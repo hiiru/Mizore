@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{89F82967-B8F8-4015-9715-9F97719FB0EA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Mizore</RootNamespace>
+    <AssemblyName>Mizore</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CacheHandler\ICacheHandler.cs" />
+    <Compile Include="CommunicationHandler\RequestHandler\PingRequest.cs" />
+    <Compile Include="CommunicationHandler\RequestHandler\QueryRequest.cs" />
+    <Compile Include="CommunicationHandler\RequestHandler\Request.cs" />
+    <Compile Include="CommunicationHandler\ResponseHandler\PingResponse.cs" />
+    <Compile Include="CommunicationHandler\ResponseHandler\QueryResponse.cs" />
+    <Compile Include="CommunicationHandler\ResponseHandler\IResponse.cs" />
+    <Compile Include="ConnectionHandler\HttpWebRequestHandler.cs" />
+    <Compile Include="ConnectionHandler\IConnectionHandler.cs" />
+    <Compile Include="ContentSerializer\EasynetJavabinSerializer.cs" />
+    <Compile Include="ContentSerializer\easynet_Javabin\DoubleConverter.cs" />
+    <Compile Include="ContentSerializer\easynet_Javabin\EasynetNamedList.cs" />
+    <Compile Include="ContentSerializer\easynet_Javabin\Extension.cs" />
+    <Compile Include="ContentSerializer\easynet_Javabin\FastInputStream.cs" />
+    <Compile Include="ContentSerializer\easynet_Javabin\FastOutputStream.cs" />
+    <Compile Include="ContentSerializer\easynet_Javabin\FloatConverter.cs" />
+    <Compile Include="ContentSerializer\easynet_Javabin\LinkedHashMap.cs" />
+    <Compile Include="ContentSerializer\easynet_Javabin\SolrDocument.cs" />
+    <Compile Include="ContentSerializer\easynet_Javabin\SolrDocumentList.cs" />
+    <Compile Include="ContentSerializer\easynet_Javabin\SolrInputDocument.cs" />
+    <Compile Include="ContentSerializer\easynet_Javabin\SolrInputField.cs" />
+    <Compile Include="ContentSerializer\IContentSerializer.cs" />
+    <Compile Include="ContentSerializer\easynet_Javabin\JavaBinCodec.cs" />
+    <Compile Include="ContentSerializer\JsonNetSerializer.cs" />
+    <Compile Include="DataMappingHandler\IDataMappingHandler.cs" />
+    <Compile Include="SolrServerHandler\HttpSolrServer.cs" />
+    <Compile Include="SolrServerHandler\ISolrServerHandler.cs" />
+    <Compile Include="Mizore.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="util\ClassActivator.cs" />
+    <Compile Include="util\NamedList.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ContentSerializer\easynet_Javabin\easynet-information.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
