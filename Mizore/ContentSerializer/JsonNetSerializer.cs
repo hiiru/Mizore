@@ -1,29 +1,25 @@
 ﻿using System;
 using System.IO;
-using Mizore.ContentSerializer.easynet_Javabin;
 using Mizore.util;
 
 namespace Mizore.ContentSerializer
 {
     internal class JsonNetSerializer : IContentSerializer
     {
-		 public string wt { get { return "json"; } }
-		 public string ContentType { get { return "application/json"; } }
-	    public Version SupportedSince { get; private set; }
+        public string wt { get { return "json"; } }
 
-	    public Stream GetStream<T>(T obj)
+        public string ContentType { get { return "application/json"; } }
+
+        public Version SupportedSince { get; private set; }
+
+        public void Marshal<T>(T obj, Stream stream)
         {
             throw new NotImplementedException();
         }
 
-        public NamedList<T> GetObject<T>(Stream stream)
+        public INamedList Unmarshal(Stream stream)
         {
             throw new NotImplementedException();
         }
-
-	    public EasynetNamedList GetObject(Stream stream)
-	    {
-		    throw new NotImplementedException();
-	    }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Mizore.CacheHandler;
+using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.ConnectionHandler;
@@ -10,25 +11,18 @@ namespace Mizore.SolrServerHandler
 {
     public class HttpSolrServer : ISolrServerHandler
     {
-        public HttpSolrServer(string url, IContentSerializer contentSerializer = null, ICacheHandler cacheHandler=null)
+        public HttpSolrServer(string url, IContentSerializer contentSerializer = null, ICacheHandler cacheHandler = null, IRequestFactory factory = null)
         {
-			  if (string.IsNullOrWhiteSpace(url)) throw new ArgumentNullException(url);
-			  if (contentSerializer != null)
-				  Serializer = contentSerializer;
-			  else
-				  //Init a default Serializer
-				  Serializer = null;
-			  if (cacheHandler != null)
-				  Cache = cacheHandler;
-			  else
-				  //Init a default Cachehandler or keep disabled?
-				  Cache = null;
+            if (string.IsNullOrWhiteSpace(url)) throw new ArgumentNullException(url);
+            Serializer = contentSerializer ?? null;
+            Cache = cacheHandler ?? null;
+            RequestFactory = factory ?? new RequestFactory();
 
-			  //TODO-HIGH: url validation -> is it a valid solr url? what to do if not?
-			  // Also Initialize related properties, (MulticoreMode,AdminCore,Cores,DefaultCore)
-			  ServerAddress = url;
+            //TODO-HIGH: url validation -> is it a valid solr url? what to do if not?
+            // Also Initialize related properties, (MulticoreMode,AdminCore,Cores,DefaultCore)
+            ServerAddress = url;
 
-			  //TODO: Timeout?
+            //TODO: Timeout?
         }
 
         public List<string> Cores
@@ -36,9 +30,10 @@ namespace Mizore.SolrServerHandler
             get { throw new NotImplementedException(); }
         }
 
+        //TODO: DefaultCore handling
         public string DefaultCore
         {
-            get { throw new NotImplementedException(); }
+            get { return null; }
             set { throw new NotImplementedException(); }
         }
 
@@ -52,12 +47,13 @@ namespace Mizore.SolrServerHandler
             get { return true; }
         }
 
-	    public string ServerAddress { get; protected set; }
+        public string ServerAddress { get; protected set; }
 
-		 public ICacheHandler Cache { get; protected set; }
+        public ICacheHandler Cache { get; protected set; }
 
-        public IContentSerializer Serializer{ get; protected set; }
+        public IContentSerializer Serializer { get; protected set; }
 
+        public IRequestFactory RequestFactory { get; protected set; }
 
         public int ConnectionTimeout
         {
@@ -65,7 +61,7 @@ namespace Mizore.SolrServerHandler
             set { throw new NotImplementedException(); }
         }
 
-        public void Request(object obj, Request request, string core = null)
+        public void Request(object obj, IRequest request, string core = null)
         {
             throw new NotImplementedException();
         }
@@ -92,8 +88,8 @@ namespace Mizore.SolrServerHandler
 
         public PingResponse Ping()
         {
-            HttpWebRequestHandler handler = new HttpWebRequestHandler();
-            return handler.Request<PingResponse>(new PingRequest(this));
+            var handler = new HttpWebRequestHandler();
+            return handler.Request<PingResponse>(RequestFactory.CreateRequest("ping", this));
         }
 
         public void GetVersion()

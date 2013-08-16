@@ -1,41 +1,32 @@
 ﻿using System;
 using System.Collections.Specialized;
-using System.IO;
 using Mizore.SolrServerHandler;
+using Mizore.util;
 
 namespace Mizore.CommunicationHandler.RequestHandler
 {
-    public class QueryRequest : Request
+    public class QueryRequest : IRequest
     {
-        public QueryRequest(ISolrServerHandler server, Stream data = null, string core = null)
-            : base(server, data, core)
+        public QueryRequest(ISolrServerHandler server, INamedList data, string core = null)
         {
+            if (server == null) throw new ArgumentNullException("server");
+            if (data == null) throw new ArgumentNullException("data");
+            Server = server;
+            Core = core ?? server.DefaultCore;
         }
 
-        public override string Method
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public string Method { get; protected set; }
 
-        public override Uri Url
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public Uri Url { get; protected set; }
 
-        public override Stream Content
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public ISolrServerHandler Server { get; protected set; }
 
-        public override NameValueCollection Header
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public string Core { get; protected set; }
 
-        public override string CacheKey
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public INamedList Content { get; protected set; }
+
+        public NameValueCollection Header { get; protected set; }
+
+        public string CacheKey { get; protected set; }
     }
 }

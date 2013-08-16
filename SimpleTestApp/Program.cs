@@ -15,102 +15,86 @@ namespace SimpleTestApp
         {
             //BenchmarkNamedLists();
             //return;
-            var server = new HttpSolrServer("http://127.0.0.1:8080/solr", new EasynetJavabinSerializer());
-			  //var server = new HttpSolrServer("http://127.0.0.1:8983/solr",new EasynetJavabinSerializer());
+            //var server = new HttpSolrServer("http://127.0.0.1:8080/solr", new EasynetJavabinSerializer());
+            var server = new HttpSolrServer("http://127.0.0.1:8983/solr", new EasynetJavabinSerializer());
             var ping = server.Ping();
-			  if (ping.ContentENL!=null)
-			  {
-				  var reqHead = ping.ContentENL.Get("responseHeader") as SimpleOrderedMap;
-				  Console.WriteLine("requestHeader:");
-				  Console.WriteLine("\tstatus: " + reqHead.Get("status"));
-				  Console.WriteLine("\tQTime: " + reqHead.Get("QTime"));
-				  Console.WriteLine("status: "+ping.ContentENL.Get("status"));
-			  }
-			  Console.WriteLine("Raw:");
+            if (ping.ContentENL != null)
+            {
+                var reqHead = ping.ContentENL.Get("responseHeader") as SimpleOrderedMap;
+                Console.WriteLine("requestHeader:");
+                Console.WriteLine("\tstatus: " + reqHead.Get("status"));
+                Console.WriteLine("\tQTime: " + reqHead.Get("QTime"));
+                Console.WriteLine("status: " + ping.ContentENL.Get("status"));
+            }
+            Console.WriteLine("Raw:");
             Console.WriteLine(ping.ContentString);
             Console.WriteLine("Done");
             Console.ReadKey();
         }
+
+        public static Tuple<long, long, long> BenchmarkNamedList(INamedList list, int outerLimit = 5000, int innerMod = 10)
+        {
+            List<string> keys = Enumerable.Range(0, outerLimit + 1).Select(i => i + "_key").ToList();
+            var sw = Stopwatch.StartNew();
+            for (int i = 0; i < outerLimit; i++)
+            {
+                string key = keys[i];
+                for (int j = 0; j <= i % innerMod; j++)
+                {
+                    var innerlist = new NamedList<int>();
+                    innerlist.Add(key, j);
+                    list.Add(key, list);
+                }
+            }
+            sw.Start();
+            long write = sw.ElapsedMilliseconds;
+            sw.Restart();
+            for (int i = 0; i < outerLimit; i++)
+            {
+                var x = list.Get(i);
+            }
+            sw.Start();
+            long getval = sw.ElapsedMilliseconds;
+            sw.Restart();
+            for (int i = 0; i < outerLimit; i++)
+            {
+                string key = keys[i % outerLimit];
+                var x = list.Get(key);
+            }
+            sw.Start();
+            long getstr = sw.ElapsedMilliseconds;
+            return new Tuple<long, long, long>(write, getval, getstr);
+        }
+
         public static void BenchmarkNamedLists()
         {
+            var type = typeof(INamedList);
+            var types = AppDomain.CurrentDomain.GetAssemblies().ToList()
+                .SelectMany(s => s.GetTypes())
+                .Where(type.IsAssignableFrom);
+
             const int OUTERLIMIT = 5000;
             const int INNERMOD = 10;
-            NamedList<object> nl = new NamedList<object>();
-            EasynetNamedList easynetNamedList = new EasynetNamedList();
-
-            Stopwatch swNamedListAdd = new Stopwatch();
-            Stopwatch swEasyNamedListAdd = new Stopwatch();
-            Stopwatch swNamedListGetId = new Stopwatch();
-            Stopwatch swEasyNamedListGetId = new Stopwatch();
-            Stopwatch swNamedListGetKey = new Stopwatch();
-            Stopwatch swEasyNamedListGetKey = new Stopwatch();
-            List<string> keys = Enumerable.Range(0, OUTERLIMIT+1).Select(i => i + "_key").ToList();
-
-            swNamedListAdd.Start();
-            for (int i = 0; i < OUTERLIMIT; i++)
+            foreach (Type nlType in types)
             {
-                string key = keys[i];
-                for (int j = 0; j <= i % INNERMOD; j++)
+                var fullname = nlType.FullName;
+                if (fullname == "Mizore.util.INamedList") continue;
+                Console.WriteLine("Starting benchmark for " + fullname + " with outer:" + OUTERLIMIT + " inner:" + INNERMOD);
+                try
                 {
-                    var list = new NamedList<int>();
-                    list.Add(key, j);
-                    nl.Add(key, list);
+                    var times = BenchmarkNamedList(Activator.CreateInstance(nlType) as INamedList, OUTERLIMIT, INNERMOD);
+                    Console.WriteLine("Write: " + times.Item1 + "ms GetVal: " + times.Item2 + "ms GetStr: " + times.Item3 + "ms");
                 }
-            }
-            swNamedListAdd.Stop();
-            swEasyNamedListAdd.Start();
-            for (int i = 0; i < OUTERLIMIT; i++)
-            {
-                string key = keys[i];
-                for (int j = 0; j <= i % INNERMOD; j++)
+                catch
                 {
-                    var list = new EasynetNamedList<int>();
-                    list.Add(key, j);
-                    easynetNamedList.Add(key, list);
+                    Console.WriteLine("Test for " + fullname + " failes!");
                 }
+                Console.WriteLine();
             }
-            swEasyNamedListAdd.Stop();
-            swNamedListGetId.Start();
-            for (int i = 0; i < OUTERLIMIT; i++)
-            {
-                string key = keys[i % OUTERLIMIT];
-                var x = nl.Get(i);
-            }
-            swNamedListGetId.Stop();
-            swEasyNamedListGetId.Start();
-            for (int i = 0; i < OUTERLIMIT; i++)
-            {
-                string key = keys[i % OUTERLIMIT];
-                var x = easynetNamedList.GetVal(i);
-            }
-            swEasyNamedListGetId.Stop();
-            swNamedListGetKey.Start();
-            for (int i = 0; i < OUTERLIMIT; i++)
-            {
-                string key = keys[i % OUTERLIMIT];
-                var x = nl.Get(key);
-            }
-            swNamedListGetKey.Stop();
-            swEasyNamedListGetKey.Start();
-            for (int i = 0; i < OUTERLIMIT; i++)
-            {
-                string key = keys[i % OUTERLIMIT];
-                var x = easynetNamedList.Get(key);
-            }
-            swEasyNamedListGetKey.Stop();
-
-
-            Console.WriteLine("Add speedtest (" + OUTERLIMIT + " limit, " + INNERMOD + " mod):");
-            Console.WriteLine("\tNamedList: " + swNamedListAdd.ElapsedMilliseconds + "ms");
-            Console.WriteLine("\tEasynetNamedList: " + swEasyNamedListAdd.ElapsedMilliseconds + "ms");
-            Console.WriteLine("GetId speedtest (" + OUTERLIMIT + " limit, " + INNERMOD + " mod):");
-            Console.WriteLine("\tNamedList: " + swNamedListGetId.ElapsedMilliseconds + "ms");
-            Console.WriteLine("\tEasynetNamedList: " + swEasyNamedListGetId.ElapsedMilliseconds + "ms");
-            Console.WriteLine("GetKey speedtest (" + OUTERLIMIT + " limit, " + INNERMOD + " mod):");
-            Console.WriteLine("\tNamedList: " + swNamedListGetKey.ElapsedMilliseconds + "ms");
-            Console.WriteLine("\tEasynetNamedList: " + swEasyNamedListGetKey.ElapsedMilliseconds + "ms");
+            Console.WriteLine("Benchmaks done.");
             Console.ReadKey();
         }
+
         public static void GeneratePlotCSV()
         {
             const int INNERMOD = 10;
@@ -128,7 +112,7 @@ namespace SimpleTestApp
                 for (int i = 0; i < limit; i++)
                 {
                     string key = i + "_key";
-                    for (int j = 0; j <= i%INNERMOD; j++)
+                    for (int j = 0; j <= i % INNERMOD; j++)
                     {
                         var list = new NamedList<int>();
                         list.Add(key, j);
@@ -140,7 +124,7 @@ namespace SimpleTestApp
                 for (int i = 0; i < limit; i++)
                 {
                     string key = i + "_key";
-                    for (int j = 0; j <= i%INNERMOD; j++)
+                    for (int j = 0; j <= i % INNERMOD; j++)
                     {
                         var list = new EasynetNamedList<int>();
                         list.Add(key, j);

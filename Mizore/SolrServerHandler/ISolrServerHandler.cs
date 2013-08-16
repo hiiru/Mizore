@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Mizore.CacheHandler;
+using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.ContentSerializer;
 
@@ -40,6 +41,8 @@ namespace Mizore.SolrServerHandler
         ICacheHandler Cache { get; }
 
         IContentSerializer Serializer { get; }
+
+        IRequestFactory RequestFactory { get; }
 
         int ConnectionTimeout { get; set; }
 

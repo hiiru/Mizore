@@ -1,33 +1,38 @@
 ﻿using System;
+using System.Collections.Specialized;
 using Mizore.SolrServerHandler;
+using Mizore.util;
 
 namespace Mizore.CommunicationHandler.RequestHandler
 {
-    public class PingRequest : Request
+    public class PingRequest : IRequest
     {
         public const string Handler = "/admin/ping";
 
         public PingRequest(ISolrServerHandler server)
-            : base(server)
         {
             if (server == null) throw new ArgumentNullException("server");
             if (!server.AdminCore) throw new ArgumentException("PingRequest requires a Server AdminCore!", "server");
+            Server = server;
+
             var url = new UriBuilder(server.ServerAddress + Handler);
-				if (server.Serializer!=null)
-	        url.Query = "wt="+server.Serializer.wt;
-	        _url = url.Uri;
+            if (server.Serializer != null)
+                url.Query = "wt=" + server.Serializer.wt;
+            Url = url.Uri;
         }
 
-        protected Uri _url;
+        public virtual string Method { get { return "GET"; } }
 
-        public override Uri Url
-        {
-            get { return _url; }
-        }
+        public Uri Url { get; protected set; }
 
-        public override string CacheKey
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public ISolrServerHandler Server { get; protected set; }
+
+        public virtual string Core { get { return "admin"; } }
+
+        public virtual INamedList Content { get { return null; } }
+
+        public virtual NameValueCollection Header { get { return null; } }
+
+        public virtual string CacheKey { get { return null; } }
     }
 }

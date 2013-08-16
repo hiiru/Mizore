@@ -11,6 +11,6 @@ namespace Mizore.ConnectionHandler
     /// </summary>
     public interface IConnectionHandler
     {
-        T Request<T>(Request request) where T : IResponse, new();
+        T Request<T>(IRequest request) where T : IResponse, new();
     }
 }

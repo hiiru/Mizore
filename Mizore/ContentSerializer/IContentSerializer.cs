@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using Mizore.ContentSerializer.easynet_Javabin;
 using Mizore.util;
 
 namespace Mizore.ContentSerializer
@@ -11,20 +10,16 @@ namespace Mizore.ContentSerializer
     /// </summary>
     public interface IContentSerializer
     {
-		 //naming for wt= parameter?
-	    string wt { get; }
+        //naming for wt= parameter?
+        string wt { get; }
 
-	    string ContentType { get; }
+        string ContentType { get; }
 
-		 //Minimum solr version needed - Version or float?
-	    Version SupportedSince { get; }
+        //Minimum solr version needed - Version or float?
+        Version SupportedSince { get; }
 
-		 
-        Stream GetStream<T>(T obj);
+        void Marshal<T>(T obj, Stream stream);
 
-        NamedList<T> GetObject<T>(Stream stream);
-
-		 //tmp
-	    EasynetNamedList GetObject(Stream stream);
+        INamedList Unmarshal(Stream stream);
     }
 }

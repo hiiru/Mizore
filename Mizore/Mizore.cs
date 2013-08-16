@@ -58,11 +58,10 @@
         //Dismax
         //IsAvailable (checkinterval property, lastquery datetime, ping tests -> optional: reinitialize solr cores)
         //Solr serializer query version support, e.g. (http://wiki.apache.org/solr/XMLResponseFormat)  -> identify by version, contenttype, wt param
-		
-		//Future ideas:
-		//-> WebAPI which provides a solr proxy for JS solr implementation like ajax-solr.
-		
-		
+
+        //Future ideas:
+        //-> WebAPI which provides a solr proxy for JS solr implementation like ajax-solr.
+
         // TBC...
     }
 }

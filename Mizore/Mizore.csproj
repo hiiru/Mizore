@@ -57,9 +57,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CacheHandler\ICacheHandler.cs" />
+    <Compile Include="CommunicationHandler\IRequestFactory.cs" />
+    <Compile Include="CommunicationHandler\RequestFactory.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\PingRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\QueryRequest.cs" />
-    <Compile Include="CommunicationHandler\RequestHandler\Request.cs" />
+    <Compile Include="CommunicationHandler\RequestHandler\IRequest.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\PingResponse.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\QueryResponse.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\IResponse.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="Mizore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="util\ClassActivator.cs" />
+    <Compile Include="util\INamedList.cs" />
     <Compile Include="util\NamedList.cs" />
   </ItemGroup>
   <ItemGroup>

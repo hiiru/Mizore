@@ -10,7 +10,7 @@ namespace Mizore.ConnectionHandler
     {
         protected string ETag = null;
 
-        public T Request<T>(Request request) where T : IResponse, new()
+        public T Request<T>(IRequest request) where T : IResponse, new()
         {
             if (request == null) throw new ArgumentNullException("request");
             if (request.Server.Cache != null)
@@ -45,7 +45,7 @@ namespace Mizore.ConnectionHandler
             }
         }
 
-        protected virtual HttpWebRequest CreateWebRequest(Request request)
+        protected virtual HttpWebRequest CreateWebRequest(IRequest request)
         {
             var webRequest = (HttpWebRequest)WebRequest.Create(request.Url);
             webRequest.Method = request.Method;
@@ -68,7 +68,7 @@ namespace Mizore.ConnectionHandler
             {
                 using (var requestStream = webRequest.GetRequestStream())
                 {
-                    request.Content.CopyTo(requestStream);
+                    request.Server.Serializer.Marshal(request.Content, requestStream);
                 }
             }
             return webRequest;
