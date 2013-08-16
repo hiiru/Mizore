@@ -10,7 +10,6 @@ namespace Mizore.CommunicationHandler.ResponseHandler
         {
             Request = request;
 
-            //TODO-HIGH: Implement NamedList<T> and a ContentSerializer.
             if (request.Server.Serializer != null)
             {
                 ContentENL = request.Server.Serializer.Unmarshal(content) as EasynetNamedList;

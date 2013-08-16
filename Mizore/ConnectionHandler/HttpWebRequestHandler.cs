@@ -38,9 +38,9 @@ namespace Mizore.ConnectionHandler
             }
             catch (WebException we)
             {
-                //TODO: Http exceptionhandling
-                //TODO: Cache handling
-                //TODO-LOW: Solr errorpage parsing and own exception handling
+                //TODO: JIRA SOLR-7: Http exceptionhandling
+                //TODO: JIIRA SOLR-9: Cache handling
+                //TODO-LOW: JIRA SOLR-16: Solr errorpage parsing and own exception handling
                 throw we;
             }
         }

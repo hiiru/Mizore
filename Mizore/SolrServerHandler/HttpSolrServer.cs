@@ -18,7 +18,7 @@ namespace Mizore.SolrServerHandler
             Cache = cacheHandler ?? null;
             RequestFactory = factory ?? new RequestFactory();
 
-            //TODO-HIGH: url validation -> is it a valid solr url? what to do if not?
+            //TODO-HIGH: SOLR-17: url validation -> is it a valid solr url? what to do if not?
             // Also Initialize related properties, (MulticoreMode,AdminCore,Cores,DefaultCore)
             ServerAddress = url;
 
@@ -30,7 +30,7 @@ namespace Mizore.SolrServerHandler
             get { throw new NotImplementedException(); }
         }
 
-        //TODO: DefaultCore handling
+        //TODO: DefaultCore handling -  SOLR-5 should simplify this
         public string DefaultCore
         {
             get { return null; }
