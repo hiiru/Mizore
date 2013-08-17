@@ -59,6 +59,11 @@ namespace Mizore.util
             return null;
         }
 
+        public string GetKey(int i)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void Add(string name, T obj)
         {
             List<int> list;
@@ -69,5 +74,7 @@ namespace Mizore.util
             list.Add(values.Count);
             values.Add(obj);
         }
+
+        public int Count { get { return values.Count; } }
     }
 }

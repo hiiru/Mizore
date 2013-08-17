@@ -13,15 +13,19 @@ namespace Mizore.SolrServerHandler
     {
         public HttpSolrServer(string url, IContentSerializer contentSerializer = null, ICacheHandler cacheHandler = null, IRequestFactory factory = null)
         {
+            //TODO-HIGH: SOLR-17: url validation -> is it a valid solr url? what to do if not?
             if (string.IsNullOrWhiteSpace(url)) throw new ArgumentNullException(url);
+            if (!url.Substring(0,4).Equals("http", StringComparison.InvariantCultureIgnoreCase)) throw new ArgumentException("The solr url has to be a HTTP(S):// url!", "url");
+            if (url.Contains("?")) throw new ArgumentException("Invalid solr url, The solr URL must not contain parameters: "+ url,"url");
+            if (url.EndsWith("/")) url = url.Substring(0, url.Length - 1);
+            ServerAddress = url;
+            
             Serializer = contentSerializer ?? null;
             Cache = cacheHandler ?? null;
             RequestFactory = factory ?? new RequestFactory();
 
-            //TODO-HIGH: SOLR-17: url validation -> is it a valid solr url? what to do if not?
-            // Also Initialize related properties, (MulticoreMode,AdminCore,Cores,DefaultCore)
-            ServerAddress = url;
 
+            //TODO: Multicore Mode - Initialize related properties, (MulticoreMode,Cores,DefaultCore)
             //TODO: Timeout?
         }
 
@@ -41,12 +45,7 @@ namespace Mizore.SolrServerHandler
         {
             get { return false; }
         }
-
-        public bool AdminCore
-        {
-            get { return true; }
-        }
-
+        
         public string ServerAddress { get; protected set; }
 
         public ICacheHandler Cache { get; protected set; }
@@ -90,6 +89,12 @@ namespace Mizore.SolrServerHandler
         {
             var handler = new HttpWebRequestHandler();
             return handler.Request<PingResponse>(RequestFactory.CreateRequest("ping", this));
+        }
+
+        public SystemResponse GetSystemInfo()
+        {
+            var handler = new HttpWebRequestHandler();
+            return handler.Request<SystemResponse>(RequestFactory.CreateRequest("system", this));
         }
 
         public void GetVersion()

@@ -11,23 +11,61 @@ namespace SimpleTestApp
 {
     internal class Program
     {
+        private const string SERVERURL = "http://127.0.0.1:8983/solr/";
+
+        //private const string SERVERURL = "http://127.0.0.1:8080/solr";
         private static void Main(string[] args)
         {
-            //BenchmarkNamedLists();
-            //return;
-            //var server = new HttpSolrServer("http://127.0.0.1:8080/solr", new EasynetJavabinSerializer());
-            var server = new HttpSolrServer("http://127.0.0.1:8983/solr", new EasynetJavabinSerializer());
+            Console.WriteLine("Pining solr server: " + SERVERURL);
+            Console.WriteLine();
+            var server = new HttpSolrServer(SERVERURL, new EasynetJavabinSerializer());
             var ping = server.Ping();
-            if (ping.ContentENL != null)
+            Console.WriteLine("Ping URL: "+ping.Request.Url);
+            Console.WriteLine("Ping Status: " + ping.Status);
+            Console.WriteLine();
+            Console.WriteLine("RequestHeader:");
+            Console.WriteLine("\tstatus: " + ping.ResponseHeader.Status);
+            Console.WriteLine("\tQTime: " + ping.ResponseHeader.QTime);
+            if (ping.ResponseHeader.Parameters != null)
             {
-                var reqHead = ping.ContentENL.Get("responseHeader") as SimpleOrderedMap;
-                Console.WriteLine("requestHeader:");
-                Console.WriteLine("\tstatus: " + reqHead.Get("status"));
-                Console.WriteLine("\tQTime: " + reqHead.Get("QTime"));
-                Console.WriteLine("status: " + ping.ContentENL.Get("status"));
+                for (int i = 0; i < ping.ResponseHeader.Parameters.Count; i++)
+                {
+                    Console.WriteLine("\t\t" + ping.ResponseHeader.Parameters.GetKey(i) + ": " + ping.ResponseHeader.Parameters.Get(i));
+                }
             }
-            Console.WriteLine("Raw:");
-            Console.WriteLine(ping.ContentString);
+            Console.WriteLine();
+
+            var system = server.GetSystemInfo();
+            Console.WriteLine("System URL: " + system.Request.Url);
+            Console.WriteLine("System Mode: " + system.Mode);
+            Console.WriteLine();
+            Console.WriteLine("System Core Info: ");
+            Console.WriteLine("\tSchema: " + system.Core.Schema);
+            Console.WriteLine("\tHost: " + system.Core.Host);
+            Console.WriteLine("\tServer Time: " + system.Core.Now);
+            Console.WriteLine("\tStart Time: " + system.Core.Start);
+            if (system.Core.Directory != null)
+            {
+                for (int i = 0; i < system.Core.Directory.Count; i++)
+                {
+                    Console.WriteLine("\t\t" + system.Core.Directory.GetKey(i) + ": " + system.Core.Directory.Get(i));
+                }
+            }
+            Console.WriteLine();
+            Console.WriteLine("RequestHeader:");
+            Console.WriteLine("\tstatus: " + system.ResponseHeader.Status);
+            Console.WriteLine("\tQTime: " + system.ResponseHeader.QTime);
+            if (system.ResponseHeader.Parameters != null)
+            {
+                for (int i = 0; i < system.ResponseHeader.Parameters.Count; i++)
+                {
+                    Console.WriteLine("\t\t" + system.ResponseHeader.Parameters.GetKey(i) + ": " + system.ResponseHeader.Parameters.Get(i));
+                }
+            }
+            Console.WriteLine();
+
+
+
             Console.WriteLine("Done");
             Console.ReadKey();
         }

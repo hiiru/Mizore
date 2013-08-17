@@ -59,12 +59,15 @@
     <Compile Include="CacheHandler\ICacheHandler.cs" />
     <Compile Include="CommunicationHandler\IRequestFactory.cs" />
     <Compile Include="CommunicationHandler\RequestFactory.cs" />
+    <Compile Include="CommunicationHandler\RequestHandler\SystemRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\PingRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\QueryRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\IRequest.cs" />
+    <Compile Include="CommunicationHandler\ResponseHandler\SystemResponse.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\PingResponse.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\QueryResponse.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\IResponse.cs" />
+    <Compile Include="CommunicationHandler\ResponseHandler\ResponseData\ResponseHeader.cs" />
     <Compile Include="ConnectionHandler\HttpWebRequestHandler.cs" />
     <Compile Include="ConnectionHandler\IConnectionHandler.cs" />
     <Compile Include="ContentSerializer\EasynetJavabinSerializer.cs" />

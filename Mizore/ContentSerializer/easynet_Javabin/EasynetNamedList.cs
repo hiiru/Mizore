@@ -89,6 +89,11 @@ namespace Mizore.ContentSerializer.easynet_Javabin
             return (T)nvPairs[(index << 1) + 1];
         }
 
+        public string GetKey(int i)
+        {
+            return GetName(i);
+        }
+
         /// <summary>
         /// 添加元素
         /// </summary>

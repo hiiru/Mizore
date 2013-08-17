@@ -11,6 +11,8 @@ namespace Mizore.CommunicationHandler
             {
                 case "ping":
                     return new PingRequest(server);
+                case "system":
+                    return new SystemRequest(server);
 
                 default:
                     return null;

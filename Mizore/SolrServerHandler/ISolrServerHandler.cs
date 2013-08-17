@@ -30,12 +30,7 @@ namespace Mizore.SolrServerHandler
         /// </summary>
         ///
         bool MulticoreMode { get; }
-
-        /// <summary>
-        /// This should return true if /admin can be used on the server (e.g. ping)
-        /// </summary>
-        bool AdminCore { get; }
-
+        
         string ServerAddress { get; }
 
         ICacheHandler Cache { get; }
@@ -61,7 +56,7 @@ namespace Mizore.SolrServerHandler
         bool Optimize(string core = null);
 
         PingResponse Ping();
-
+        SystemResponse GetSystemInfo();
         void GetVersion();
 
         //future: admin features (cores, etc.) and statistics

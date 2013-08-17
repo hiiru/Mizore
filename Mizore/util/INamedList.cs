@@ -12,6 +12,10 @@ namespace Mizore.util
 
         IList<T> GetAll(string name);
 
+        string GetKey(int i);
+
         void Add(string name, T obj);
+
+        int Count { get; }
     }
 }
