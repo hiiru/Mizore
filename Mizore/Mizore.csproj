@@ -59,10 +59,12 @@
     <Compile Include="CacheHandler\ICacheHandler.cs" />
     <Compile Include="CommunicationHandler\IRequestFactory.cs" />
     <Compile Include="CommunicationHandler\RequestFactory.cs" />
+    <Compile Include="CommunicationHandler\RequestHandler\UpdateReuqest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\SystemRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\PingRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\QueryRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\IRequest.cs" />
+    <Compile Include="CommunicationHandler\ResponseHandler\UpdateResonse.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\SystemResponse.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\PingResponse.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\QueryResponse.cs" />

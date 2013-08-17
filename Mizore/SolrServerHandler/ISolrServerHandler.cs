@@ -45,7 +45,7 @@ namespace Mizore.SolrServerHandler
         //int ConnectionReadWriteTimeout { get;set; }
 
         //Input: object/doc/namedlist / Optional: core
-        bool Add();
+        UpdateResponse Add(string core = null);
 
         //Input: id/query / Optional: core
         bool Delete();

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Mizore.CommunicationHandler.RequestHandler;
+using Mizore.util;
 
 namespace Mizore.CommunicationHandler.ResponseHandler
 {
@@ -11,5 +12,7 @@ namespace Mizore.CommunicationHandler.ResponseHandler
         }
 
         public IRequest Request { get; protected set; }
+
+        public INamedList Content { get; protected set; }
     }
 }

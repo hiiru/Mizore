@@ -17,7 +17,7 @@ namespace Mizore.SolrServerHandler
             if (string.IsNullOrWhiteSpace(url)) throw new ArgumentNullException(url);
             if (!url.Substring(0,4).Equals("http", StringComparison.InvariantCultureIgnoreCase)) throw new ArgumentException("The solr url has to be a HTTP(S):// url!", "url");
             if (url.Contains("?")) throw new ArgumentException("Invalid solr url, The solr URL must not contain parameters: "+ url,"url");
-            if (url.EndsWith("/")) url = url.Substring(0, url.Length - 1);
+            if (url.EndsWith("/")) url = url.TrimEnd('/');
             ServerAddress = url;
             
             Serializer = contentSerializer ?? null;
@@ -65,11 +65,13 @@ namespace Mizore.SolrServerHandler
             throw new NotImplementedException();
         }
 
-        public bool Add()
+        //TODO: how is the Data passed to the Request?
+        public UpdateResponse Add(string core = null)
         {
-            throw new NotImplementedException();
+            var handler = new HttpWebRequestHandler();
+            return handler.Request<UpdateResponse>(RequestFactory.CreateRequest("update", this, core));
         }
-
+        
         public bool Delete()
         {
             throw new NotImplementedException();
