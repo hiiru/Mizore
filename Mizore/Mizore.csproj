@@ -88,6 +88,8 @@
     <Compile Include="ContentSerializer\easynet_Javabin\JavaBinCodec.cs" />
     <Compile Include="ContentSerializer\JsonNetSerializer.cs" />
     <Compile Include="DataMappingHandler\IDataMappingHandler.cs" />
+    <Compile Include="Exceptions\MizoreConnectionException.cs" />
+    <Compile Include="Exceptions\MizoreException.cs" />
     <Compile Include="SolrServerHandler\HttpSolrServer.cs" />
     <Compile Include="SolrServerHandler\ISolrServerHandler.cs" />
     <Compile Include="Mizore.cs" />

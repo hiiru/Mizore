@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mizore", "Mizore\Mizore.csproj", "{89F82967-B8F8-4015-9715-9F97719FB0EA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleTestApp", "SimpleTestApp\SimpleTestApp.csproj", "{7D235D1F-CD9C-496D-93E5-85C55230EA8F}"

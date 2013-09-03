@@ -3,13 +3,21 @@ using System.IO;
 using System.Net;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
+using Mizore.Exceptions;
 
 namespace Mizore.ConnectionHandler
 {
-    internal class HttpWebRequestHandler : IConnectionHandler
+    public class HttpWebRequestHandler : IConnectionHandler
     {
         protected string ETag = null;
 
+        /// <summary>
+        /// Transfers the Request to the Solr Server and returns it's Response.
+        /// </summary>
+        /// <typeparam name="T">IResponse type, which handles the response.</typeparam>
+        /// <param name="request">IRequest implementation, which handles the required date for the Request.</param>
+        /// <exception cref="MizoreConnectionExcpetion">Thrown when a problem with the Conneection to the server occurs</exception>
+        /// <returns>IResponse implementation for the Response</returns>
         public T Request<T>(IRequest request) where T : IResponse, new()
         {
             if (request == null) throw new ArgumentNullException("request");
@@ -41,7 +49,12 @@ namespace Mizore.ConnectionHandler
                 //TODO: JIRA SOLR-7: Http exceptionhandling
                 //TODO: JIIRA SOLR-9: Cache handling
                 //TODO-LOW: JIRA SOLR-16: Solr errorpage parsing and own exception handling
-                throw we;
+                throw new MizoreConnectionException(request, "Connection exception occured in HttpWebRequestHandler.", we);
+            }
+            catch (Exception e)
+            {
+                //TODO: generic error handling
+                throw new MizoreConnectionException(request, e);
             }
         }
 
