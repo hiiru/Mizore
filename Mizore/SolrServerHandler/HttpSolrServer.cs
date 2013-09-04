@@ -20,7 +20,7 @@ namespace Mizore.SolrServerHandler
             if (url.EndsWith("/")) url = url.TrimEnd('/');
             ServerAddress = url;
             
-            Serializer = contentSerializer ?? null;
+            Serializer = contentSerializer ?? new EasynetJavabinSerializer();
             Cache = cacheHandler ?? null;
             RequestFactory = factory ?? new RequestFactory();
 

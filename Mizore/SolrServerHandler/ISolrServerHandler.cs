@@ -28,7 +28,6 @@ namespace Mizore.SolrServerHandler
         /// <summary>
         /// This returns true if multicore support is available.
         /// </summary>
-        ///
         bool MulticoreMode { get; }
         
         string ServerAddress { get; }
@@ -40,10 +39,7 @@ namespace Mizore.SolrServerHandler
         IRequestFactory RequestFactory { get; }
 
         int ConnectionTimeout { get; set; }
-
-        // is this needed? or same as timeout?
-        //int ConnectionReadWriteTimeout { get;set; }
-
+        
         //Input: object/doc/namedlist / Optional: core
         UpdateResponse Add(string core = null);
 
