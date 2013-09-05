@@ -11,9 +11,8 @@ namespace SimpleTestApp
 {
     internal class Program
     {
-        private const string SERVERURL = "http://127.0.0.1:8983/solr/";
+        private const string SERVERURL = "http://127.0.0.1:20440/solr/";
 
-        //private const string SERVERURL = "http://127.0.0.1:8080/solr";
         private static void Main(string[] args)
         {
             Console.WriteLine("Pining solr server: " + SERVERURL);

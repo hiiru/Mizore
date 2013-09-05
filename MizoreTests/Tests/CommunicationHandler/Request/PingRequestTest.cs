@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mizore.CommunicationHandler.RequestHandler;
+using MizoreTests.Mock;
 
 namespace MizoreTests.Tests.CommunicationHandler.Request
 {
@@ -9,8 +10,7 @@ namespace MizoreTests.Tests.CommunicationHandler.Request
     {
         protected override IRequest CreateInstance()
         {
-            //TODO: fix when a mocking SolrServerHandler is available
-            return new PingRequest(null);
+            return new PingRequest(new MockSolrServerHandler(null));
         }
 
         [TestMethod]

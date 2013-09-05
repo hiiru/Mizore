@@ -53,7 +53,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Mock\MockConnectionHandler.cs" />
     <Compile Include="Mock\MockSolrServerHandler.cs" />
+    <Compile Include="Resources\ResourceProvider.cs" />
     <Compile Include="Tests\CommunicationHandler\Request\PingRequestTest.cs" />
     <Compile Include="Tests\CommunicationHandler\Request\RequestBaseTest.cs" />
     <Compile Include="Tests\ConnectionHandler\ConnectionHandlerBaseTest.cs" />
@@ -69,6 +71,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ResponseFiles\ping.javabin" />
+    <EmbeddedResource Include="Resources\ResponseFiles\ping.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ResponseFiles\ping.xml" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Mizore.CacheHandler;
 using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
@@ -12,16 +10,33 @@ namespace MizoreTests.Mock
 {
     public class MockSolrServerHandler : ISolrServerHandler
     {
-        public MockSolrServerHandler() {}
+        protected string ResourcePath;
+
+        public MockSolrServerHandler(string resourcePath, string url=null, IContentSerializer contentSerializer = null, ICacheHandler cacheHandler = null, IRequestFactory factory = null)
+        {
+            ResourcePath = resourcePath;
+            ServerAddress = url ?? "http://127.0.0.1:20440/solr/";
+            Serializer = contentSerializer ?? new EasynetJavabinSerializer();
+            Cache = cacheHandler ?? null;
+            RequestFactory = factory ?? new RequestFactory();
+        }
 
         public List<string> Cores { get; private set; }
+
         public string DefaultCore { get; set; }
+
         public bool MulticoreMode { get; private set; }
+
         public string ServerAddress { get; private set; }
+
         public ICacheHandler Cache { get; private set; }
+
         public IContentSerializer Serializer { get; private set; }
+
         public IRequestFactory RequestFactory { get; private set; }
+
         public int ConnectionTimeout { get; set; }
+
         public UpdateResponse Add(string core = null)
         {
             throw new NotImplementedException();
@@ -44,7 +59,8 @@ namespace MizoreTests.Mock
 
         public PingResponse Ping()
         {
-            throw new NotImplementedException();
+            var conHandler = new MockConnectionHandler { ResponseFilename = "ping", ResourcePath = ResourcePath};
+            return conHandler.Request<PingResponse>(RequestFactory.CreateRequest("ping", this));
         }
 
         public SystemResponse GetSystemInfo()

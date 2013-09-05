@@ -1,10 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Mizore.ContentSerializer;
 using Mizore.SolrServerHandler;
 
 namespace MizoreTests.Tests.SolrServerHandler
 {
     public abstract class SolrServerHandlerBaseTest
     {
+        protected abstract IContentSerializer CreateSerializer();
         protected abstract ISolrServerHandler CreateInstance();
 
         [TestMethod]
