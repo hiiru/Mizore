@@ -6,29 +6,37 @@ using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.ConnectionHandler;
 using Mizore.ContentSerializer;
+using Mizore.Exceptions;
 
 namespace Mizore.SolrServerHandler
 {
     public class HttpSolrServer : ISolrServerHandler
     {
+        protected HttpWebRequestHandler RequestHandler;
+
+        public bool IsReady { get; protected set; }
+
         public HttpSolrServer(string url, IContentSerializer contentSerializer = null, ICacheHandler cacheHandler = null, IRequestFactory factory = null)
         {
-            //TODO-HIGH: SOLR-17: url validation -> is it a valid solr url? what to do if not?
-            if (string.IsNullOrWhiteSpace(url)) throw new ArgumentNullException(url);
-            if (!url.Substring(0,4).Equals("http", StringComparison.InvariantCultureIgnoreCase)) throw new ArgumentException("The solr url has to be a HTTP(S):// url!", "url");
-            if (url.Contains("?")) throw new ArgumentException("Invalid solr url, The solr URL must not contain parameters: "+ url,"url");
+            if (string.IsNullOrWhiteSpace(url)) throw new ArgumentNullException("url");
             if (url.EndsWith("/")) url = url.TrimEnd('/');
             ServerAddress = url;
-            
             Serializer = contentSerializer ?? new EasynetJavabinSerializer();
             Cache = cacheHandler ?? null;
             RequestFactory = factory ?? new RequestFactory();
 
+            Uri solrUri;
+            if (!Uri.TryCreate(ServerAddress, UriKind.Absolute, out solrUri)) throw new ArgumentException("the URL is invalid", "url");
+            RequestHandler=new HttpWebRequestHandler();
+            if (!RequestHandler.IsUriSupported(solrUri)) throw new ArgumentException("the URL is invalid", "url");
+
+
+            IsReady = true;
 
             //TODO: Multicore Mode - Initialize related properties, (MulticoreMode,Cores,DefaultCore)
             //TODO: Timeout?
         }
-
+        
         public List<string> Cores
         {
             get { throw new NotImplementedException(); }
@@ -68,8 +76,7 @@ namespace Mizore.SolrServerHandler
         //TODO: how is the Data passed to the Request?
         public UpdateResponse Add(string core = null)
         {
-            var handler = new HttpWebRequestHandler();
-            return handler.Request<UpdateResponse>(RequestFactory.CreateRequest("update", this, core));
+            return RequestHandler.Request<UpdateResponse>(RequestFactory.CreateRequest("update", this, core));
         }
         
         public bool Delete()
@@ -89,14 +96,12 @@ namespace Mizore.SolrServerHandler
 
         public PingResponse Ping()
         {
-            var handler = new HttpWebRequestHandler();
-            return handler.Request<PingResponse>(RequestFactory.CreateRequest("ping", this));
+            return RequestHandler.Request<PingResponse>(RequestFactory.CreateRequest("ping", this));
         }
 
         public SystemResponse GetSystemInfo()
         {
-            var handler = new HttpWebRequestHandler();
-            return handler.Request<SystemResponse>(RequestFactory.CreateRequest("system", this));
+            return RequestHandler.Request<SystemResponse>(RequestFactory.CreateRequest("system", this));
         }
 
         public void GetVersion()

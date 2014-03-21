@@ -58,6 +58,22 @@ namespace Mizore.ConnectionHandler
             }
         }
 
+        public bool IsUriSupported(Uri uri)
+        {
+            if (uri == null || !uri.IsAbsoluteUri) return false;
+            switch (uri.Scheme)
+            {
+                case "http":
+                case "https":
+                    break;
+                default:
+                    return false;
+            }
+            if (!string.IsNullOrWhiteSpace(uri.UserInfo)) return false;
+            if (!string.IsNullOrWhiteSpace(uri.Query)) return false;
+            return true;
+        }
+
         protected virtual HttpWebRequest CreateWebRequest(IRequest request)
         {
             var webRequest = (HttpWebRequest)WebRequest.Create(request.Url);

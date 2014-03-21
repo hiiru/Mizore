@@ -1,4 +1,5 @@
-﻿using Mizore.CommunicationHandler.RequestHandler;
+﻿using System;
+using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
 
 namespace Mizore.ConnectionHandler
@@ -19,5 +20,7 @@ namespace Mizore.ConnectionHandler
         /// <exception cref="MizoreConnectionExcpetion">Thrown when a problem with the Conneection to the server occurs</exception>
         /// <returns>IResponse implementation for the Response</returns>
         T Request<T>(IRequest request) where T : IResponse, new();
+
+        bool IsUriSupported(Uri uri);
     }
 }
