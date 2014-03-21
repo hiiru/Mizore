@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mizore.CommunicationHandler.RequestHandler;
+using Mizore.CommunicationHandler.RequestHandler.Admin;
 using MizoreTests.Mock;
 
 namespace MizoreTests.Tests.CommunicationHandler.Request

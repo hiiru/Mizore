@@ -3,13 +3,13 @@ using System.Collections.Specialized;
 using Mizore.SolrServerHandler;
 using Mizore.util;
 
-namespace Mizore.CommunicationHandler.RequestHandler
+namespace Mizore.CommunicationHandler.RequestHandler.Admin
 {
-    public class SystemRequest : IRequest
+    public class PingRequest : IRequest
     {
-        public const string Handler = "/admin/system";
+        public const string Handler = "/admin/ping";
 
-        public SystemRequest(ISolrServerHandler server)
+        public PingRequest(ISolrServerHandler server)
         {
             if (server == null) throw new ArgumentNullException("server");
             Server = server;

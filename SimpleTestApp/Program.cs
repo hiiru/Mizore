@@ -12,12 +12,14 @@ namespace SimpleTestApp
     internal class Program
     {
         private const string SERVERURL = "http://127.0.0.1:20440/solr/";
+        private const string SERVERURL_362 = "http://127.0.0.1:20362/solr/";
 
         private static void Main(string[] args)
         {
             Console.WriteLine("Pining solr server: " + SERVERURL);
             Console.WriteLine();
             var server = new HttpSolrServer(SERVERURL, new EasynetJavabinSerializer());
+            var server_362 = new HttpSolrServer(SERVERURL_362, new EasynetJavabinSerializer());
             var ping = server.Ping();
             Console.WriteLine("Ping URL: "+ping.Request.Url);
             Console.WriteLine("Ping Status: " + ping.Status);

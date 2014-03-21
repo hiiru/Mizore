@@ -39,5 +39,15 @@ namespace MizoreTests.Mock
                 return response;
             }
         }
+
+        public bool IsUriSupported(Uri uri)
+        {
+            throw new NotImplementedException();
+        }
+
+        T IConnectionHandler.Request<T>(IRequest request)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

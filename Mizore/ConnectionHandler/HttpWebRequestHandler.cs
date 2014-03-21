@@ -18,7 +18,7 @@ namespace Mizore.ConnectionHandler
         /// <param name="request">IRequest implementation, which handles the required date for the Request.</param>
         /// <exception cref="MizoreConnectionExcpetion">Thrown when a problem with the Conneection to the server occurs</exception>
         /// <returns>IResponse implementation for the Response</returns>
-        public T Request<T>(IRequest request) where T : IResponse, new()
+        public T Request<T>(IRequest request) where T : IResponse
         {
             if (request == null) throw new ArgumentNullException("request");
             if (request.Server.Cache != null)
@@ -28,8 +28,8 @@ namespace Mizore.ConnectionHandler
                 var webRequest = CreateWebRequest(request);
 
                 //if new T() can't be used due to missing new()
-                //var response = (T)Activator.CreateInstance(typeof(T));
-                var response = new T();
+                var response = (T)Activator.CreateInstance(typeof(T));
+                //var response = new T();
                 var webResponse = webRequest.GetResponse();
                 Stream ms = null;
                 using (var responseStream = webResponse.GetResponseStream())

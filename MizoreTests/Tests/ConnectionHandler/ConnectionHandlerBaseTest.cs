@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mizore.CommunicationHandler.ResponseHandler;
+using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ConnectionHandler;
 
 namespace MizoreTests.Tests.ConnectionHandler

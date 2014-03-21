@@ -1,4 +1,5 @@
 ﻿using Mizore.CommunicationHandler.RequestHandler;
+using Mizore.CommunicationHandler.RequestHandler.Admin;
 using Mizore.SolrServerHandler;
 
 namespace Mizore.CommunicationHandler
@@ -17,6 +18,8 @@ namespace Mizore.CommunicationHandler
                     return new PingRequest(server);
                 case "system":
                     return new SystemRequest(server);
+                case "cores":
+                    return new CoresRequest(server); 
                 default:
                     return null;
             }

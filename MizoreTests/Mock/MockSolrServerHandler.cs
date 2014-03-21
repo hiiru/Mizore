@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Mizore.CacheHandler;
 using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
+using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer;
 using Mizore.SolrServerHandler;
 
@@ -21,6 +22,7 @@ namespace MizoreTests.Mock
             RequestFactory = factory ?? new RequestFactory();
         }
 
+        public bool IsReady { get; private set; }
         public List<string> Cores { get; private set; }
 
         public string DefaultCore { get; set; }

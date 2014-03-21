@@ -19,7 +19,7 @@ namespace Mizore.ConnectionHandler
         /// <param name="request">IRequest implementation, which handles the required date for the Request.</param>
         /// <exception cref="MizoreConnectionExcpetion">Thrown when a problem with the Conneection to the server occurs</exception>
         /// <returns>IResponse implementation for the Response</returns>
-        T Request<T>(IRequest request) where T : IResponse, new();
+        T Request<T>(IRequest request) where T : IResponse;
 
         bool IsUriSupported(Uri uri);
     }

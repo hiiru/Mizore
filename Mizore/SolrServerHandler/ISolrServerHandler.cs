@@ -2,6 +2,7 @@
 using Mizore.CacheHandler;
 using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
+using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer;
 
 namespace Mizore.SolrServerHandler

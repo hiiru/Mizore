@@ -3,7 +3,7 @@ using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler.ResponseData;
 using Mizore.util;
 
-namespace Mizore.CommunicationHandler.ResponseHandler
+namespace Mizore.CommunicationHandler.ResponseHandler.Admin
 {
     public class PingResponse : IResponse
     {

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Mizore.CacheHandler;
 using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
+using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ConnectionHandler;
 using Mizore.ContentSerializer;
-using Mizore.Exceptions;
 
 namespace Mizore.SolrServerHandler
 {
@@ -15,40 +16,54 @@ namespace Mizore.SolrServerHandler
         protected HttpWebRequestHandler RequestHandler;
 
         public bool IsReady { get; protected set; }
+        public bool IsOnline { get; protected set; }
+        private DateTime LastCheck;
+        //TODO: define interval?
+        private TimeSpan RechckInterval = new TimeSpan(0, 1, 0);
 
         public HttpSolrServer(string url, IContentSerializer contentSerializer = null, ICacheHandler cacheHandler = null, IRequestFactory factory = null)
         {
+            //Argument Validation
             if (string.IsNullOrWhiteSpace(url)) throw new ArgumentNullException("url");
             if (url.EndsWith("/")) url = url.TrimEnd('/');
+            Uri solrUri;
+            if (!Uri.TryCreate(url, UriKind.Absolute, out solrUri)) throw new ArgumentException("the URL is invalid", "url");
+            RequestHandler=new HttpWebRequestHandler();
+            if (!RequestHandler.IsUriSupported(solrUri)) throw new ArgumentException("the URL is invalid", "url");
+
+            //Initialization
             ServerAddress = url;
             Serializer = contentSerializer ?? new EasynetJavabinSerializer();
             Cache = cacheHandler ?? null;
             RequestFactory = factory ?? new RequestFactory();
-
-            Uri solrUri;
-            if (!Uri.TryCreate(ServerAddress, UriKind.Absolute, out solrUri)) throw new ArgumentException("the URL is invalid", "url");
-            RequestHandler=new HttpWebRequestHandler();
-            if (!RequestHandler.IsUriSupported(solrUri)) throw new ArgumentException("the URL is invalid", "url");
-
-
             IsReady = true;
-
-            //TODO: Multicore Mode - Initialize related properties, (MulticoreMode,Cores,DefaultCore)
-            //TODO: Timeout?
+            CheckStatus(true);
         }
-        
-        public List<string> Cores
+
+        private bool CheckStatus(bool loadCores=false)
         {
-            get { throw new NotImplementedException(); }
+            if (LastCheck - DateTime.Now > RechckInterval) return IsOnline;
+            LastCheck = DateTime.Now;
+            PingResponse ping;
+            IsOnline = TryRequest(RequestFactory.CreateRequest("ping", this), out ping) &&
+                        ping.Status.Equals("OK", StringComparison.InvariantCultureIgnoreCase);
+
+            if (IsOnline && loadCores)
+            {
+                CoresResponse coresResponse;
+                if (TryRequest(RequestFactory.CreateRequest("cores", this), out coresResponse))
+                {
+                    Cores = coresResponse.Cores.Select(x => x.Name).ToList();
+                    DefaultCore = coresResponse.DefaultCore;
+                }
+            }
+            return IsOnline;
         }
 
-        //TODO: DefaultCore handling -  SOLR-5 should simplify this
-        public string DefaultCore
-        {
-            get { return null; }
-            set { throw new NotImplementedException(); }
-        }
+        public List<string> Cores { get; protected set; }
 
+        public string DefaultCore { get; set; }
+ 
         public bool MulticoreMode
         {
             get { return false; }
@@ -68,10 +83,24 @@ namespace Mizore.SolrServerHandler
             set { throw new NotImplementedException(); }
         }
 
-        public void Request(object obj, IRequest request, string core = null)
+        public bool TryRequest<T>(IRequest request, out T response, string core = null) where T : class, IResponse
         {
-            throw new NotImplementedException();
+            response = null;
+            try
+            {
+                response = RequestHandler.Request<T>(request);
+            }
+            catch
+            {
+                return false;
+            }
+            return response != null;
         }
+
+        //public IResponse Request(object obj, IRequest request, string core = null)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //TODO: how is the Data passed to the Request?
         public UpdateResponse Add(string core = null)
