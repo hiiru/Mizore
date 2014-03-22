@@ -1,4 +1,5 @@
-﻿using Mizore.CommunicationHandler.RequestHandler;
+﻿using System;
+using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.RequestHandler.Admin;
 using Mizore.SolrServerHandler;
 
@@ -11,16 +12,17 @@ namespace Mizore.CommunicationHandler
             if (core == null) core = server.DefaultCore;
             switch (requestType.ToLower())
             {
-                case "update":
-                    //TODO: how is the Data passed to the Request?
-                    return new UpdateRequest(server,core);
+                //case "update":
+                //    //TODO: how is the Data passed to the Request?
+                //    return new UpdateRequest(server,core);
                 case "ping":
                     return new PingRequest(server);
                 case "system":
                     return new SystemRequest(server);
                 case "cores":
-                    return new CoresRequest(server); 
+                    return new CoresRequest(server);
                 default:
+                    throw new NotImplementedException("RequestType " + requestType + " is not Implemented yet");
                     return null;
             }
         }

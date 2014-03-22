@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Mizore.CacheHandler;
 using Mizore.CommunicationHandler;
+using Mizore.CommunicationHandler.RequestHandler;
+using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.ContentSerializer;
 
 namespace Mizore.SolrServerHandler
@@ -33,5 +35,9 @@ namespace Mizore.SolrServerHandler
         IContentSerializer Serializer { get; }
 
         IRequestFactory RequestFactory { get; }
+
+        bool TryRequest<T>(IRequest request, out T response, string core = null) where T : class, IResponse;
+        T Request<T>(IRequest request, string core = null) where T : class, IResponse;
+        T Request<T>(string type, string core = null) where T : class, IResponse;
     }
 }

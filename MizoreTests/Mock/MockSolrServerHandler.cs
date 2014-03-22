@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Mizore.CacheHandler;
 using Mizore.CommunicationHandler;
+using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer;
@@ -38,6 +39,20 @@ namespace MizoreTests.Mock
         public IContentSerializer Serializer { get; private set; }
 
         public IRequestFactory RequestFactory { get; private set; }
+        public bool TryRequest<T>(IRequest request, out T response, string core = null) where T : class, IResponse
+        {
+            throw new NotImplementedException();
+        }
+
+        public T Request<T>(IRequest request, string core = null) where T : class, IResponse
+        {
+            throw new NotImplementedException();
+        }
+
+        public T Request<T>(string type, string core = null) where T : class, IResponse
+        {
+            throw new NotImplementedException();
+        }
 
         public int ConnectionTimeout { get; set; }
 

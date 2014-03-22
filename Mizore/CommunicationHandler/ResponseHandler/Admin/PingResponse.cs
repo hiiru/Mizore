@@ -1,49 +1,28 @@
 ﻿using System.IO;
-using Mizore.CommunicationHandler.Data;
 using Mizore.CommunicationHandler.RequestHandler;
-using Mizore.util;
 
 namespace Mizore.CommunicationHandler.ResponseHandler.Admin
 {
-    public class PingResponse : IResponse
+    public class PingResponse : AResponseBase, IResponse
     {
-        public void Parse(IRequest request, Stream content)
+        public override void Parse(IRequest request, Stream content)
         {
             Request = request;
             Content = Request.Server.Serializer.Unmarshal(content);
-            if (Content == null)
-            {
-                Status = "FAIL";
-                return;
-            }
-            Status = Content.Get("status") as string;
         }
 
-        public IRequest Request { get; protected set; }
+        protected string _status;
 
-        public INamedList Content { get; protected set; }
-
-        protected ResponseHeader _responseHeader;
-
-        public ResponseHeader ResponseHeader
+        public string Status
         {
             get
             {
-                if (_responseHeader == null && Content != null)
+                if (_status == null)
                 {
-                    var head = Content.Get("responseHeader") as INamedList;
-                    if (head != null)
-                    {
-                        var status = (int)head.Get("status");
-                        var qtime = (int)head.Get("QTime");
-                        var paramlist = head.Get("params") as INamedList;
-                        _responseHeader = new ResponseHeader { Status = status, QTime = qtime, Parameters = paramlist };
-                    }
+                    _status = Content != null ? Content.GetOrDefault<string>("status") : "FAIL";
                 }
-                return _responseHeader;
+                return _status;
             }
         }
-
-        public string Status { get; protected set; }
     }
 }

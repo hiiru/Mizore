@@ -5,9 +5,9 @@ using Mizore.util;
 
 namespace Mizore.CommunicationHandler.RequestHandler
 {
-    public class QueryRequest : IRequest
+    public class SelectRequest : IRequest
     {
-        public QueryRequest(ISolrServerHandler server, INamedList data, string core = null)
+        public SelectRequest(ISolrServerHandler server, INamedList data, string core = null)
         {
             if (server == null) throw new ArgumentNullException("server");
             if (data == null) throw new ArgumentNullException("data");

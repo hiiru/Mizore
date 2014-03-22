@@ -56,20 +56,26 @@ namespace Mizore.SolrServerHandler
             IsReady = true;
             CheckStatus(true);
         }
-
+        
         private bool CheckStatus(bool loadCores=false)
         {
             if (IsOnline) return true;
             if (LastCheck - DateTime.Now > RechckInterval) return false;
             LastCheck = DateTime.Now;
-            PingResponse ping;
-            IsOnline = TryRequest(RequestFactory.CreateRequest("ping", this), out ping) &&
-                        ping.Status.Equals("OK", StringComparison.InvariantCultureIgnoreCase);
-
+            try
+            {
+                var ping = RequestHandler.Request<PingResponse>(RequestFactory.CreateRequest("ping", this));
+                IsOnline = ping != null && ping.Status.Equals("OK", StringComparison.InvariantCultureIgnoreCase);
+            }
+            catch
+            {
+                IsOnline = false;
+                return false;
+            }
             if (IsOnline && loadCores)
             {
-                CoresResponse coresResponse;
-                if (TryRequest(RequestFactory.CreateRequest("cores", this), out coresResponse))
+                var coresResponse = RequestHandler.Request<CoresResponse>(RequestFactory.CreateRequest("cores", this));
+                if (coresResponse != null)
                 {
                     Cores = coresResponse.Cores.Select(x => x.Name).ToList();
                     DefaultCore = coresResponse.DefaultCore;

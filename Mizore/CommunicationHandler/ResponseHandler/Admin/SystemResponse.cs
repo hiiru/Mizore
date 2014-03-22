@@ -1,86 +1,86 @@
-﻿using System;
-using System.IO;
-using Mizore.CommunicationHandler.Data;
+﻿using System.IO;
+using Mizore.CommunicationHandler.Data.Admin;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.util;
 
 namespace Mizore.CommunicationHandler.ResponseHandler.Admin
 {
-    public class SystemResponse : IResponse
+    public class SystemResponse : AResponseBase, IResponse
     {
-        public void Parse(IRequest request, Stream content)
+        public override void Parse(IRequest request, Stream content)
         {
             Request = request;
             Content = Request.Server.Serializer.Unmarshal(content);
-
-            Mode = Content.Get("mode") as string;
         }
 
-        public IRequest Request { get; protected set; }
+        protected SystemCoreData _core;
 
-        public INamedList Content { get; protected set; }
-
-        protected ResponseHeader _responseHeader;
-
-        public ResponseHeader ResponseHeader
-        {
-            get
-            {
-                if (_responseHeader == null && Content != null)
-                {
-                    var head = Content.Get("responseHeader") as INamedList;
-                    if (head != null)
-                    {
-                        _responseHeader = new ResponseHeader
-                        {
-                            Status = (int)head.Get("status"),
-                            QTime = (int)head.Get("QTime"),
-                            Parameters = head.Get("params") as INamedList,
-                        };
-                    }
-                }
-                return _responseHeader;
-            }
-        }
-
-        protected CoreData _core;
-
-        public CoreData Core
+        public SystemCoreData Core
         {
             get
             {
                 if (_core == null && Content != null)
                 {
-                    var core = Content.Get("core") as INamedList;
-                    if (core != null)
-                    {
-                        _core = new CoreData
-                            {
-                                Schema = core.Get("schema") as string,
-                                Host = core.Get("host") as string,
-                                Now = (DateTime)core.Get("now"),
-                                Start = (DateTime)core.Get("start"),
-                                Directory = core.Get("directory") as INamedList
-                            };
-                    }
+                    _core=new SystemCoreData(Content.GetOrDefault<INamedList>("core"));
                 }
                 return _core;
             }
         }
 
-        public string Mode { get; protected set; }
+        protected SystemLuceneData _lucene;
 
-        public class CoreData
+        public SystemLuceneData Lucene
         {
-            public string Schema { get; set; }
+            get
+            {
+                if (_lucene == null && Content != null)
+                {
+                    _lucene = new SystemLuceneData(Content.GetOrDefault<INamedList>("lucene"));
+                }
+                return _lucene;
+            }
+        }
 
-            public string Host { get; set; }
+        protected SystemJvmData _jvm;
 
-            public DateTime Now { get; set; }
+        public SystemJvmData Jvm
+        {
+            get
+            {
+                if (_jvm == null && Content != null)
+                {
+                    _jvm = new SystemJvmData(Content.GetOrDefault<INamedList>("jvm"));
+                }
+                return _jvm;
+            }
+        }
 
-            public DateTime Start { get; set; }
+        protected SystemSystemData _system;
 
-            public INamedList Directory { get; set; }
+        public SystemSystemData System
+        {
+            get
+            {
+                if (_system == null && Content != null)
+                {
+                    _system = new SystemSystemData(Content.GetOrDefault<INamedList>("system"));
+                }
+                return _system;
+            }
+        }
+        
+        protected string _mode;
+
+        public string Mode
+        {
+            get
+            {
+                if (_mode == null && Content != null)
+                {
+                    _mode = Content.GetOrDefault<string>("mode");
+                }
+                return _mode;
+            }
         }
     }
 }
