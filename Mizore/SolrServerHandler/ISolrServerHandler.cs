@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using Mizore.CacheHandler;
 using Mizore.CommunicationHandler;
-using Mizore.CommunicationHandler.ResponseHandler;
-using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer;
 
 namespace Mizore.SolrServerHandler
@@ -27,11 +25,6 @@ namespace Mizore.SolrServerHandler
         /// Default core of the Connection, this is used in Multicore Mode.
         /// </summary>
         string DefaultCore { get; set; }
-
-        /// <summary>
-        /// This returns true if multicore support is available.
-        /// </summary>
-        bool MulticoreMode { get; }
         
         string ServerAddress { get; }
 
@@ -40,24 +33,5 @@ namespace Mizore.SolrServerHandler
         IContentSerializer Serializer { get; }
 
         IRequestFactory RequestFactory { get; }
-
-        int ConnectionTimeout { get; set; }
-        
-        //Input: object/doc/namedlist / Optional: core
-        UpdateResponse Add(string core = null);
-
-        //Input: id/query / Optional: core
-        bool Delete();
-
-        //No Input / Optional: core
-        bool Commit(string core = null);
-
-        bool Optimize(string core = null);
-
-        PingResponse Ping();
-        SystemResponse GetSystemInfo();
-        void GetVersion();
-
-        //future: admin features (cores, etc.) and statistics
     }
 }

@@ -85,8 +85,8 @@ namespace Mizore.ConnectionHandler
 
             if (ETag != null) webRequest.Headers.Add(HttpRequestHeader.IfNoneMatch, ETag);
 
-            if (request.Server.ConnectionTimeout > 0)
-                webRequest.Timeout = webRequest.ReadWriteTimeout = request.Server.ConnectionTimeout;
+            //if (request.Server.ConnectionTimeout > 0)
+            //    webRequest.Timeout = webRequest.ReadWriteTimeout = request.Server.ConnectionTimeout;
 
             //TODO-LOW: UserAgent?
             //webRequest.UserAgent = "TODO";

@@ -1,6 +1,6 @@
 ﻿using Mizore.util;
 
-namespace Mizore.CommunicationHandler.ResponseHandler.ResponseData
+namespace Mizore.CommunicationHandler.Data
 {
     public class ResponseHeader
     {

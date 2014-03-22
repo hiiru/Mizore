@@ -12,17 +12,6 @@ namespace MizoreTests.Tests.SolrServerHandler
         {
             return new MockSolrServerHandler(resourcePath: "MizoreTests.Resources.ResponseFiles.", contentSerializer: CreateSerializer());
         }
-
-        [TestMethod]
-        public void Ping()
-        {
-            var server = CreateInstance();
-            var response = server.Ping();
-            Assert.IsNotNull(response);
-            Assert.AreEqual(response.Status, "OK");
-            Assert.AreEqual(response.ResponseHeader.QTime, 1);
-            Assert.AreEqual(response.ResponseHeader.Status, 0);
-        }
     }
 
     [TestClass]

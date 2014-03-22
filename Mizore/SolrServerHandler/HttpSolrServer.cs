@@ -8,15 +8,32 @@ using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ConnectionHandler;
 using Mizore.ContentSerializer;
+using Mizore.Exceptions;
 
 namespace Mizore.SolrServerHandler
 {
     public class HttpSolrServer : ISolrServerHandler
     {
-        protected HttpWebRequestHandler RequestHandler;
+        #region Properties
+        public List<string> Cores { get; protected set; }
+
+        public string DefaultCore { get; set; }
+
+        public string ServerAddress { get; protected set; }
+
+        public ICacheHandler Cache { get; protected set; }
+
+        public IContentSerializer Serializer { get; protected set; }
+
+        public IRequestFactory RequestFactory { get; protected set; }
 
         public bool IsReady { get; protected set; }
+
         public bool IsOnline { get; protected set; }
+
+        #endregion
+
+        protected HttpWebRequestHandler RequestHandler;
         private DateTime LastCheck;
         //TODO: define interval?
         private TimeSpan RechckInterval = new TimeSpan(0, 1, 0);
@@ -42,7 +59,8 @@ namespace Mizore.SolrServerHandler
 
         private bool CheckStatus(bool loadCores=false)
         {
-            if (LastCheck - DateTime.Now > RechckInterval) return IsOnline;
+            if (IsOnline) return true;
+            if (LastCheck - DateTime.Now > RechckInterval) return false;
             LastCheck = DateTime.Now;
             PingResponse ping;
             IsOnline = TryRequest(RequestFactory.CreateRequest("ping", this), out ping) &&
@@ -59,36 +77,16 @@ namespace Mizore.SolrServerHandler
             }
             return IsOnline;
         }
-
-        public List<string> Cores { get; protected set; }
-
-        public string DefaultCore { get; set; }
- 
-        public bool MulticoreMode
-        {
-            get { return false; }
-        }
         
-        public string ServerAddress { get; protected set; }
-
-        public ICacheHandler Cache { get; protected set; }
-
-        public IContentSerializer Serializer { get; protected set; }
-
-        public IRequestFactory RequestFactory { get; protected set; }
-
-        public int ConnectionTimeout
-        {
-            get { return 0; }
-            set { throw new NotImplementedException(); }
-        }
-
         public bool TryRequest<T>(IRequest request, out T response, string core = null) where T : class, IResponse
         {
             response = null;
+            if (!IsOnline && !CheckStatus())
+                return false;
+
             try
             {
-                response = RequestHandler.Request<T>(request);
+                response = Request<T>(request, core);
             }
             catch
             {
@@ -97,45 +95,17 @@ namespace Mizore.SolrServerHandler
             return response != null;
         }
 
-        //public IResponse Request(object obj, IRequest request, string core = null)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //TODO: how is the Data passed to the Request?
-        public UpdateResponse Add(string core = null)
+        public T Request<T>(IRequest request, string core = null) where T : class, IResponse
         {
-            return RequestHandler.Request<UpdateResponse>(RequestFactory.CreateRequest("update", this, core));
-        }
-        
-        public bool Delete()
-        {
-            throw new NotImplementedException();
+            if (!IsOnline && !CheckStatus()) throw new MizoreException("Server offline");
+            return RequestHandler.Request<T>(request);
         }
 
-        public bool Commit(string core = null)
+        public T Request<T>(string type, string core = null) where T : class, IResponse
         {
-            throw new NotImplementedException();
-        }
-
-        public bool Optimize(string core = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public PingResponse Ping()
-        {
-            return RequestHandler.Request<PingResponse>(RequestFactory.CreateRequest("ping", this));
-        }
-
-        public SystemResponse GetSystemInfo()
-        {
-            return RequestHandler.Request<SystemResponse>(RequestFactory.CreateRequest("system", this));
-        }
-
-        public void GetVersion()
-        {
-            throw new NotImplementedException();
+            //TODO: how is the Data passed to the Request?
+            var request = RequestFactory.CreateRequest(type,this);
+            return RequestHandler.Request<T>(request);
         }
     }
 }

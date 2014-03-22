@@ -71,7 +71,7 @@
     <Compile Include="CommunicationHandler\ResponseHandler\Admin\PingResponse.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\QueryResponse.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\IResponse.cs" />
-    <Compile Include="CommunicationHandler\ResponseHandler\ResponseData\ResponseHeader.cs" />
+    <Compile Include="CommunicationHandler\Data\ResponseHeader.cs" />
     <Compile Include="ConnectionHandler\HttpWebRequestHandler.cs" />
     <Compile Include="ConnectionHandler\IConnectionHandler.cs" />
     <Compile Include="ContentSerializer\EasynetJavabinSerializer.cs" />

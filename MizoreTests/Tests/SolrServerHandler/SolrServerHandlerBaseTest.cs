@@ -14,12 +14,9 @@ namespace MizoreTests.Tests.SolrServerHandler
         {
             var server = CreateInstance();
             Assert.IsNotNull(server);
-            if (server.MulticoreMode)
-            {
-                Assert.IsNotNull(server.Cores);
-                Assert.IsTrue(server.Cores.Count > 0);
-                Assert.IsNotNull(server.DefaultCore);
-            }
+            Assert.IsNotNull(server.Cores);
+            Assert.IsTrue(server.Cores.Count > 0);
+            Assert.IsNotNull(server.DefaultCore);
         }
         [TestMethod]
         public void ServerAddressNotNull()

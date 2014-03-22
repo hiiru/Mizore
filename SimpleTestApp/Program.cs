@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer;
 using Mizore.ContentSerializer.easynet_Javabin;
 using Mizore.SolrServerHandler;
@@ -20,7 +21,7 @@ namespace SimpleTestApp
             Console.WriteLine();
             var server = new HttpSolrServer(SERVERURL, new EasynetJavabinSerializer());
             var server_362 = new HttpSolrServer(SERVERURL_362, new EasynetJavabinSerializer());
-            var ping = server.Ping();
+            var ping = server.Request<PingResponse>("ping");
             Console.WriteLine("Ping URL: "+ping.Request.Url);
             Console.WriteLine("Ping Status: " + ping.Status);
             Console.WriteLine();
@@ -36,7 +37,7 @@ namespace SimpleTestApp
             }
             Console.WriteLine();
 
-            var system = server.GetSystemInfo();
+            var system = server.Request<SystemResponse>("system");
             Console.WriteLine("System URL: " + system.Request.Url);
             Console.WriteLine("System Mode: " + system.Mode);
             Console.WriteLine();

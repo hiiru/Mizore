@@ -20,6 +20,8 @@ namespace MizoreTests.Mock
             Serializer = contentSerializer ?? new EasynetJavabinSerializer();
             Cache = cacheHandler ?? null;
             RequestFactory = factory ?? new RequestFactory();
+            DefaultCore = "mizoreMockingTestCore";
+            Cores = new List<string> { DefaultCore };
         }
 
         public bool IsReady { get; private set; }
