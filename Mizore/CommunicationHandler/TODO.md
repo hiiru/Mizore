@@ -11,7 +11,7 @@
 
 ## Admin / Debug / Management
 
-TODO: Definie which one we will implement.
+TODO: Define which one we will implement.
 
 INFO: these urls are based on the example 4.4.0 solr server with example data imported
 
