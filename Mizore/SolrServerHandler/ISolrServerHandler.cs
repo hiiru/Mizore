@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Mizore.CacheHandler;
 using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.RequestHandler;
@@ -27,8 +28,8 @@ namespace Mizore.SolrServerHandler
         /// Default core of the Connection, this is used in Multicore Mode.
         /// </summary>
         string DefaultCore { get; set; }
-        
-        string ServerAddress { get; }
+
+        SolrUriBuilder SolrUriBuilder { get; }
 
         ICacheHandler Cache { get; }
 

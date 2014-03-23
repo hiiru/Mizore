@@ -62,9 +62,11 @@
     <Compile Include="CommunicationHandler\Data\Admin\SystemLuceneData.cs" />
     <Compile Include="CommunicationHandler\Data\Admin\CoreStatusData.cs" />
     <Compile Include="CommunicationHandler\Data\Admin\SystemCoreData.cs" />
+    <Compile Include="CommunicationHandler\Data\SelectResponseData.cs" />
     <Compile Include="CommunicationHandler\IRequestFactory.cs" />
     <Compile Include="CommunicationHandler\RequestFactory.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\Admin\CoresRequest.cs" />
+    <Compile Include="CommunicationHandler\RequestHandler\ARequestBaseGet.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\UpdateReuqest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\Admin\SystemRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\Admin\PingRequest.cs" />
@@ -78,6 +80,7 @@
     <Compile Include="CommunicationHandler\ResponseHandler\SelectResponse.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\IResponse.cs" />
     <Compile Include="CommunicationHandler\Data\ResponseHeader.cs" />
+    <Compile Include="CommunicationHandler\SolrUriBuilder.cs" />
     <Compile Include="ConnectionHandler\HttpWebRequestHandler.cs" />
     <Compile Include="ConnectionHandler\IConnectionHandler.cs" />
     <Compile Include="ContentSerializer\EasynetJavabinSerializer.cs" />
@@ -134,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CommunicationHandler\TODO.md" />
+    <None Include="ContentSerializer\TODO.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

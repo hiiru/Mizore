@@ -5,28 +5,12 @@ using Mizore.util;
 
 namespace Mizore.CommunicationHandler.RequestHandler
 {
-    public class SelectRequest : IRequest
+    public class SelectRequest : ARequestBaseGet
     {
-        public SelectRequest(ISolrServerHandler server, INamedList data, string core = null)
+        public SelectRequest(ISolrServerHandler server, string query, string core = null)
+            : base(server, core, "select")
         {
-            if (server == null) throw new ArgumentNullException("server");
-            if (data == null) throw new ArgumentNullException("data");
-            Server = server;
-            Core = core ?? server.DefaultCore;
+            uriBuilder.Query["q"] = query;
         }
-
-        public string Method { get; protected set; }
-
-        public Uri Url { get; protected set; }
-
-        public ISolrServerHandler Server { get; protected set; }
-
-        public string Core { get; protected set; }
-
-        public INamedList Content { get; protected set; }
-
-        public NameValueCollection Header { get; protected set; }
-
-        public string CacheKey { get; protected set; }
     }
 }

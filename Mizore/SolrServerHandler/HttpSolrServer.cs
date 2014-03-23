@@ -19,7 +19,7 @@ namespace Mizore.SolrServerHandler
 
         public string DefaultCore { get; set; }
 
-        public string ServerAddress { get; protected set; }
+        public SolrUriBuilder SolrUriBuilder { get; protected set; }
 
         public ICacheHandler Cache { get; protected set; }
 
@@ -49,7 +49,7 @@ namespace Mizore.SolrServerHandler
             if (!RequestHandler.IsUriSupported(solrUri)) throw new ArgumentException("the URL is invalid", "url");
 
             //Initialization
-            ServerAddress = url;
+            SolrUriBuilder = new SolrUriBuilder(solrUri);
             Serializer = contentSerializer ?? new EasynetJavabinSerializer();
             Cache = cacheHandler ?? null;
             RequestFactory = factory ?? new RequestFactory();

@@ -27,12 +27,6 @@ namespace Mizore.CommunicationHandler.RequestHandler
         ISolrServerHandler Server { get; }
 
         /// <summary>
-        /// Returns the Core for this request.
-        /// This requires a value.
-        /// </summary>
-        string Core { get; }
-
-        /// <summary>
         /// Prepared Stream for transmission.
         /// This will be ignored if it's null. (no content)
         /// </summary>

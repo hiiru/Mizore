@@ -17,7 +17,7 @@ namespace MizoreTests.Mock
         public MockSolrServerHandler(string resourcePath, string url=null, IContentSerializer contentSerializer = null, ICacheHandler cacheHandler = null, IRequestFactory factory = null)
         {
             ResourcePath = resourcePath;
-            ServerAddress = url ?? "http://127.0.0.1:20440/solr/";
+            SolrUriBuilder = new SolrUriBuilder(url ?? "http://127.0.0.1:20440/solr/");
             Serializer = contentSerializer ?? new EasynetJavabinSerializer();
             Cache = cacheHandler ?? null;
             RequestFactory = factory ?? new RequestFactory();
@@ -32,7 +32,7 @@ namespace MizoreTests.Mock
 
         public bool MulticoreMode { get; private set; }
 
-        public string ServerAddress { get; private set; }
+        public SolrUriBuilder SolrUriBuilder { get; private set; }
 
         public ICacheHandler Cache { get; private set; }
 

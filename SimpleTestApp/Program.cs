@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using Mizore;
+using Mizore.CommunicationHandler.RequestHandler;
+using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer;
 using Mizore.ContentSerializer.easynet_Javabin;
@@ -19,17 +23,55 @@ namespace SimpleTestApp
 
         private static void Main(string[] args)
         {
-            Servers.Add(new HttpSolrServer(SERVERURL, new EasynetJavabinSerializer()));
-            Servers.Add(new HttpSolrServer(SERVERURL_362, new EasynetJavabinSerializer()));
-
-            foreach (var server in Servers)
+            try
             {
-                Console.WriteLine("Checking Server "+server.ServerAddress);
-                Ping(server);
-                SystemInfo(server);
+                Servers.Add(new HttpSolrServer(SERVERURL, new EasynetJavabinSerializer()));
+                Servers.Add(new HttpSolrServer(SERVERURL_362, new EasynetJavabinSerializer()));
+
+                foreach (var server in Servers)
+                {
+                    Console.WriteLine("Checking Server " + server.SolrUriBuilder.ServerAddress);
+                    Ping(server);
+                    SystemInfo(server);
+                    Console.WriteLine();
+                    Query(server);
+                    Console.WriteLine();
+                }
+                Console.WriteLine("Done");
             }
-            Console.WriteLine("Done");
+            catch (Exception e)
+            {
+                Console.WriteLine("EXCEPTION!!!!!!");
+                var inner = e;
+                while (inner != null)
+                {
+                    Console.WriteLine(inner.Message);
+                    Console.WriteLine(inner.StackTrace);
+                    inner = inner.InnerException;
+                }
+            }
             Console.ReadKey();
+        }
+
+        private const string TestQuery = "*:*";
+        private static void Query(ISolrServerHandler server)
+        {
+            if (server == null) return;
+            var sbOutput = new StringBuilder();
+            var queryRequest = server.RequestFactory.CreateRequest("select", server,server.DefaultCore, TestQuery);
+            var query = server.Request<SelectResponse>(queryRequest);
+            sbOutput.AppendFormat("querying for {0}, ResultCount: {1}\n", TestQuery, query.Documents.NumFound);
+            if (query.Documents!=null)
+            {
+                for (int i = 0; i < 5 && i < query.Documents.Count; i++)
+                {
+                    var id = query.Documents[i]["id"];
+                    var name = query.Documents[i]["name"];
+                    sbOutput.AppendFormat("ID: {0}, name: {1}\n", id, name);
+                }
+            }
+            Console.WriteLine(sbOutput.ToString());
+
         }
 
         private static void Ping(ISolrServerHandler server)
@@ -37,7 +79,7 @@ namespace SimpleTestApp
             if (server == null) return;
             var sbOutput = new StringBuilder();
             var ping = server.Request<PingResponse>("ping");
-            sbOutput.AppendFormat("Status: {0} - QTime: {1}\n", ping.Status,ping.ResponseHeader.QTime);
+            sbOutput.AppendFormat("Status: {0} - QTime: {1}", ping.Status,ping.ResponseHeader.QTime);
             Console.WriteLine(sbOutput.ToString());
         }
 
@@ -46,7 +88,7 @@ namespace SimpleTestApp
             if (server == null) return;
             var sbOutput = new StringBuilder();
             var system = server.Request<SystemResponse>("system");
-            sbOutput.AppendFormat("Host: {0} servertime: {1} StartTime: {2}\n", system.Core.Host, system.Core.Now, system.Core.Start);
+            sbOutput.AppendFormat("Host: {0} servertime: {1} StartTime: {2}", system.Core.Host, system.Core.Now, system.Core.Start);
             Console.WriteLine(sbOutput.ToString());
         }
 

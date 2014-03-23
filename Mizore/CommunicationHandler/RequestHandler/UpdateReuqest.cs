@@ -17,10 +17,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
             Server = server;
             Core = core;
 
-            var url = new UriBuilder(server.ServerAddress + Handler);
-            if (server.Serializer != null)
-                url.Query = "wt=" + server.Serializer.wt;
-            Url = url.Uri;
+            throw new NotImplementedException("TODO: Update Request");
         }
 
         public virtual string Method { get { return "POST"; } }

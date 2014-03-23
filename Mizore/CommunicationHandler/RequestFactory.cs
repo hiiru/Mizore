@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.RequestHandler.Admin;
 using Mizore.SolrServerHandler;
@@ -21,6 +22,8 @@ namespace Mizore.CommunicationHandler
                     return new SystemRequest(server);
                 case "cores":
                     return new CoresRequest(server);
+                case "select":
+                    return new SelectRequest(server,objects[0] as string, core);
                 default:
                     throw new NotImplementedException("RequestType " + requestType + " is not Implemented yet");
                     return null;

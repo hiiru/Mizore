@@ -23,7 +23,8 @@ namespace MizoreTests.Tests.SolrServerHandler
         {
             var server = CreateInstance();
             Assert.IsNotNull(server);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(server.ServerAddress));
+            Assert.IsNotNull(server.SolrUriBuilder);
+            Assert.IsNotNull(server.SolrUriBuilder.ServerAddress);
         }
 
         [TestMethod]

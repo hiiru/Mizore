@@ -35,5 +35,26 @@ namespace Mizore
                 return default(T);
             }
         }
+        public static T GetOrDefault<T>(this INamedList namedList, int index) where T : class
+        {
+            if (namedList.IsNullOrEmpty()) return null;
+            var item = namedList.Get(index);
+            if (item == null) return null;
+            return item as T;
+        }
+        public static T GetOrDefaultStruct<T>(this INamedList namedList, int index) where T : struct
+        {
+            if (namedList.IsNullOrEmpty()) return default(T);
+            var item = namedList.Get(index);
+            if (item == null) return default(T);
+            try
+            {
+                return (T)item;
+            }
+            catch
+            {
+                return default(T);
+            }
+        }
     }
 }
