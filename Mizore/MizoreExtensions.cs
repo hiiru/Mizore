@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,11 @@ namespace Mizore
     public static class MizoreExtensions
     {
         public static bool IsNullOrEmpty(this INamedList namedList)
+        {
+            if (namedList == null) return true;
+            return namedList.Count == 0;
+        }
+        public static bool IsNullOrEmpty(this ICollection namedList)
         {
             if (namedList == null) return true;
             return namedList.Count == 0;

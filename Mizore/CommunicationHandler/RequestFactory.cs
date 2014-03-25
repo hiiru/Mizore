@@ -23,7 +23,7 @@ namespace Mizore.CommunicationHandler
                 case "cores":
                     return new CoresRequest(server);
                 case "select":
-                    return new SelectRequest(server,objects[0] as string, core);
+                    return new SelectRequest(server,objects[0] as IQueryBuilder, core);
                 default:
                     throw new NotImplementedException("RequestType " + requestType + " is not Implemented yet");
                     return null;

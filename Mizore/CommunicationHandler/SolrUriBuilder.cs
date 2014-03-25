@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
+//TODO: in which namespace should this class be?
 namespace Mizore.CommunicationHandler
 {
     public class SolrUriBuilder
@@ -134,6 +135,19 @@ namespace Mizore.CommunicationHandler
                 sbQuery.AppendFormat("{0}={1}", item.Key, item.Value);
             }
             return sbQuery.ToString();
+        }
+
+        public void SetQuery(IQueryBuilder queryBuilder)
+        {
+            if (queryBuilder==null) 
+                throw new ArgumentNullException("queryBuilder");
+            if (queryBuilder.QueryParameters.IsNullOrEmpty())
+                throw new ArgumentException("QueryParameters are empty", "queryBuilder");
+            foreach (var parameter in queryBuilder.QueryParameters)
+            {
+                if (parameter.Key.Equals("wt",StringComparison.InvariantCultureIgnoreCase)) throw new InvalidOperationException("wt parameter is not allowed in the QueryParameters");
+                Query[parameter.Key] = parameter.Value;
+            }
         }
     }
 }

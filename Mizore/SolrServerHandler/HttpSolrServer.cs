@@ -110,6 +110,7 @@ namespace Mizore.SolrServerHandler
         public T Request<T>(string type, string core = null) where T : class, IResponse
         {
             //TODO: how is the Data passed to the Request?
+            if (!IsOnline && !CheckStatus()) throw new MizoreException("Server offline");
             var request = RequestFactory.CreateRequest(type,this);
             return RequestHandler.Request<T>(request);
         }

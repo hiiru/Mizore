@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Mizore;
+using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
@@ -26,7 +27,7 @@ namespace SimpleTestApp
             try
             {
                 Servers.Add(new HttpSolrServer(SERVERURL, new EasynetJavabinSerializer()));
-                Servers.Add(new HttpSolrServer(SERVERURL_362, new EasynetJavabinSerializer()));
+                //Servers.Add(new HttpSolrServer(SERVERURL_362, new EasynetJavabinSerializer()));
 
                 foreach (var server in Servers)
                 {
@@ -58,7 +59,7 @@ namespace SimpleTestApp
         {
             if (server == null) return;
             var sbOutput = new StringBuilder();
-            var queryRequest = server.RequestFactory.CreateRequest("select", server,server.DefaultCore, TestQuery);
+            var queryRequest = server.RequestFactory.CreateRequest("select", server,server.DefaultCore, new SimpleQueryBuilder(TestQuery));
             var query = server.Request<SelectResponse>(queryRequest);
             sbOutput.AppendFormat("querying for {0}, ResultCount: {1}\n", TestQuery, query.Documents.NumFound);
             if (query.Documents!=null)
