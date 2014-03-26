@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Mizore;
+using Mizore.ContentSerializer.JsonNet;
 using Mizore.util;
 using Newtonsoft.Json;
 

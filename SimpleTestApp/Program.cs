@@ -5,6 +5,8 @@ using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer;
+using Mizore.ContentSerializer.JavaBin;
+using Mizore.ContentSerializer.JsonNet;
 using Mizore.SolrServerHandler;
 
 namespace SimpleTestApp
@@ -19,8 +21,9 @@ namespace SimpleTestApp
         {
             try
             {
+                Servers.Add(new HttpSolrServer(SERVERURL, new JavaBinSerializer()));
                 //Servers.Add(new HttpSolrServer(SERVERURL, new EasynetJavabinSerializer()));
-                Servers.Add(new HttpSolrServer(SERVERURL, new JsonNetSerializer()));
+                //Servers.Add(new HttpSolrServer(SERVERURL, new JsonNetSerializer()));
                 //Servers.Add(new HttpSolrServer(SERVERURL_362, new EasynetJavabinSerializer()));
 
                 foreach (var server in Servers)

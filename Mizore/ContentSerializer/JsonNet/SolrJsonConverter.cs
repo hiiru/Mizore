@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Mizore;
 using Mizore.util;
 using Newtonsoft.Json;
 
-namespace SimpleTestApp
+namespace Mizore.ContentSerializer.JsonNet
 {
     public class SolrJsonConverter : JsonConverter
     {

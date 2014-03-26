@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using Mizore.ContentSerializer.easynet_Javabin;
+using System.Linq;
+using System.Text;
+using Mizore.ContentSerializer.JsonNet;
 using Mizore.util;
 
-namespace Mizore.ContentSerializer
+namespace Mizore.ContentSerializer.JavaBin
 {
-    public class EasynetJavabinSerializer : IContentSerializer
+    public class JavaBinSerializer : IContentSerializer
     {
         public string wt { get { return "javabin"; } }
 
@@ -15,14 +18,14 @@ namespace Mizore.ContentSerializer
 
         public void Marshal<T>(T obj, Stream stream) where T : INamedList
         {
-            var x = new JavaBinCodec();
-            x.Marshal(obj, stream);
+            var converter = new SolrJavaBinConverter();
+            converter.WriteJavaBin(obj, stream);
         }
 
         public INamedList Unmarshal(Stream stream)
         {
-            var x = new JavaBinCodec();
-            return x.Unmarshal(stream) as EasynetNamedList;
+            var converter = new SolrJavaBinConverter();
+            return converter.ReadJavaBin(stream);
         }
     }
 }

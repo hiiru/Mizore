@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using Mizore.util;
 using Newtonsoft.Json;
-using SimpleTestApp;
 
-namespace Mizore.ContentSerializer
+namespace Mizore.ContentSerializer.JsonNet
 {
     public class JsonNetSerializer : IContentSerializer
     {
@@ -20,7 +19,7 @@ namespace Mizore.ContentSerializer
             Converters = new List<JsonConverter> { new SolrJsonConverter() }
         };
 
-        public void Marshal<T>(T obj, Stream stream)
+        public void Marshal<T>(T obj, Stream stream) where T : INamedList
         {
             var writer = new StreamWriter(stream);
             writer.Write(JsonConvert.SerializeObject(obj, SerializerSettings));
