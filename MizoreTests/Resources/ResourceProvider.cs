@@ -5,7 +5,7 @@ namespace MizoreTests.Resources
 {
     internal static class ResourceProvider
     {
-        internal static Assembly CurrentAssembly {get { return Assembly.GetExecutingAssembly(); }}
+        internal static Assembly CurrentAssembly { get { return Assembly.GetExecutingAssembly(); } }
 
         internal static Stream GetResourceStream(string resourceName)
         {

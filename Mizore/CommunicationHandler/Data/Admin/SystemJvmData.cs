@@ -1,5 +1,4 @@
-﻿using System;
-using Mizore.util;
+﻿using Mizore.util;
 
 namespace Mizore.CommunicationHandler.Data.Admin
 {
@@ -18,13 +17,21 @@ namespace Mizore.CommunicationHandler.Data.Admin
             Memory = responseHeader.GetOrDefault<INamedList>("memory");
             Jmx = responseHeader.GetOrDefault<INamedList>("jmx");
         }
+
         public string Version { get; protected set; }
+
         public string Name { get; protected set; }
+
         public INamedList Spec { get; protected set; }
+
         public INamedList Jre { get; protected set; }
+
         public INamedList Vm { get; protected set; }
+
         public int Processors { get; protected set; }
+
         public INamedList Memory { get; protected set; }
+
         public INamedList Jmx { get; protected set; }
     }
 }

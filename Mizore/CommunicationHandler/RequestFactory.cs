@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.RequestHandler.Admin;
 using Mizore.SolrServerHandler;
@@ -18,12 +17,16 @@ namespace Mizore.CommunicationHandler
                 //    return new UpdateRequest(server,core);
                 case "ping":
                     return new PingRequest(server);
+
                 case "system":
                     return new SystemRequest(server);
+
                 case "cores":
                     return new CoresRequest(server);
+
                 case "select":
-                    return new SelectRequest(server,objects[0] as IQueryBuilder, core);
+                    return new SelectRequest(server, objects[0] as IQueryBuilder, core);
+
                 default:
                     throw new NotImplementedException("RequestType " + requestType + " is not Implemented yet");
                     return null;

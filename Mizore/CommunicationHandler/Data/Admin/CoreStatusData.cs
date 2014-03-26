@@ -18,14 +18,23 @@ namespace Mizore.CommunicationHandler.Data.Admin
             Uptime = responseHeader.GetOrDefaultStruct<int>("uptime");
             Index = responseHeader.GetOrDefault<INamedList>("index");
         }
+
         public string Name { get; set; }
+
         public bool IsDefaultCore { get; set; }
+
         public string InstanceDir { get; set; }
+
         public string DataDir { get; set; }
+
         public string Config { get; set; }
+
         public string Schema { get; set; }
+
         public DateTime StartTime { get; set; }
+
         public int Uptime { get; set; }
+
         public INamedList Index { get; set; }
     }
 }

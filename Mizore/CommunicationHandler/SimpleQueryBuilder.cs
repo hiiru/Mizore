@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 //TODO: in which namespace should this class be?
 namespace Mizore.CommunicationHandler

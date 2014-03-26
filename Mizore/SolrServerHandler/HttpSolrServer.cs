@@ -15,6 +15,7 @@ namespace Mizore.SolrServerHandler
     public class HttpSolrServer : ISolrServerHandler
     {
         #region Properties
+
         public List<string> Cores { get; protected set; }
 
         public string DefaultCore { get; set; }
@@ -31,10 +32,11 @@ namespace Mizore.SolrServerHandler
 
         public bool IsOnline { get; protected set; }
 
-        #endregion
+        #endregion Properties
 
         protected HttpWebRequestHandler RequestHandler;
         private DateTime LastCheck;
+
         //TODO: define interval?
         private TimeSpan RechckInterval = new TimeSpan(0, 1, 0);
 
@@ -45,7 +47,7 @@ namespace Mizore.SolrServerHandler
             if (url.EndsWith("/")) url = url.TrimEnd('/');
             Uri solrUri;
             if (!Uri.TryCreate(url, UriKind.Absolute, out solrUri)) throw new ArgumentException("the URL is invalid", "url");
-            RequestHandler=new HttpWebRequestHandler();
+            RequestHandler = new HttpWebRequestHandler();
             if (!RequestHandler.IsUriSupported(solrUri)) throw new ArgumentException("the URL is invalid", "url");
 
             //Initialization
@@ -56,8 +58,8 @@ namespace Mizore.SolrServerHandler
             IsReady = true;
             CheckStatus(true);
         }
-        
-        private bool CheckStatus(bool loadCores=false)
+
+        private bool CheckStatus(bool loadCores = false)
         {
             if (IsOnline) return true;
             if (LastCheck - DateTime.Now > RechckInterval) return false;
@@ -83,7 +85,7 @@ namespace Mizore.SolrServerHandler
             }
             return IsOnline;
         }
-        
+
         public bool TryRequest<T>(IRequest request, out T response, string core = null) where T : class, IResponse
         {
             response = null;
@@ -111,7 +113,7 @@ namespace Mizore.SolrServerHandler
         {
             //TODO: how is the Data passed to the Request?
             if (!IsOnline && !CheckStatus()) throw new MizoreException("Server offline");
-            var request = RequestFactory.CreateRequest(type,this);
+            var request = RequestFactory.CreateRequest(type, this);
             return RequestHandler.Request<T>(request);
         }
     }

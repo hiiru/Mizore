@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using Mizore.CommunicationHandler.Data;
 using Mizore.CommunicationHandler.RequestHandler;
-using Mizore.ContentSerializer.easynet_Javabin;
 using Mizore.util;
 
 namespace Mizore.CommunicationHandler.ResponseHandler

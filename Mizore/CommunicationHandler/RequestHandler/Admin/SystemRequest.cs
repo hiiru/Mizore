@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Specialized;
-using Mizore.SolrServerHandler;
-using Mizore.util;
+﻿using Mizore.SolrServerHandler;
 
 namespace Mizore.CommunicationHandler.RequestHandler.Admin
 {
@@ -9,6 +6,6 @@ namespace Mizore.CommunicationHandler.RequestHandler.Admin
     {
         public SystemRequest(ISolrServerHandler server)
             : base(server, "admin", "system")
-        {}
+        { }
     }
 }

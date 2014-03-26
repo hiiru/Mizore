@@ -10,7 +10,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
         public const string Handler = "/admin/system";
 
         //TODO: how is the Data passed to the Request?
-        public UpdateRequest(ISolrServerHandler server,string core)
+        public UpdateRequest(ISolrServerHandler server, string core)
         {
             if (server == null) throw new ArgumentNullException("server");
             if (core == null) throw new ArgumentNullException("core");

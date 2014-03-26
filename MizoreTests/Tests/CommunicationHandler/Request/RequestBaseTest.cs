@@ -12,11 +12,13 @@ namespace MizoreTests.Tests.CommunicationHandler.Request
         {
             Assert.IsNotNull(CreateInstance().Method);
         }
+
         [TestMethod]
         public void UrlNotNull()
         {
             Assert.IsNotNull(CreateInstance().Url);
         }
+
         [TestMethod]
         public void ServerNotNull()
         {

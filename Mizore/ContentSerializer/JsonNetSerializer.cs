@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using Mizore.util;
 using Newtonsoft.Json;
 using SimpleTestApp;
@@ -18,7 +17,7 @@ namespace Mizore.ContentSerializer
 
         protected JsonSerializerSettings SerializerSettings = new JsonSerializerSettings()
         {
-            Converters = new List<JsonConverter> {new SolrJsonConverter()}
+            Converters = new List<JsonConverter> { new SolrJsonConverter() }
         };
 
         public void Marshal<T>(T obj, Stream stream)

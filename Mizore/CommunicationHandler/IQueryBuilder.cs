@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 //TODO: in which namespace should this interface be?
 namespace Mizore.CommunicationHandler

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Mizore.util;
 
 namespace Mizore.CommunicationHandler.Data
@@ -13,7 +10,7 @@ namespace Mizore.CommunicationHandler.Data
             if (namedList.IsNullOrEmpty()) return;
             NumFound = namedList.GetOrDefaultStruct<int>("numFound");
             Start = namedList.GetOrDefaultStruct<int>("start");
-            var docs=namedList.GetOrDefault<List<object>>("docs");
+            var docs = namedList.GetOrDefault<List<object>>("docs");
             if (docs.IsNullOrEmpty())
                 Docs = new List<INamedList>(0);
             else

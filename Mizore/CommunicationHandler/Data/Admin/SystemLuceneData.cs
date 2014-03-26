@@ -12,9 +12,13 @@ namespace Mizore.CommunicationHandler.Data.Admin
             LuceneSpecVersion = responseHeader.GetOrDefault<string>("lucene-spec-version");
             LuceneImplVersion = responseHeader.GetOrDefault<string>("lucene-impl-version");
         }
+
         public string SolrSpecVersion { get; protected set; }
+
         public string SolrImplVersion { get; protected set; }
+
         public string LuceneSpecVersion { get; protected set; }
+
         public string LuceneImplVersion { get; protected set; }
     }
 }

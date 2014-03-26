@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using Mizore.CommunicationHandler.Data;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.util;
 
 namespace Mizore.CommunicationHandler.ResponseHandler
 {
-    public abstract class AResponseBase :IResponse
+    public abstract class AResponseBase : IResponse
     {
         public abstract void Parse(IRequest request, Stream content);
 

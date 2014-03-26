@@ -8,6 +8,7 @@ namespace Mizore.CommunicationHandler
     public class SolrUriBuilder
     {
         #region Constructor
+
         public SolrUriBuilder(string uriString)
         {
             Uri uri;
@@ -25,14 +26,14 @@ namespace Mizore.CommunicationHandler
 
         protected SolrUriBuilder(SolrUriBuilder server, string core, string handler)
         {
-            if (server==null) throw new ArgumentNullException("server");
+            if (server == null) throw new ArgumentNullException("server");
             if (!server.IsBaseUrl) throw new ArgumentException("server");
             ServerAddress = server.ServerAddress;
             Core = core;
             Handler = handler;
-            Query=new Dictionary<string, string>();
+            Query = new Dictionary<string, string>();
         }
-        
+
         private void Init(Uri uri)
         {
             if (uri == null)
@@ -43,6 +44,7 @@ namespace Mizore.CommunicationHandler
                 case "http":
                 case "https":
                     break;
+
                 default:
                     throw new ArgumentException("Unsuppored url scheme: " + uri.Scheme, "uri");
             }
@@ -54,7 +56,8 @@ namespace Mizore.CommunicationHandler
             ServerAddress = sbAddress.ToString();
             IsBaseUrl = true;
         }
-        #endregion
+
+        #endregion Constructor
 
         public SolrUriBuilder GetBuilder(string core, string handler)
         {
@@ -69,6 +72,7 @@ namespace Mizore.CommunicationHandler
         public string ServerAddress { get; protected set; }
 
         protected string _core;
+
         public string Core
         {
             get
@@ -85,6 +89,7 @@ namespace Mizore.CommunicationHandler
         }
 
         protected string _handler;
+
         public string Handler
         {
             get
@@ -100,7 +105,7 @@ namespace Mizore.CommunicationHandler
             }
         }
 
-        public Dictionary<string,string> Query { get; set; }
+        public Dictionary<string, string> Query { get; set; }
 
         public Uri Uri { get { return new Uri(ToString(), UriKind.Absolute); } }
 
@@ -139,13 +144,13 @@ namespace Mizore.CommunicationHandler
 
         public void SetQuery(IQueryBuilder queryBuilder)
         {
-            if (queryBuilder==null) 
+            if (queryBuilder == null)
                 throw new ArgumentNullException("queryBuilder");
             if (queryBuilder.QueryParameters.IsNullOrEmpty())
                 throw new ArgumentException("QueryParameters are empty", "queryBuilder");
             foreach (var parameter in queryBuilder.QueryParameters)
             {
-                if (parameter.Key.Equals("wt",StringComparison.InvariantCultureIgnoreCase)) throw new InvalidOperationException("wt parameter is not allowed in the QueryParameters");
+                if (parameter.Key.Equals("wt", StringComparison.InvariantCultureIgnoreCase)) throw new InvalidOperationException("wt parameter is not allowed in the QueryParameters");
                 Query[parameter.Key] = parameter.Value;
             }
         }

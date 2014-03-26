@@ -21,7 +21,7 @@ namespace Mizore.CommunicationHandler.ResponseHandler.Admin
             {
                 if (_core == null && Content != null)
                 {
-                    _core=new SystemCoreData(Content.GetOrDefault<INamedList>("core"));
+                    _core = new SystemCoreData(Content.GetOrDefault<INamedList>("core"));
                 }
                 return _core;
             }
@@ -68,7 +68,7 @@ namespace Mizore.CommunicationHandler.ResponseHandler.Admin
                 return _system;
             }
         }
-        
+
         protected string _mode;
 
         public string Mode

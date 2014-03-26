@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Mizore.CacheHandler;
 using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.RequestHandler;
@@ -38,7 +37,9 @@ namespace Mizore.SolrServerHandler
         IRequestFactory RequestFactory { get; }
 
         bool TryRequest<T>(IRequest request, out T response, string core = null) where T : class, IResponse;
+
         T Request<T>(IRequest request, string core = null) where T : class, IResponse;
+
         T Request<T>(string type, string core = null) where T : class, IResponse;
     }
 }

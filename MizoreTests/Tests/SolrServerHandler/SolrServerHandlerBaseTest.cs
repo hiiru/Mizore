@@ -7,6 +7,7 @@ namespace MizoreTests.Tests.SolrServerHandler
     public abstract class SolrServerHandlerBaseTest
     {
         protected abstract IContentSerializer CreateSerializer();
+
         protected abstract ISolrServerHandler CreateInstance();
 
         [TestMethod]
@@ -18,6 +19,7 @@ namespace MizoreTests.Tests.SolrServerHandler
             Assert.IsTrue(server.Cores.Count > 0);
             Assert.IsNotNull(server.DefaultCore);
         }
+
         [TestMethod]
         public void ServerAddressNotNull()
         {
@@ -38,6 +40,5 @@ namespace MizoreTests.Tests.SolrServerHandler
         {
             Assert.IsNotNull(CreateInstance().RequestFactory);
         }
-
     }
 }

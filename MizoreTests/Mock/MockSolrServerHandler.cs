@@ -14,7 +14,7 @@ namespace MizoreTests.Mock
     {
         protected string ResourcePath;
 
-        public MockSolrServerHandler(string resourcePath, string url=null, IContentSerializer contentSerializer = null, ICacheHandler cacheHandler = null, IRequestFactory factory = null)
+        public MockSolrServerHandler(string resourcePath, string url = null, IContentSerializer contentSerializer = null, ICacheHandler cacheHandler = null, IRequestFactory factory = null)
         {
             ResourcePath = resourcePath;
             SolrUriBuilder = new SolrUriBuilder(url ?? "http://127.0.0.1:20440/solr/");
@@ -26,6 +26,7 @@ namespace MizoreTests.Mock
         }
 
         public bool IsReady { get; private set; }
+
         public List<string> Cores { get; private set; }
 
         public string DefaultCore { get; set; }
@@ -39,6 +40,7 @@ namespace MizoreTests.Mock
         public IContentSerializer Serializer { get; private set; }
 
         public IRequestFactory RequestFactory { get; private set; }
+
         public bool TryRequest<T>(IRequest request, out T response, string core = null) where T : class, IResponse
         {
             throw new NotImplementedException();
@@ -78,7 +80,7 @@ namespace MizoreTests.Mock
 
         public PingResponse Ping()
         {
-            var conHandler = new MockConnectionHandler { ResponseFilename = "ping", ResourcePath = ResourcePath};
+            var conHandler = new MockConnectionHandler { ResponseFilename = "ping", ResourcePath = ResourcePath };
             return conHandler.Request<PingResponse>(RequestFactory.CreateRequest("ping", this));
         }
 

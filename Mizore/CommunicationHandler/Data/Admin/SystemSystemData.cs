@@ -18,15 +18,25 @@ namespace Mizore.CommunicationHandler.Data.Admin
             TotalPhysicalMemorySize = responseHeader.GetOrDefaultStruct<long>("totalPhysicalMemorySize");
             TotalSwapSpaceSize = responseHeader.GetOrDefaultStruct<long>("totalSwapSpaceSize");
         }
+
         public string Name { get; protected set; }
+
         public string Version { get; protected set; }
+
         public string Arch { get; protected set; }
+
         public double SystemLoadAverage { get; protected set; }
+
         public long CommitedVirtualMemorySize { get; protected set; }
+
         public long FreePhysicalMemorySize { get; protected set; }
+
         public long FreeSwapSpaceSize { get; protected set; }
+
         public long ProcessCpuTime { get; protected set; }
+
         public long TotalPhysicalMemorySize { get; protected set; }
+
         public long TotalSwapSpaceSize { get; protected set; }
     }
 }

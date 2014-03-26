@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Mizore.CommunicationHandler.Data.Admin;
 using Mizore.CommunicationHandler.RequestHandler;
@@ -14,7 +13,7 @@ namespace Mizore.CommunicationHandler.ResponseHandler.Admin
             Request = request;
             Content = Request.Server.Serializer.Unmarshal(content);
         }
-        
+
         protected string _defaultCore;
 
         public string DefaultCore

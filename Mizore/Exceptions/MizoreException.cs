@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Mizore.Exceptions
 {
@@ -10,8 +7,14 @@ namespace Mizore.Exceptions
     /// </summary>
     public class MizoreException : Exception
     {
-        public MizoreException(string message) : base(message) { }
+        public MizoreException(string message)
+            : base(message)
+        {
+        }
 
-        public MizoreException(string message, Exception innerException) : base(message, innerException) { }
+        public MizoreException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
     }
 }

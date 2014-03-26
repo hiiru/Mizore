@@ -9,7 +9,6 @@
     /// </summary>
     public class Mizore
     {
-        
         // ConnectionHandler -- Low-level connection
         //-> How to handle HTTP connections?
         //-> How to handle Response? (Headers+Content)

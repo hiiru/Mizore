@@ -66,6 +66,7 @@ namespace Mizore.ConnectionHandler
                 case "http":
                 case "https":
                     break;
+
                 default:
                     return false;
             }

@@ -6,6 +6,6 @@ namespace Mizore.CommunicationHandler.RequestHandler.Admin
     {
         public PingRequest(ISolrServerHandler server)
             : base(server, "admin", "ping")
-        {}
+        { }
     }
 }

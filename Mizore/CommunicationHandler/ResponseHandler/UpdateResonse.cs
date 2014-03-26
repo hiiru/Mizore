@@ -10,6 +10,5 @@ namespace Mizore.CommunicationHandler.ResponseHandler
             Request = request;
             Content = Request.Server.Serializer.Unmarshal(content);
         }
-        
     }
 }
