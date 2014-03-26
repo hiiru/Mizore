@@ -61,7 +61,16 @@ namespace Mizore.util
 
         public string GetKey(int i)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
+            if (indexLookup.IsNullOrEmpty()) return null;
+            foreach (var item in indexLookup)
+            {
+                if (item.Value.Contains(i))
+                {
+                    return item.Key;
+                }
+            }
+            return null;
         }
 
         public void Add(string name, T obj)

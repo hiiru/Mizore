@@ -13,16 +13,15 @@ namespace Mizore.CommunicationHandler.Data
             if (namedList.IsNullOrEmpty()) return;
             NumFound = namedList.GetOrDefaultStruct<int>("numFound");
             Start = namedList.GetOrDefaultStruct<int>("start");
-            var docs=namedList.GetOrDefault<INamedList>("docs");
+            var docs=namedList.GetOrDefault<List<object>>("docs");
             if (docs.IsNullOrEmpty())
                 Docs = new List<INamedList>(0);
             else
             {
                 Docs = new List<INamedList>(docs.Count);
-                for (int i=0;i<docs.Count;i++)
+                foreach (var doc in docs)
                 {
-                    var item = docs.GetOrDefault<INamedList>(i);
-                    Docs.Add(item);
+                    Docs.Add(doc as INamedList);
                 }
             }
         }

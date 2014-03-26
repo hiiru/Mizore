@@ -15,15 +15,15 @@ namespace Mizore.CommunicationHandler.ResponseHandler
         }
 
         //TODO: change this from SolrDocumentList to SelectResponseData
-        private SolrDocumentList _documents;
+        private SelectResponseData _documents;
 
-        public SolrDocumentList Documents
+        public SelectResponseData Documents
         {
             get
             {
                 if (_documents == null && Content != null)
                 {
-                    _documents = Content.GetOrDefault<SolrDocumentList>("response");
+                    _documents = new SelectResponseData(Content.GetOrDefault<INamedList>("response"));
                 }
                 return _documents;
             }

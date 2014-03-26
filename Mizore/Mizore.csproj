@@ -46,6 +46,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -100,6 +103,7 @@
     <Compile Include="ContentSerializer\IContentSerializer.cs" />
     <Compile Include="ContentSerializer\easynet_Javabin\JavaBinCodec.cs" />
     <Compile Include="ContentSerializer\JsonNetSerializer.cs" />
+    <Compile Include="ContentSerializer\SolrJsonConverter.cs" />
     <Compile Include="DataMappingHandler\IDataMappingHandler.cs" />
     <Compile Include="Exceptions\MizoreConnectionException.cs" />
     <Compile Include="Exceptions\MizoreException.cs" />
@@ -140,6 +144,7 @@
   <ItemGroup>
     <None Include="CommunicationHandler\TODO.md" />
     <None Include="ContentSerializer\TODO.md" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

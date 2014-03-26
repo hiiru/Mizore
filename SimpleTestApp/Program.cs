@@ -24,9 +24,10 @@ namespace SimpleTestApp
 
         private static void Main(string[] args)
         {
-            try
-            {
+            //try
+            //{
                 Servers.Add(new HttpSolrServer(SERVERURL, new EasynetJavabinSerializer()));
+                Servers.Add(new HttpSolrServer(SERVERURL, new JsonNetSerializer()));
                 //Servers.Add(new HttpSolrServer(SERVERURL_362, new EasynetJavabinSerializer()));
 
                 foreach (var server in Servers)
@@ -39,18 +40,18 @@ namespace SimpleTestApp
                     Console.WriteLine();
                 }
                 Console.WriteLine("Done");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("EXCEPTION!!!!!!");
-                var inner = e;
-                while (inner != null)
-                {
-                    Console.WriteLine(inner.Message);
-                    Console.WriteLine(inner.StackTrace);
-                    inner = inner.InnerException;
-                }
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine("EXCEPTION!!!!!!");
+            //    var inner = e;
+            //    while (inner != null)
+            //    {
+            //        Console.WriteLine(inner.Message);
+            //        Console.WriteLine(inner.StackTrace);
+            //        inner = inner.InnerException;
+            //    }
+            //}
             Console.ReadKey();
         }
 
@@ -61,13 +62,14 @@ namespace SimpleTestApp
             var sbOutput = new StringBuilder();
             var queryRequest = server.RequestFactory.CreateRequest("select", server,server.DefaultCore, new SimpleQueryBuilder(TestQuery));
             var query = server.Request<SelectResponse>(queryRequest);
-            sbOutput.AppendFormat("querying for {0}, ResultCount: {1}\n", TestQuery, query.Documents.NumFound);
-            if (query.Documents!=null)
+            sbOutput.AppendFormat("querying for {0}, ResultCount: {1}\n", TestQuery, query.Documents!=null?query.Documents.NumFound:0);
+            if (query.Documents!=null && query.Documents.Docs!=null)
             {
-                for (int i = 0; i < 5 && i < query.Documents.Count; i++)
+                var docs = query.Documents.Docs;
+                for (int i = 0; i < 5 && i < docs.Count; i++)
                 {
-                    var id = query.Documents[i]["id"];
-                    var name = query.Documents[i]["name"];
+                    var id = docs[i].Get("id");
+                    var name = docs[i].Get("name");
                     sbOutput.AppendFormat("ID: {0}, name: {1}\n", id, name);
                 }
             }

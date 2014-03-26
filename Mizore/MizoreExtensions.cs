@@ -34,7 +34,8 @@ namespace Mizore
             if (item == null) return default(T);
             try
             {
-                return (T) item;
+                return (T)Convert.ChangeType(item, typeof (T));
+                //return (T) item;
             }
             catch
             {
