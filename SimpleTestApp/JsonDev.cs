@@ -14,12 +14,18 @@ namespace SimpleTestApp
         {
             foreach (var file in Directory.GetFiles(@"..\..\TestJson"))
             {
-                Console.WriteLine(file);
-                PrintNamedList(ParseJsonFile(file));
-                Console.WriteLine();
+                //Console.WriteLine(file);
+                //PrintNamedList(ParseJsonFile(file));
+                //Console.WriteLine();
+
+                var json = File.ReadAllText(file);
+                var list = JsonConvert.DeserializeObject<NamedList>(json, new JsonSerializerSettings() { Converters = new List<JsonConverter> { new SolrJsonConverter() } });
+                var json2 = JsonConvert.SerializeObject(list, new JsonSerializerSettings() { Converters = new List<JsonConverter> { new SolrJsonConverter() } });
             }
 
-            Console.ReadKey();
+            //var json = File.ReadAllText(@"..\..\..\MizoreTests\Resources\ResponseFiles\ping.json");
+            //var list = JsonConvert.DeserializeObject<NamedList>(json, new JsonSerializerSettings() { Converters = new List<JsonConverter> { new SolrJsonConverter() } });
+            //var json2 = JsonConvert.SerializeObject(list, new JsonSerializerSettings() { Converters = new List<JsonConverter> { new SolrJsonConverter() } });
         }
 
         protected static INamedList ParseJsonFile(string filename)
@@ -30,7 +36,7 @@ namespace SimpleTestApp
             try
             {
                 return JsonConvert.DeserializeObject<NamedList>(json,
-                    new JsonSerializerSettings() {Converters = new List<JsonConverter> {new SolrJsonConverter()}});
+                    new JsonSerializerSettings() { Converters = new List<JsonConverter> { new SolrJsonConverter() } });
             }
             catch (Exception e)
             {
@@ -39,23 +45,23 @@ namespace SimpleTestApp
             }
         }
 
-        protected static void PrintNamedList(INamedList list, int level=0)
+        protected static void PrintNamedList(INamedList list, int level = 0)
         {
             var prefix = Tabs(level);
             if (level > 10)
             {
-                Console.WriteLine(prefix+"too much recursion");
+                Console.WriteLine(prefix + "too much recursion");
                 return;
             }
 
             if (list.IsNullOrEmpty())
             {
-                Console.WriteLine(prefix+"List is empty.");
+                Console.WriteLine(prefix + "List is empty.");
                 return;
             }
             for (int i = 0; i < list.Count; i++)
             {
-                Console.WriteLine(prefix+list.GetKey(i));
+                Console.WriteLine(prefix + list.GetKey(i));
                 var item = list.Get(i);
                 if (item is INamedList)
                 {
@@ -68,6 +74,6 @@ namespace SimpleTestApp
         {
             IEnumerable<string> tabs = Enumerable.Repeat(" ", numTabs);
             return (numTabs > 0) ? tabs.Aggregate((sum, next) => sum + next) : "";
-        }   
+        }
     }
 }

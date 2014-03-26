@@ -23,7 +23,9 @@ namespace Mizore.ContentSerializer
 
         public void Marshal<T>(T obj, Stream stream)
         {
-            throw new NotImplementedException();
+            var writer = new StreamWriter(stream);
+            writer.Write(JsonConvert.SerializeObject(obj, SerializerSettings));
+            writer.Flush();
         }
 
         public INamedList Unmarshal(Stream stream)

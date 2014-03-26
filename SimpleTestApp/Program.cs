@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading;
-using Mizore;
 using Mizore.CommunicationHandler;
-using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer;
-using Mizore.ContentSerializer.easynet_Javabin;
 using Mizore.SolrServerHandler;
-using Mizore.util;
 
 namespace SimpleTestApp
 {
@@ -24,9 +17,9 @@ namespace SimpleTestApp
 
         private static void Main(string[] args)
         {
-            //try
-            //{
-                Servers.Add(new HttpSolrServer(SERVERURL, new EasynetJavabinSerializer()));
+            try
+            {
+                //Servers.Add(new HttpSolrServer(SERVERURL, new EasynetJavabinSerializer()));
                 Servers.Add(new HttpSolrServer(SERVERURL, new JsonNetSerializer()));
                 //Servers.Add(new HttpSolrServer(SERVERURL_362, new EasynetJavabinSerializer()));
 
@@ -40,30 +33,31 @@ namespace SimpleTestApp
                     Console.WriteLine();
                 }
                 Console.WriteLine("Done");
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine("EXCEPTION!!!!!!");
-            //    var inner = e;
-            //    while (inner != null)
-            //    {
-            //        Console.WriteLine(inner.Message);
-            //        Console.WriteLine(inner.StackTrace);
-            //        inner = inner.InnerException;
-            //    }
-            //}
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("EXCEPTION!!!!!!");
+                var inner = e;
+                while (inner != null)
+                {
+                    Console.WriteLine(inner.Message);
+                    Console.WriteLine(inner.StackTrace);
+                    inner = inner.InnerException;
+                }
+            }
             Console.ReadKey();
         }
 
         private const string TestQuery = "*:*";
+
         private static void Query(ISolrServerHandler server)
         {
             if (server == null) return;
             var sbOutput = new StringBuilder();
-            var queryRequest = server.RequestFactory.CreateRequest("select", server,server.DefaultCore, new SimpleQueryBuilder(TestQuery));
+            var queryRequest = server.RequestFactory.CreateRequest("select", server, server.DefaultCore, new SimpleQueryBuilder(TestQuery));
             var query = server.Request<SelectResponse>(queryRequest);
-            sbOutput.AppendFormat("querying for {0}, ResultCount: {1}\n", TestQuery, query.Documents!=null?query.Documents.NumFound:0);
-            if (query.Documents!=null && query.Documents.Docs!=null)
+            sbOutput.AppendFormat("querying for {0}, ResultCount: {1}\n", TestQuery, query.Documents != null ? query.Documents.NumFound : 0);
+            if (query.Documents != null && query.Documents.Docs != null)
             {
                 var docs = query.Documents.Docs;
                 for (int i = 0; i < 5 && i < docs.Count; i++)
@@ -74,7 +68,6 @@ namespace SimpleTestApp
                 }
             }
             Console.WriteLine(sbOutput.ToString());
-
         }
 
         private static void Ping(ISolrServerHandler server)
@@ -82,7 +75,7 @@ namespace SimpleTestApp
             if (server == null) return;
             var sbOutput = new StringBuilder();
             var ping = server.Request<PingResponse>("ping");
-            sbOutput.AppendFormat("Status: {0} - QTime: {1}", ping.Status,ping.ResponseHeader.QTime);
+            sbOutput.AppendFormat("Status: {0} - QTime: {1}", ping.Status, ping.ResponseHeader.QTime);
             Console.WriteLine(sbOutput.ToString());
         }
 
@@ -94,7 +87,6 @@ namespace SimpleTestApp
             sbOutput.AppendFormat("Host: {0} servertime: {1} StartTime: {2}", system.Core.Host, system.Core.Now, system.Core.Start);
             Console.WriteLine(sbOutput.ToString());
         }
-
 
         //public static Tuple<long, long, long> BenchmarkNamedList(INamedList list, int outerLimit = 5000, int innerMod = 10)
         //{
