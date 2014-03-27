@@ -99,9 +99,14 @@ namespace Mizore.ContentSerializer.JavaBin
                 case NULL:
                     return null;
                 case DATE:
-                        long timestamp = stream.ReadLong();
+                        var timestamp = stream.ReadLong();
                         if (timestamp < -62135596800000)
                             return DateTime.MinValue;
+
+                    //    if (timestamp <= -315537897600000 || timestamp >= 315537897600000)
+                    //{
+                        
+                    //}
                         DateTime date;
                         try {
                             date = utcDateTime.AddMilliseconds(timestamp).ToLocalTime();

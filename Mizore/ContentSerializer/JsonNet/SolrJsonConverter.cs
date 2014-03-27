@@ -84,10 +84,15 @@ namespace Mizore.ContentSerializer.JsonNet
             {
                 switch (reader.TokenType)
                 {
+                    case JsonToken.Date:
+                        if (propertyName == null)
+                            throw new InvalidOperationException("propertyName is null...");
+                        list.Add(propertyName, ((DateTime)reader.Value).ToLocalTime());
+                        propertyName = null;
+                        break;
                     case JsonToken.Null:
                     case JsonToken.Boolean:
                     case JsonToken.Bytes:
-                    case JsonToken.Date:
                     case JsonToken.Float:
                     case JsonToken.Integer:
                     case JsonToken.String:
@@ -148,10 +153,12 @@ namespace Mizore.ContentSerializer.JsonNet
             {
                 switch (reader.TokenType)
                 {
+                    case JsonToken.Date:
+                        array.Add(((DateTime)reader.Value).ToUniversalTime());
+                        break;
                     case JsonToken.Null:
                     case JsonToken.Boolean:
                     case JsonToken.Bytes:
-                    case JsonToken.Date:
                     case JsonToken.Float:
                     case JsonToken.Integer:
                     case JsonToken.String:

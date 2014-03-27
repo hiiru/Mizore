@@ -22,8 +22,8 @@ namespace SimpleTestApp
             try
             {
                 Servers.Add(new HttpSolrServer(SERVERURL, new JavaBinSerializer()));
-                //Servers.Add(new HttpSolrServer(SERVERURL, new EasynetJavabinSerializer()));
-                //Servers.Add(new HttpSolrServer(SERVERURL, new JsonNetSerializer()));
+                Servers.Add(new HttpSolrServer(SERVERURL, new EasynetJavabinSerializer()));
+                Servers.Add(new HttpSolrServer(SERVERURL, new JsonNetSerializer()));
                 //Servers.Add(new HttpSolrServer(SERVERURL_362, new EasynetJavabinSerializer()));
 
                 foreach (var server in Servers)
