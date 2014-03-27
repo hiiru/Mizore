@@ -102,6 +102,7 @@
     <Compile Include="ContentSerializer\easynet_Javabin\SolrInputField.cs" />
     <Compile Include="ContentSerializer\IContentSerializer.cs" />
     <Compile Include="ContentSerializer\easynet_Javabin\JavaBinCodec.cs" />
+    <Compile Include="ContentSerializer\JavaBin\ConvertedSolrjClasses\SolrBufferedStream.cs" />
     <Compile Include="ContentSerializer\JavaBin\JavaBinSerializer.cs" />
     <Compile Include="ContentSerializer\JavaBin\SolrJavaBinConverter.cs" />
     <Compile Include="ContentSerializer\JsonNet\JsonNetSerializer.cs" />
@@ -148,9 +149,7 @@
     <None Include="ContentSerializer\TODO.md" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ContentSerializer\JavaBin\ConvertedSolrjClasses\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
