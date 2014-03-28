@@ -15,6 +15,7 @@ namespace Mizore.ContentSerializer.JavaBin.ConvertedSolrjClasses
             InputStream = stream;
         }
 
+        #region Stream Implementation
         public override void Flush()
         {
             InputStream.Flush();
@@ -70,7 +71,8 @@ namespace Mizore.ContentSerializer.JavaBin.ConvertedSolrjClasses
         {
             return InputStream.ReadByte();
         }
-
+        #endregion
+        #region Read
         public short ReadShort()
         {
             Read(ReadBuffer, 0, 2);
@@ -116,6 +118,127 @@ namespace Mizore.ContentSerializer.JavaBin.ConvertedSolrjClasses
             //Read(ReadBuffer, 0, 8);
             //return BitConverter.ToDouble(ReadBuffer, 0);
         }
+        #endregion
+        #region Write
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="b"></param>
+        public void Write(int b)
+        {
+            InputStream.WriteByte((byte)b);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="b"></param>
+        public void Write(byte[] b)
+        {
+            InputStream.Write(b, 0, b.Length);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="v"></param>
+        public void WriteBoolean(bool v)
+        {
+            Write(v ? 1 : 0);
+        }
+        
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="v"></param>
+        public void WriteShort(int v)
+        {
+            Write((byte)(v >> 8));
+            Write((byte)v);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="v"></param>
+        public void WriteChar(int v)
+        {
+            WriteShort(v);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="v"></param>
+        public void WriteInt(int v)
+        {
+            WriteByte((byte)(v >> 24));
+            WriteByte((byte)(v >> 16));
+            WriteByte((byte)(v >> 8));
+            WriteByte((byte)(v));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="v"></param>
+        public void WriteLong(long v)
+        {
+            WriteByte((byte)(v >> 56));
+            WriteByte((byte)(v >> 48));
+            WriteByte((byte)(v >> 40));
+            WriteByte((byte)(v >> 32));
+            WriteByte((byte)(v >> 24));
+            WriteByte((byte)(v >> 16));
+            WriteByte((byte)(v >> 8));
+            WriteByte((byte)(v));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="v"></param>
+        public void WriteFloat(float v)
+        {
+            converter.Single = v;
+            WriteInt(converter.Int);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="v"></param>
+        public void WriteDouble(double v)
+        {
+            converter.Double = v;
+            WriteLong(converter.Long);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="s"></param>
+        public void WriteBytes(string s)
+        {
+            foreach (char c in s)
+            {
+                WriteByte((byte)c);
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="s"></param>
+        public void WriteChars(string s)
+        {
+            foreach (char c in s)
+            {
+                WriteChar(c);
+            }
+        }
+        #endregion
 
         [StructLayout(LayoutKind.Explicit)]
         protected struct FloatingPointConverter
