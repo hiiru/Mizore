@@ -6,6 +6,7 @@ using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer;
+using Mizore.ContentSerializer.JavaBin;
 using Mizore.SolrServerHandler;
 
 namespace MizoreTests.Mock
@@ -18,7 +19,7 @@ namespace MizoreTests.Mock
         {
             ResourcePath = resourcePath;
             SolrUriBuilder = new SolrUriBuilder(url ?? "http://127.0.0.1:20440/solr/");
-            Serializer = contentSerializer ?? new EasynetJavabinSerializer();
+            Serializer = contentSerializer ?? new JavaBinSerializer();
             Cache = cacheHandler ?? null;
             RequestFactory = factory ?? new RequestFactory();
             DefaultCore = "mizoreMockingTestCore";

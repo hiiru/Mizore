@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mizore.ContentSerializer;
+using Mizore.ContentSerializer.JavaBin;
 using Mizore.SolrServerHandler;
 using MizoreTests.Mock;
 
@@ -18,7 +19,7 @@ namespace MizoreTests.Tests.SolrServerHandler
     {
         protected override IContentSerializer CreateSerializer()
         {
-            return new EasynetJavabinSerializer();
+            return new JavaBinSerializer();
         }
     }
 }

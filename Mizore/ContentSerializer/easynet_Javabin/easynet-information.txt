@@ -1,5 +1,0 @@
-﻿All the files in this Folder (easynet_Javabin) are copied from the easynet Project by Terry Liang.
-http://easynet.codeplex.com/
-
-Those files are Licensed under Apache License 2.0.
-http://www.apache.org/licenses/

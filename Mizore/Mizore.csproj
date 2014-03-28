@@ -88,20 +88,7 @@
     <Compile Include="CommunicationHandler\SolrUriBuilder.cs" />
     <Compile Include="ConnectionHandler\HttpWebRequestHandler.cs" />
     <Compile Include="ConnectionHandler\IConnectionHandler.cs" />
-    <Compile Include="ContentSerializer\EasynetJavabinSerializer.cs" />
-    <Compile Include="ContentSerializer\easynet_Javabin\DoubleConverter.cs" />
-    <Compile Include="ContentSerializer\easynet_Javabin\EasynetNamedList.cs" />
-    <Compile Include="ContentSerializer\easynet_Javabin\Extension.cs" />
-    <Compile Include="ContentSerializer\easynet_Javabin\FastInputStream.cs" />
-    <Compile Include="ContentSerializer\easynet_Javabin\FastOutputStream.cs" />
-    <Compile Include="ContentSerializer\easynet_Javabin\FloatConverter.cs" />
-    <Compile Include="ContentSerializer\easynet_Javabin\LinkedHashMap.cs" />
-    <Compile Include="ContentSerializer\easynet_Javabin\SolrDocument.cs" />
-    <Compile Include="ContentSerializer\easynet_Javabin\SolrDocumentList.cs" />
-    <Compile Include="ContentSerializer\easynet_Javabin\SolrInputDocument.cs" />
-    <Compile Include="ContentSerializer\easynet_Javabin\SolrInputField.cs" />
     <Compile Include="ContentSerializer\IContentSerializer.cs" />
-    <Compile Include="ContentSerializer\easynet_Javabin\JavaBinCodec.cs" />
     <Compile Include="ContentSerializer\JavaBin\ConvertedSolrjClasses\SolrBufferedStream.cs" />
     <Compile Include="ContentSerializer\JavaBin\JavaBinSerializer.cs" />
     <Compile Include="ContentSerializer\JavaBin\SolrJavaBinConverter.cs" />
@@ -145,9 +132,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ContentSerializer\easynet_Javabin\easynet-information.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CommunicationHandler\TODO.md" />

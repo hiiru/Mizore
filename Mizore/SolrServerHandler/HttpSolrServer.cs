@@ -8,6 +8,7 @@ using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ConnectionHandler;
 using Mizore.ContentSerializer;
+using Mizore.ContentSerializer.JavaBin;
 using Mizore.Exceptions;
 
 namespace Mizore.SolrServerHandler
@@ -52,7 +53,7 @@ namespace Mizore.SolrServerHandler
 
             //Initialization
             SolrUriBuilder = new SolrUriBuilder(solrUri);
-            Serializer = contentSerializer ?? new EasynetJavabinSerializer();
+            Serializer = contentSerializer ?? new JavaBinSerializer();
             Cache = cacheHandler ?? null;
             RequestFactory = factory ?? new RequestFactory();
             IsReady = true;

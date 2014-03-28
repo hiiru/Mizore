@@ -36,9 +36,6 @@ namespace SimpleTestApp
 
         public static void Parse(byte[] bytes)
         {
-            var enJB = new EasynetJavabinSerializer();
-            var enList = enJB.Unmarshal(new MemoryStream(bytes));
-
             var myJB = new JavaBinSerializer();
             var myList = myJB.Unmarshal(new MemoryStream(bytes));
         }
