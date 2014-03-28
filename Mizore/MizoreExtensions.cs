@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using Mizore.util;
+using Mizore.Data;
 
 namespace Mizore
 {

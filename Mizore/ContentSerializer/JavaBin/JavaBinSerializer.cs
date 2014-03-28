@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Mizore.ContentSerializer.JsonNet;
-using Mizore.util;
+using Mizore.Data;
 
 namespace Mizore.ContentSerializer.JavaBin
 {
@@ -25,7 +25,7 @@ namespace Mizore.ContentSerializer.JavaBin
         public INamedList Unmarshal(Stream stream)
         {
             var converter = new SolrJavaBinConverter();
-            return converter.ReadJavaBin(stream);
+            return converter.ReadJavaBin(stream) as INamedList;
         }
     }
 }

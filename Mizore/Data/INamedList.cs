@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Mizore.util
+namespace Mizore.Data
 {
     public interface INamedList : INamedList<object> { }
 
@@ -8,9 +8,9 @@ namespace Mizore.util
     {
         T Get(int i);
 
-        T Get(string name);
+        T Get(string key);
 
-        IList<T> GetAll(string name);
+        IList<T> GetAll(string key);
 
         string GetKey(int i);
 

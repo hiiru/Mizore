@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
 
-namespace Mizore.util
+namespace Mizore.Data
 {
+    /// <summary>
+    /// This NamedList is optimized for fast access by key, but is slower in creation/write
+    /// </summary>
     public class NamedList : NamedList<object>, INamedList { }
 
+    /// <summary>
+    /// This NamedList is optimized for fast access by key, but is slower in creation/write
+    /// </summary>
     public class NamedList<T> : INamedList<T>
     {
-        //TODO: Rebuild a NamedList in c# like lucene's NamedList
-
         /*
         http://lucene.apache.org/solr/3_6_1/org/apache/solr/common/util/NamedList.html
         A simple container class for modeling an ordered list of name/value pairs.

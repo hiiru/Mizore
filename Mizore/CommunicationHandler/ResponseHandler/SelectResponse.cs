@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Mizore.CommunicationHandler.Data;
 using Mizore.CommunicationHandler.RequestHandler;
-using Mizore.util;
+using Mizore.Data;
 
 namespace Mizore.CommunicationHandler.ResponseHandler
 {

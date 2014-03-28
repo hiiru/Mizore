@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Mizore.util;
+using Mizore.Data;
 
 namespace Mizore.CommunicationHandler.Data
 {

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Mizore.ContentSerializer.easynet_Javabin;
 using Mizore.ContentSerializer.JavaBin.ConvertedSolrjClasses;
-using Mizore.util;
+using Mizore.Data;
+using Mizore.Data.Solr;
 
 namespace Mizore.ContentSerializer.JavaBin
 {
@@ -60,7 +60,7 @@ namespace Mizore.ContentSerializer.JavaBin
             throw new NotImplementedException();
         }
 
-        public INamedList ReadJavaBin(Stream stream)
+        public object ReadJavaBin(Stream stream)
         {
             var solrStream = new SolrBufferedStream(stream);
             var version = solrStream.ReadByte();
@@ -68,7 +68,7 @@ namespace Mizore.ContentSerializer.JavaBin
             {
                 throw new Exception("Invalid version (expected " + VERSION + ", but " + version + ") or the data in not in 'javabin' format");
             }
-            return ReadVal(solrStream) as INamedList;
+            return ReadVal(solrStream);
         }
 
         public object ReadVal(SolrBufferedStream stream)
@@ -172,41 +172,33 @@ namespace Mizore.ContentSerializer.JavaBin
         private object ReadSolrInputDocument(SolrBufferedStream stream)
         {
             int sz = ReadVInt(stream);
-            var nl = new EasynetNamedList();
-            nl.Add("boost",(float?)ReadVal(stream));
-
-            var dict = new Dictionary<string, INamedList>(sz);
-            var children = new ArrayList();
+            var sid = new SolrInputDocument();
+            sid.DocBoost = (float?) ReadVal(stream);
             for (int i = 0; i < sz; i++)
             {
-                float boost = 1.0f;
-                string fieldName;
+                var boost = 1.0f;
+                string name;
                 var obj = ReadVal(stream); // could be a boost, a field name, or a child document
                 if (obj is float)
                 {
                     boost = (float)obj;
-                    fieldName = (String)ReadVal(stream);
-                } else if (obj is INamedList)
+                    name = (string)ReadVal(stream);
+                }
+                else if (obj is SolrInputDocument)
                 {
-                    children.Add(obj);
+                    if (sid.ChildDocuments==null)
+                        sid.ChildDocuments=new List<SolrInputDocument>();
+                    sid.ChildDocuments.Add(obj as SolrInputDocument);
                     continue;
                 }
                 else
                 {
-                    fieldName = (String)obj;
+                    name = (string)obj;
                 }
-                Object fieldVal = ReadVal(stream);
-                var fields = new EasynetNamedList();
-                fields.Add("name", fieldName);
-                fields.Add("value", fieldVal);
-                fields.Add("boost", boost);
-                dict.Add(fieldName,fields);
+                var value = ReadVal(stream);
+                sid.Fields.Add(name, new SolrInputField(name) { Boost = boost, Value = value });
             }
-            if (dict.Count>0)
-                nl.Add("fields",dict);
-            if (children.Count > 0)
-                nl.Add("children", children);
-            return nl;
+            return sid;
         }
 
         private IList ReadIterator(SolrBufferedStream stream)
@@ -229,20 +221,22 @@ namespace Mizore.ContentSerializer.JavaBin
             return arr;
         }
 
-        private INamedList ReadSolrDocumentList(SolrBufferedStream stream)
+        private SolrDocumentList ReadSolrDocumentList(SolrBufferedStream stream)
         {
-            var nl = new EasynetNamedList();
-            var list = (IList)ReadVal(stream);
-            nl.Add("numFound", (long) list[0]);
-            nl.Add("start", (long) list[1]);
-            nl.Add("maxScore", (float?)list[2]);
-            nl.Add("docs",(ArrayList)ReadVal(stream));
-            return nl;
+            var sdl = new SolrDocumentList();
+            var metadata = (IList)ReadVal(stream);
+            sdl.NumFound = (long)metadata[0];
+            sdl.Start = (long)metadata[1];
+            sdl.MaxScore = (float?)metadata[2];
+            var arr = ReadVal(stream) as ArrayList;
+            if (arr != null) 
+                sdl.AddRange(arr.Cast<SolrDocument>());
+            return sdl;
         }
 
-        private INamedList ReadSolrDocument(SolrBufferedStream stream)
+        private SolrDocument ReadSolrDocument(SolrBufferedStream stream)
         {
-            return (INamedList)ReadVal(stream);
+            return new SolrDocument(ReadVal(stream) as INamedList);
         }
 
         private IDictionary<object, object> ReadMap(SolrBufferedStream stream)
@@ -274,7 +268,7 @@ namespace Mizore.ContentSerializer.JavaBin
         private INamedList ReadNamedList(SolrBufferedStream stream)
         {
             int sz = ReadSize(stream);
-            var nl = new EasynetNamedList();
+            var nl = new SerializationNamedList();
             for (int i = 0; i < sz; i++)
             {
                 var key = ReadVal(stream) as string;

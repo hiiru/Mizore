@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Mizore;
 using Mizore.ContentSerializer.JsonNet;
-using Mizore.util;
+using Mizore.Data;
 using Newtonsoft.Json;
 
 namespace SimpleTestApp

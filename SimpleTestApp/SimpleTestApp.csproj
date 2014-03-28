@@ -80,6 +80,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="TestJavaBin\javabin_backcompat.bin" />
+    <None Include="TestJavaBin\selectAllExampleDocs.bin" />
     <None Include="TestJavaBin\updateReq_4_5.bin" />
     <None Include="TestJson\cores.json" />
     <None Include="TestJson\logging.json" />

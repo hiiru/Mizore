@@ -20,7 +20,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Mizore.util;
+using Mizore.Data;
 
 namespace Mizore.ContentSerializer.easynet_Javabin
 {

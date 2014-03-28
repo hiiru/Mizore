@@ -1,4 +1,4 @@
-﻿using Mizore.util;
+﻿using Mizore.Data;
 
 namespace Mizore.CommunicationHandler.Data.Admin
 {
