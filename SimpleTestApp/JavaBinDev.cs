@@ -14,16 +14,18 @@ namespace SimpleTestApp
     {
         public static void Main(string[] args)
         {
-            var javabin = File.ReadAllBytes(@"..\..\..\MizoreTests\Resources\ResponseFiles\ping.javabin");
-            //Parse(javabin);
-            for (int i = 0; i < 100000; i++)
-                Parse(javabin);
+            var solrBackCompTestfile = File.ReadAllBytes(@"..\..\TestJavaBin\javabin_backcompat.bin");
+            Parse(solrBackCompTestfile);
+
+            //var javabin = File.ReadAllBytes(@"..\..\..\MizoreTests\Resources\ResponseFiles\ping.javabin");
+            //for (int i = 0; i < 100000; i++)
+            //    Parse(javabin);
         }
 
         public static void Parse(byte[] bytes)
         {
-            var enJB = new EasynetJavabinSerializer();
-            var enList = enJB.Unmarshal(new MemoryStream(bytes));
+        //    var enJB = new EasynetJavabinSerializer();
+        //    var enList = enJB.Unmarshal(new MemoryStream(bytes));
 
             var myJB = new JavaBinSerializer();
             var myList = myJB.Unmarshal(new MemoryStream(bytes));

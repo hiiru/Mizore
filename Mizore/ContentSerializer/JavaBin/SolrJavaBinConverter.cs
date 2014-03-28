@@ -176,28 +176,36 @@ namespace Mizore.ContentSerializer.JavaBin
             nl.Add("boost",(float?)ReadVal(stream));
 
             var dict = new Dictionary<string, INamedList>(sz);
+            var children = new ArrayList();
             for (int i = 0; i < sz; i++)
             {
-                var fields = new EasynetNamedList();
                 float boost = 1.0f;
-                String fieldName;
-                Object boostOrFieldName = ReadVal(stream);
-                if (boostOrFieldName is float)
+                string fieldName;
+                var obj = ReadVal(stream); // could be a boost, a field name, or a child document
+                if (obj is float)
                 {
-                    boost = (float)boostOrFieldName;
+                    boost = (float)obj;
                     fieldName = (String)ReadVal(stream);
+                } else if (obj is INamedList)
+                {
+                    children.Add(obj);
+                    continue;
                 }
                 else
                 {
-                    fieldName = (String)boostOrFieldName;
+                    fieldName = (String)obj;
                 }
                 Object fieldVal = ReadVal(stream);
-                //fields.Add("name", fieldName);
+                var fields = new EasynetNamedList();
+                fields.Add("name", fieldName);
                 fields.Add("value", fieldVal);
                 fields.Add("boost", boost);
                 dict.Add(fieldName,fields);
             }
-            nl.Add("fields",dict);
+            if (dict.Count>0)
+                nl.Add("fields",dict);
+            if (children.Count > 0)
+                nl.Add("children", children);
             return nl;
         }
 

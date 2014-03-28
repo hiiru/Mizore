@@ -147,6 +147,7 @@
   <ItemGroup>
     <None Include="CommunicationHandler\TODO.md" />
     <None Include="ContentSerializer\TODO.md" />
+    <None Include="Data\Solr\README.md" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

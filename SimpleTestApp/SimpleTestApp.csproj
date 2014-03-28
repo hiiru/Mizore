@@ -50,7 +50,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>SimpleTestApp.Program</StartupObject>
+    <StartupObject>SimpleTestApp.JavaBinDev</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -79,6 +79,8 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="TestJavaBin\javabin_backcompat.bin" />
+    <None Include="TestJavaBin\updateReq_4_5.bin" />
     <None Include="TestJson\cores.json" />
     <None Include="TestJson\logging.json" />
     <None Include="TestJson\mbeans.json" />
