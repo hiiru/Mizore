@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Mizore.Data;
+using Mizore.ContentSerializer.Data;
 
 namespace Mizore.ContentSerializer
 {

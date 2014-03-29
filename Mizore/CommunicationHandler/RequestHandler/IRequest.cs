@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
-using Mizore.Data;
+using Mizore.ContentSerializer.Data;
 using Mizore.SolrServerHandler;
 
 namespace Mizore.CommunicationHandler.RequestHandler

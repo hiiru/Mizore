@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Mizore.ContentSerializer.JavaBin.ConvertedSolrjClasses
@@ -16,6 +15,7 @@ namespace Mizore.ContentSerializer.JavaBin.ConvertedSolrjClasses
         }
 
         #region Stream Implementation
+
         public override void Flush()
         {
             InputStream.Flush();
@@ -71,12 +71,15 @@ namespace Mizore.ContentSerializer.JavaBin.ConvertedSolrjClasses
         {
             return InputStream.ReadByte();
         }
-        #endregion
+
+        #endregion Stream Implementation
+
         #region Read
+
         public short ReadShort()
         {
             Read(ReadBuffer, 0, 2);
-            return (short) ((ReadBuffer[0] << 8) | ReadBuffer[1]);
+            return (short)((ReadBuffer[0] << 8) | ReadBuffer[1]);
         }
 
         public int ReadInt()
@@ -92,14 +95,14 @@ namespace Mizore.ContentSerializer.JavaBin.ConvertedSolrjClasses
         {
             Read(ReadBuffer, 0, 8);
 
-            return (((long) ReadBuffer[0]) << 56)
-                   | (((long) ReadBuffer[1]) << 48)
-                   | (((long) ReadBuffer[2]) << 40)
-                   | (((long) ReadBuffer[3]) << 32)
-                   | (((long) ReadBuffer[4]) << 24)
-                   | (uint) (ReadBuffer[5] << 16)
-                   | (uint) (ReadBuffer[6] << 8)
-                   | (uint) (ReadBuffer[7]);
+            return (((long)ReadBuffer[0]) << 56)
+                   | (((long)ReadBuffer[1]) << 48)
+                   | (((long)ReadBuffer[2]) << 40)
+                   | (((long)ReadBuffer[3]) << 32)
+                   | (((long)ReadBuffer[4]) << 24)
+                   | (uint)(ReadBuffer[5] << 16)
+                   | (uint)(ReadBuffer[6] << 8)
+                   | (uint)(ReadBuffer[7]);
             //return BitConverter.ToInt64(ReadBuffer, 0);
         }
 
@@ -118,7 +121,9 @@ namespace Mizore.ContentSerializer.JavaBin.ConvertedSolrjClasses
             //Read(ReadBuffer, 0, 8);
             //return BitConverter.ToDouble(ReadBuffer, 0);
         }
-        #endregion
+
+        #endregion Read
+
         #region Write
 
         /// <summary>
@@ -147,7 +152,7 @@ namespace Mizore.ContentSerializer.JavaBin.ConvertedSolrjClasses
         {
             Write(v ? 1 : 0);
         }
-        
+
         /// <summary>
         ///
         /// </summary>
@@ -238,7 +243,8 @@ namespace Mizore.ContentSerializer.JavaBin.ConvertedSolrjClasses
                 WriteChar(c);
             }
         }
-        #endregion
+
+        #endregion Write
 
         [StructLayout(LayoutKind.Explicit)]
         protected struct FloatingPointConverter

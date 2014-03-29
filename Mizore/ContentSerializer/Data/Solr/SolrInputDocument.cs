@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 
-namespace Mizore.Data.Solr
+namespace Mizore.ContentSerializer.Data.Solr
 {
     public class SolrInputDocument : SolrDocument
     {
-        public SolrInputDocument(Dictionary<string, SolrInputField> fields = null) : base(fields: fields)
+        public SolrInputDocument(Dictionary<string, SolrInputField> fields = null)
+            : base(fields: fields)
         {
             DocBoost = 1f;
         }
-        
+
         public List<SolrInputDocument> ChildDocuments { get; set; }
 
         public float? DocBoost { get; set; }

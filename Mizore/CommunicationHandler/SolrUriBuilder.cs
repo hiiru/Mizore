@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+
 //TODO: in which namespace should this class be?
 using Mizore.CommunicationHandler.Data.Params;
 

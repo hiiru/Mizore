@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace Mizore.Data
+namespace Mizore.ContentSerializer.Data
 {
     /// <summary>
     /// This NamedList is optimized for fast write, access by Key is not possible!
     /// </summary>
-    public class SerializationNamedList : SerializationNamedList<object>,INamedList { }
+    public class SerializationNamedList : SerializationNamedList<object>, INamedList { }
 
     /// <summary>
     /// This NamedList is optimized for fast write, access by Key is not possible!
     /// </summary>
     public class SerializationNamedList<T> : List<T>, INamedList<T>
     {
-        protected List<string> Keys=new List<string>();
+        protected List<string> Keys = new List<string>();
+
         public T Get(int i)
         {
             return this[i];

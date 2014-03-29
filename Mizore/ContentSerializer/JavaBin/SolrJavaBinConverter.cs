@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Mizore.ContentSerializer.Data;
+using Mizore.ContentSerializer.Data.Solr;
 using Mizore.ContentSerializer.JavaBin.ConvertedSolrjClasses;
-using Mizore.Data;
-using Mizore.Data.Solr;
 
 namespace Mizore.ContentSerializer.JavaBin
 {
@@ -57,6 +57,7 @@ namespace Mizore.ContentSerializer.JavaBin
 
         //holds all the extern strings
         private readonly List<string> ExternStrings = new List<string>();
+
         private readonly Dictionary<string, int> ExtenStringsMap = new Dictionary<string, int>();
 
         public void WriteJavaBin(object list, Stream stream)
@@ -389,14 +390,15 @@ namespace Mizore.ContentSerializer.JavaBin
         }
 
         #endregion Read
+
         #region Write
 
         public void WriteVal(object value, SolrBufferedStream stream)
         {
-            if (WritePrimitive(value, stream)) 
+            if (WritePrimitive(value, stream))
                 return;
             if (value is INamedList)
-                WriteNamedList(value as INamedList,stream);
+                WriteNamedList(value as INamedList, stream);
             if (value is SolrDocumentList)
                 WriteSolrDocumentList(value as SolrDocumentList, stream);
             if (value is SolrDocument)
@@ -478,13 +480,13 @@ namespace Mizore.ContentSerializer.JavaBin
             foreach (var entry in solrDocument.Fields)
             {
                 WriteExternString(entry.Key, stream);
-                WriteVal(entry.Value,stream);
+                WriteVal(entry.Value, stream);
             }
         }
 
         private void WriteSolrDocumentList(SolrDocumentList value, SolrBufferedStream stream)
         {
-            WriteTag(SOLRDOCLST,stream);
+            WriteTag(SOLRDOCLST, stream);
             IList l = new ArrayList(3);
             l.Add(value.NumFound);
             l.Add(value.Start);
@@ -517,7 +519,7 @@ namespace Mizore.ContentSerializer.JavaBin
         {
             if (value == null)
             {
-                WriteTag(NULL,stream);
+                WriteTag(NULL, stream);
                 return;
             }
             int idx;
@@ -670,11 +672,11 @@ namespace Mizore.ContentSerializer.JavaBin
         private void WriteString(string value, SolrBufferedStream stream)
         {
             var bytes = Encoding.UTF8.GetBytes(value);
-            WriteTag(STR,stream, bytes.Length);
+            WriteTag(STR, stream, bytes.Length);
             stream.Write(bytes, 0, bytes.Length);
         }
 
-        private void WriteTag(byte tag, SolrBufferedStream stream, int? length=null)
+        private void WriteTag(byte tag, SolrBufferedStream stream, int? length = null)
         {
             if (length.HasValue)
             {
@@ -712,6 +714,6 @@ namespace Mizore.ContentSerializer.JavaBin
             stream.Write(value);
         }
 
-        #endregion
+        #endregion Write
     }
 }

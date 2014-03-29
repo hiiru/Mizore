@@ -6,9 +6,9 @@ using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer;
+using Mizore.ContentSerializer.Data.Solr;
 using Mizore.ContentSerializer.JavaBin;
 using Mizore.ContentSerializer.JsonNet;
-using Mizore.Data.Solr;
 using Mizore.SolrServerHandler;
 
 namespace SimpleTestApp

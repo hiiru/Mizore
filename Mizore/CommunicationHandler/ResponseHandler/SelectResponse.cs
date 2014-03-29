@@ -1,8 +1,6 @@
 ﻿using System.IO;
-using Mizore.CommunicationHandler.Data;
 using Mizore.CommunicationHandler.RequestHandler;
-using Mizore.Data;
-using Mizore.Data.Solr;
+using Mizore.ContentSerializer.Data.Solr;
 
 namespace Mizore.CommunicationHandler.ResponseHandler
 {

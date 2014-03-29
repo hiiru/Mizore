@@ -84,7 +84,6 @@
     <Compile Include="CommunicationHandler\Data\Params\TermsParams.cs" />
     <Compile Include="CommunicationHandler\Data\Params\TermVectorParams.cs" />
     <Compile Include="CommunicationHandler\Data\Params\UpdateParams.cs" />
-    <Compile Include="CommunicationHandler\Data\SelectResponseData.cs" />
     <Compile Include="CommunicationHandler\Data\Params\CommonParams.cs" />
     <Compile Include="CommunicationHandler\IQueryBuilder.cs" />
     <Compile Include="CommunicationHandler\IRequestFactory.cs" />
@@ -115,11 +114,11 @@
     <Compile Include="ContentSerializer\JsonNet\JsonNetSerializer.cs" />
     <Compile Include="ContentSerializer\JsonNet\SolrJsonConverter.cs" />
     <Compile Include="DataMappingHandler\IDataMappingHandler.cs" />
-    <Compile Include="Data\SerializationNamedList.cs" />
-    <Compile Include="Data\Solr\SolrDocument.cs" />
-    <Compile Include="Data\Solr\SolrDocumentList.cs" />
-    <Compile Include="Data\Solr\SolrInputDocument.cs" />
-    <Compile Include="Data\Solr\SolrInputField.cs" />
+    <Compile Include="ContentSerializer\Data\SerializationNamedList.cs" />
+    <Compile Include="ContentSerializer\Data\Solr\SolrDocument.cs" />
+    <Compile Include="ContentSerializer\Data\Solr\SolrDocumentList.cs" />
+    <Compile Include="ContentSerializer\Data\Solr\SolrInputDocument.cs" />
+    <Compile Include="ContentSerializer\Data\Solr\SolrInputField.cs" />
     <Compile Include="Exceptions\MizoreConnectionException.cs" />
     <Compile Include="Exceptions\MizoreException.cs" />
     <Compile Include="MizoreExtensions.cs" />
@@ -128,8 +127,8 @@
     <Compile Include="Mizore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="util\ClassActivator.cs" />
-    <Compile Include="Data\INamedList.cs" />
-    <Compile Include="Data\NamedList.cs" />
+    <Compile Include="ContentSerializer\Data\INamedList.cs" />
+    <Compile Include="ContentSerializer\Data\NamedList.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -155,8 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CommunicationHandler\TODO.md" />
-    <None Include="ContentSerializer\TODO.md" />
-    <None Include="Data\Solr\README.md" />
+    <None Include="ContentSerializer\Data\Solr\README.md" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

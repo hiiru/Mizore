@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Mizore.Data;
+using Mizore.ContentSerializer.Data;
 using Newtonsoft.Json;
 
 namespace Mizore.ContentSerializer.JsonNet

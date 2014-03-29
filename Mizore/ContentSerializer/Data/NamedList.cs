@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Mizore.Data
+namespace Mizore.ContentSerializer.Data
 {
     /// <summary>
     /// This NamedList is optimized for fast access by key, but is slower in creation/write

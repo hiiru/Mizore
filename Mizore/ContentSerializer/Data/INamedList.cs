@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Mizore.Data
+namespace Mizore.ContentSerializer.Data
 {
     public interface INamedList : INamedList<object> { }
 

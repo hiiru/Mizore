@@ -1,9 +1,9 @@
 ﻿/** License / Porting note
  * This File is ported from the apache solr sourcecode
  * org.apache.solr.common.params.CommonParams
- * 
+ *
  * Original License text:
- * 
+ *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -19,6 +19,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 namespace Mizore.CommunicationHandler.Data.Params
 {
     /// <summary>
@@ -41,95 +42,96 @@ namespace Mizore.CommunicationHandler.Data.Params
         public const string TZ = "TZ";
 
         /// <summary>
-		/// the Request Handler (formerly known as the Query Type) - which Request Handler should handle the request
-		/// </summary>
+        /// the Request Handler (formerly known as the Query Type) - which Request Handler should handle the request
+        /// </summary>
         public const string QT = "qt";
 
         /// <summary>
-		/// the response writer type - the format of the response
-		/// </summary>
+        /// the response writer type - the format of the response
+        /// </summary>
         public const string WT = "wt";
 
         /// <summary>
-		/// query string
-		/// </summary>
+        /// query string
+        /// </summary>
         public const string Q = "q";
 
         /// <summary>
-		/// distrib string
-		/// </summary>
+        /// distrib string
+        /// </summary>
         public const string DISTRIB = "distrib";
 
         /// <summary>
-		/// sort order
-		/// </summary>
+        /// sort order
+        /// </summary>
         public const string SORT = "sort";
 
         /// <summary>
-		/// Lucene query string(s) for filtering the results without affecting scoring
-		/// </summary>
+        /// Lucene query string(s) for filtering the results without affecting scoring
+        /// </summary>
         public const string FQ = "fq";
 
         /// <summary>
-		/// zero based offset of matching documents to retrieve
-		/// </summary>
+        /// zero based offset of matching documents to retrieve
+        /// </summary>
         public const string START = "start";
 
         /// <summary>
-		/// number of documents to return starting at "start"
-		/// </summary>
+        /// number of documents to return starting at "start"
+        /// </summary>
         public const string ROWS = "rows";
 
         // SOLR-4228 start
         /// <summary>
-		/// handler value for SolrPing
-		/// </summary>
+        /// handler value for SolrPing
+        /// </summary>
         public const string PING_HANDLER = "/admin/ping";
 
         /// <summary>
-		/// "action" parameter for SolrPing
-		/// </summary>
+        /// "action" parameter for SolrPing
+        /// </summary>
         public const string ACTION = "action";
 
         /// <summary>
-		/// "disable" value for SolrPing action
-		/// </summary>
+        /// "disable" value for SolrPing action
+        /// </summary>
         public const string DISABLE = "disable";
 
         /// <summary>
-		/// "enable" value for SolrPing action
-		/// </summary>
+        /// "enable" value for SolrPing action
+        /// </summary>
         public const string ENABLE = "enable";
 
         /// <summary>
-		/// "ping" value for SolrPing action
-		/// </summary>
+        /// "ping" value for SolrPing action
+        /// </summary>
         public const string PING = "ping";
+
         // SOLR-4228 end
 
         /// <summary>
-		/// stylesheet to apply to XML results
-		/// </summary>
+        /// stylesheet to apply to XML results
+        /// </summary>
         public const string XSL = "xsl";
 
         /// <summary>
-		/// version parameter to check request-response compatibility
-		/// </summary>
+        /// version parameter to check request-response compatibility
+        /// </summary>
         public const string VERSION = "version";
 
         /// <summary>
-		/// query and init param for field list
-		/// </summary>
+        /// query and init param for field list
+        /// </summary>
         public const string FL = "fl";
 
         /// <summary>
-		/// default query field
-		/// </summary>
+        /// default query field
+        /// </summary>
         public const string DF = "df";
 
         /// <summary>
-		/// Transformer param -- used with XSLT
-		/// </summary>
+        /// Transformer param -- used with XSLT
+        /// </summary>
         public const string TR = "tr";
 
         /// <summary>
@@ -146,18 +148,22 @@ namespace Mizore.CommunicationHandler.Data.Params
         /// {@link #DEBUG} value indicating an interest in debug output related to timing
         /// </summary>
         public const string TIMING = "timing";
+
         /// <summary>
         /// {@link #DEBUG} value indicating an interest in debug output related to the results (explains)
         /// </summary>
         public const string RESULTS = "results";
+
         /// <summary>
         /// {@link #DEBUG} value indicating an interest in debug output related to the Query (parsing, etc.)
         /// </summary>
         public const string QUERY = "query";
+
         /// <summary>
         /// {@link #DEBUG} value indicating an interest in debug output related to the distributed tracking
         /// </summary>
         public const string TRACK = "track";
+
         /// <summary>
         /// boolean indicating whether score explanations should structured (true),
         /// or plain text (false)
@@ -165,23 +171,23 @@ namespace Mizore.CommunicationHandler.Data.Params
         public const string EXPLAIN_STRUCT = "debug.explain.structured";
 
         /// <summary>
-		/// another query to explain against
-		/// </summary>
+        /// another query to explain against
+        /// </summary>
         public const string EXPLAIN_OTHER = "explainOther";
 
         /// <summary>
-		/// If the content stream should come from a URL (using URLConnection)
-		/// </summary>
+        /// If the content stream should come from a URL (using URLConnection)
+        /// </summary>
         public const string STREAM_URL = "stream.url";
 
         /// <summary>
-		/// If the content stream should come from a File (using FileReader)
-		/// </summary>
+        /// If the content stream should come from a File (using FileReader)
+        /// </summary>
         public const string STREAM_FILE = "stream.file";
 
         /// <summary>
-		/// If the content stream should come directly from a field
-		/// </summary>
+        /// If the content stream should come directly from a field
+        /// </summary>
         public const string STREAM_BODY = "stream.body";
 
         /// <summary>
@@ -197,8 +203,8 @@ namespace Mizore.CommunicationHandler.Data.Params
         public const string TIME_ALLOWED = "timeAllowed";
 
         /// <summary>
-		/// 'true' if the header should include the handler name
-		/// </summary>
+        /// 'true' if the header should include the handler name
+        /// </summary>
         public const string HEADER_ECHO_HANDLER = "echoHandler";
 
         /// <summary>
@@ -207,8 +213,8 @@ namespace Mizore.CommunicationHandler.Data.Params
         public const string HEADER_ECHO_PARAMS = "echoParams";
 
         /// <summary>
-		/// include header in the response
-		/// </summary>
+        /// include header in the response
+        /// </summary>
         public const string OMIT_HEADER = "omitHeader";
 
         /// <summary>
@@ -220,7 +226,7 @@ namespace Mizore.CommunicationHandler.Data.Params
             EXPLICIT,
             ALL,
         }
-        
+
         /// <summary>
         /// which parameters to log (if not supplied all parameters will be logged)
         /// </summary>
@@ -237,13 +243,13 @@ namespace Mizore.CommunicationHandler.Data.Params
         public const string FALSE = "false";
 
         /// <summary>
-		/// Used as a local parameter on queries.  cache=false means don't check any query or filter caches.
+        /// Used as a local parameter on queries.  cache=false means don't check any query or filter caches.
         /// cache=true is the default.
         /// </summary>
         public const string CACHE = "cache";
 
         /// <summary>
-		/// Used as a local param on filter queries in conjunction with cache=false.  Filters are checked in order, from
+        /// Used as a local param on filter queries in conjunction with cache=false.  Filters are checked in order, from
         /// smallest cost to largest. If cost>=100 and the query implements PostFilter, then that interface will be used to do post query filtering.
         /// </summary>
         public const string COST = "cost";

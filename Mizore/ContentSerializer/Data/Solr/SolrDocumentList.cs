@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Mizore.Data.Solr
+namespace Mizore.ContentSerializer.Data.Solr
 {
     public class SolrDocumentList : List<SolrDocument>
     {

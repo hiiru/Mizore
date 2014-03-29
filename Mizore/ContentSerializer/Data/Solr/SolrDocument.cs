@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace Mizore.Data.Solr
+namespace Mizore.ContentSerializer.Data.Solr
 {
     public class SolrDocument
     {

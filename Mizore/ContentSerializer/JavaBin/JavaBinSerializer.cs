@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using Mizore.ContentSerializer.JsonNet;
-using Mizore.Data;
+using Mizore.ContentSerializer.Data;
 
 namespace Mizore.ContentSerializer.JavaBin
 {
