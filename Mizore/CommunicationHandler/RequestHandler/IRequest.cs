@@ -1,30 +1,29 @@
-﻿using System;
-using System.Collections.Specialized;
+﻿using System.Collections.Generic;
+using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.ContentSerializer.Data;
-using Mizore.SolrServerHandler;
 
 namespace Mizore.CommunicationHandler.RequestHandler
 {
+    public enum RequestMethod
+    {
+        GET,
+        POST
+    }
+
     public interface IRequest
     {
         /// <summary>
         /// Http Method
         /// This requires a value.
         /// </summary>
-        string Method { get; }
+        RequestMethod Method { get; }
 
         /// <summary>
         /// Whole url + handler
         /// The Request handler is responsible for provinding the real url with all the query parameters.
         /// This requires a value.
         /// </summary>
-        Uri Url { get; }
-
-        /// <summary>
-        /// Returns the server instance for this request.
-        /// This requires a value.
-        /// </summary>
-        ISolrServerHandler Server { get; }
+        SolrUriBuilder UrlBuilder { get; }
 
         /// <summary>
         /// Prepared Stream for transmission.
@@ -37,13 +36,15 @@ namespace Mizore.CommunicationHandler.RequestHandler
         /// These values should overwrite the ones provided by the ConnectionHandler.
         /// This will be ignored if it's null. (no additional headers)
         /// </summary>
-        NameValueCollection Header { get; }
+        Dictionary<string, string> Header { get; }
+
+        IResponse GetResponse(INamedList nl);
 
         /// <summary>
         /// Returns CacheKey for this request
         /// This should be unique.
         /// This will be ignored if it's null. (cache disabled)
         /// </summary>
-        string CacheKey { get; }
+        //string CacheKey { get; }
     }
 }

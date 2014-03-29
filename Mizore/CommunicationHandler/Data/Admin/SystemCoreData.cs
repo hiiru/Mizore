@@ -5,14 +5,14 @@ namespace Mizore.CommunicationHandler.Data.Admin
 {
     public class SystemCoreData
     {
-        public SystemCoreData(INamedList responseHeader)
+        public SystemCoreData(INamedList nl)
         {
-            if (responseHeader.IsNullOrEmpty()) return;
-            Schema = responseHeader.GetOrDefault<string>("schema");
-            Host = responseHeader.GetOrDefault<string>("host");
-            Now = responseHeader.GetOrDefaultStruct<DateTime>("now");
-            Start = responseHeader.GetOrDefaultStruct<DateTime>("start");
-            Directory = responseHeader.GetOrDefault<INamedList>("directory");
+            if (nl.IsNullOrEmpty()) return;
+            Schema = nl.GetOrDefault<string>("schema");
+            Host = nl.GetOrDefault<string>("host");
+            Now = nl.GetOrDefaultStruct<DateTime>("now");
+            Start = nl.GetOrDefaultStruct<DateTime>("start");
+            Directory = nl.GetOrDefault<INamedList>("directory");
         }
 
         public string Schema { get; protected set; }

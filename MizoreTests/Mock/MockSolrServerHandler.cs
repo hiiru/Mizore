@@ -6,7 +6,6 @@ using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer;
-using Mizore.ContentSerializer.JavaBin;
 using Mizore.SolrServerHandler;
 
 namespace MizoreTests.Mock
@@ -14,12 +13,13 @@ namespace MizoreTests.Mock
     public class MockSolrServerHandler : ISolrServerHandler
     {
         protected string ResourcePath;
+        private readonly SolrUriBuilder baseUriBuilder;
 
-        public MockSolrServerHandler(string resourcePath, string url = null, IContentSerializer contentSerializer = null, ICacheHandler cacheHandler = null, IRequestFactory factory = null)
+        public MockSolrServerHandler(string resourcePath, IContentSerializerFactory contentSerializerFactory = null, IRequestFactory factory = null, ICacheHandler cacheHandler = null)
         {
             ResourcePath = resourcePath;
-            SolrUriBuilder = new SolrUriBuilder(url ?? "http://127.0.0.1:20440/solr/");
-            Serializer = contentSerializer ?? new JavaBinSerializer();
+            baseUriBuilder = new SolrUriBuilder(null ?? "http://127.0.0.1:20440/solr/");
+            SerializerFactory = contentSerializerFactory ?? new ContentSerializerFactory();
             Cache = cacheHandler ?? null;
             RequestFactory = factory ?? new RequestFactory();
             DefaultCore = "mizoreMockingTestCore";
@@ -34,13 +34,16 @@ namespace MizoreTests.Mock
 
         public bool MulticoreMode { get; private set; }
 
-        public SolrUriBuilder SolrUriBuilder { get; private set; }
-
         public ICacheHandler Cache { get; private set; }
 
-        public IContentSerializer Serializer { get; private set; }
+        public IContentSerializerFactory SerializerFactory { get; private set; }
 
         public IRequestFactory RequestFactory { get; private set; }
+
+        public SolrUriBuilder GetUriBuilder(string core = null, string handler = null)
+        {
+            return baseUriBuilder.GetBuilder(core ?? DefaultCore, handler);
+        }
 
         public bool TryRequest<T>(IRequest request, out T response, string core = null) where T : class, IResponse
         {
@@ -82,7 +85,7 @@ namespace MizoreTests.Mock
         public PingResponse Ping()
         {
             var conHandler = new MockConnectionHandler { ResponseFilename = "ping", ResourcePath = ResourcePath };
-            return conHandler.Request<PingResponse>(RequestFactory.CreateRequest("ping", this));
+            return conHandler.Request<PingResponse>(RequestFactory.CreateRequest("ping", GetUriBuilder()), SerializerFactory);
         }
 
         public SystemResponse GetSystemInfo()

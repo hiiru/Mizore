@@ -107,7 +107,9 @@
     <Compile Include="CommunicationHandler\SolrUriBuilder.cs" />
     <Compile Include="ConnectionHandler\HttpWebRequestHandler.cs" />
     <Compile Include="ConnectionHandler\IConnectionHandler.cs" />
+    <Compile Include="ContentSerializer\ContentSerializerFactory.cs" />
     <Compile Include="ContentSerializer\IContentSerializer.cs" />
+    <Compile Include="ContentSerializer\IContentSerializerFactory.cs" />
     <Compile Include="ContentSerializer\JavaBin\ConvertedSolrjClasses\SolrBufferedStream.cs" />
     <Compile Include="ContentSerializer\JavaBin\JavaBinSerializer.cs" />
     <Compile Include="ContentSerializer\JavaBin\SolrJavaBinConverter.cs" />

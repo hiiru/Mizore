@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mizore.CommunicationHandler.RequestHandler;
 
 namespace MizoreTests.Tests.CommunicationHandler.Request
@@ -16,13 +17,14 @@ namespace MizoreTests.Tests.CommunicationHandler.Request
         [TestMethod]
         public void UrlNotNull()
         {
-            Assert.IsNotNull(CreateInstance().Url);
+            Assert.IsNotNull(CreateInstance().UrlBuilder.Uri);
         }
 
         [TestMethod]
         public void ServerNotNull()
         {
-            Assert.IsNotNull(CreateInstance().Server);
+            throw new Exception();
+            //Assert.IsNotNull(CreateInstance().Server);
         }
     }
 }

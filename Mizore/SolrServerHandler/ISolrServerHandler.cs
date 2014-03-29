@@ -28,13 +28,13 @@ namespace Mizore.SolrServerHandler
         /// </summary>
         string DefaultCore { get; set; }
 
-        SolrUriBuilder SolrUriBuilder { get; }
-
         ICacheHandler Cache { get; }
 
-        IContentSerializer Serializer { get; }
+        IContentSerializerFactory SerializerFactory { get; }
 
         IRequestFactory RequestFactory { get; }
+
+        SolrUriBuilder GetUriBuilder(string core = null, string handler = null);
 
         bool TryRequest<T>(IRequest request, out T response, string core = null) where T : class, IResponse;
 

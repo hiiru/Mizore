@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
-//TODO: in which namespace should this class be?
 using Mizore.CommunicationHandler.Data.Params;
 
 namespace Mizore.CommunicationHandler
@@ -61,7 +59,7 @@ namespace Mizore.CommunicationHandler
 
         #endregion Constructor
 
-        public SolrUriBuilder GetBuilder(string core, string handler)
+        public SolrUriBuilder GetBuilder(string core, string handler = null)
         {
             return new SolrUriBuilder(this, core, handler);
         }
@@ -73,39 +71,9 @@ namespace Mizore.CommunicationHandler
         /// </summary>
         public string ServerAddress { get; protected set; }
 
-        protected string _core;
+        public string Core { get; set; }
 
-        public string Core
-        {
-            get
-            {
-                return _core;
-            }
-            protected set
-            {
-                if (IsBaseUrl) throw new InvalidOperationException("Core can't be set on BaseUrl");
-                if (_core != null) throw new InvalidOperationException("Core can only be set once!");
-                if (value == null) value = "";
-                _core = value;
-            }
-        }
-
-        protected string _handler;
-
-        public string Handler
-        {
-            get
-            {
-                return _handler;
-            }
-            protected set
-            {
-                if (IsBaseUrl) throw new InvalidOperationException("Handler can't be set on BaseUrl");
-                if (_handler != null) throw new InvalidOperationException("Handler can only be set once!");
-                if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException("value");
-                _handler = value;
-            }
-        }
+        public string Handler { get; set; }
 
         public Dictionary<string, string> Query { get; set; }
 

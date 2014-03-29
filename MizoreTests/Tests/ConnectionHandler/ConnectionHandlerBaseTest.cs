@@ -14,7 +14,7 @@ namespace MizoreTests.Tests.ConnectionHandler
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestArgumentNull()
         {
-            CreateInstance().Request<PingResponse>(null);
+            CreateInstance().Request<PingResponse>(null, null);
         }
     }
 }

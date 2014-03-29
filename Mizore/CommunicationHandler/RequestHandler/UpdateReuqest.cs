@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Specialized;
+using System.Collections.Generic;
+using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.ContentSerializer.Data;
 using Mizore.SolrServerHandler;
 
@@ -20,7 +21,9 @@ namespace Mizore.CommunicationHandler.RequestHandler
             throw new NotImplementedException("TODO: Update Request");
         }
 
-        public virtual string Method { get { return "POST"; } }
+        public virtual RequestMethod Method { get { return RequestMethod.POST; } }
+
+        public SolrUriBuilder UrlBuilder { get; private set; }
 
         public Uri Url { get; protected set; }
 
@@ -30,7 +33,12 @@ namespace Mizore.CommunicationHandler.RequestHandler
 
         public virtual INamedList Content { get { return null; } }
 
-        public virtual NameValueCollection Header { get { return null; } }
+        public Dictionary<string, string> Header { get; protected set; }
+
+        public IResponse GetResponse(INamedList nl)
+        {
+            throw new NotImplementedException();
+        }
 
         public virtual string CacheKey { get { return null; } }
     }

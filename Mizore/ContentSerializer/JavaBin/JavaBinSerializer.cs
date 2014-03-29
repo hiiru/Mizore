@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using Mizore.ContentSerializer.Data;
 
@@ -6,9 +8,18 @@ namespace Mizore.ContentSerializer.JavaBin
 {
     public class JavaBinSerializer : IContentSerializer
     {
-        public string wt { get { return "javabin"; } }
+        private readonly ReadOnlyCollection<string> _aliases;
+
+        public ReadOnlyCollection<string> Aliases { get { return _aliases; } }
 
         public string ContentType { get { return "application/javabin"; } }
+
+        public string WT { get { return "javabin"; } }
+
+        public JavaBinSerializer()
+        {
+            _aliases = new ReadOnlyCollection<string>(new List<string> { WT });
+        }
 
         public Version SupportedSince { get; private set; }
 

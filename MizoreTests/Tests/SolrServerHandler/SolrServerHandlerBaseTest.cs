@@ -25,14 +25,14 @@ namespace MizoreTests.Tests.SolrServerHandler
         {
             var server = CreateInstance();
             Assert.IsNotNull(server);
-            Assert.IsNotNull(server.SolrUriBuilder);
-            Assert.IsNotNull(server.SolrUriBuilder.ServerAddress);
+            Assert.IsNotNull(server.GetUriBuilder());
+            Assert.IsNotNull(server.GetUriBuilder().ServerAddress);
         }
 
         [TestMethod]
         public void SerializerNotNull()
         {
-            Assert.IsNotNull(CreateInstance().Serializer);
+            Assert.IsNotNull(CreateInstance().SerializerFactory);
         }
 
         [TestMethod]

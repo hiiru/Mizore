@@ -1,16 +1,14 @@
-﻿using System.IO;
-using Mizore.CommunicationHandler.RequestHandler;
+﻿using Mizore.CommunicationHandler.RequestHandler;
+using Mizore.ContentSerializer.Data;
 using Mizore.ContentSerializer.Data.Solr;
 
 namespace Mizore.CommunicationHandler.ResponseHandler
 {
     public class SelectResponse : AResponseBase, IResponse
     {
-        public override void Parse(IRequest request, Stream content)
-        {
-            Request = request;
-            Content = Request.Server.Serializer.Unmarshal(content);
-        }
+        public SelectResponse(SelectRequest request, INamedList nl)
+            : base(request, nl)
+        { }
 
         private SolrDocumentList _documents;
 

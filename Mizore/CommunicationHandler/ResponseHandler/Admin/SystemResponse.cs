@@ -1,17 +1,14 @@
-﻿using System.IO;
-using Mizore.CommunicationHandler.Data.Admin;
-using Mizore.CommunicationHandler.RequestHandler;
+﻿using Mizore.CommunicationHandler.Data.Admin;
+using Mizore.CommunicationHandler.RequestHandler.Admin;
 using Mizore.ContentSerializer.Data;
 
 namespace Mizore.CommunicationHandler.ResponseHandler.Admin
 {
     public class SystemResponse : AResponseBase, IResponse
     {
-        public override void Parse(IRequest request, Stream content)
-        {
-            Request = request;
-            Content = Request.Server.Serializer.Unmarshal(content);
-        }
+        public SystemResponse(SystemRequest request, INamedList nl)
+            : base(request, nl)
+        { }
 
         protected SystemCoreData _core;
 

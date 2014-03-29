@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Pipes;
-using System.Linq;
-using System.Text;
-using Mizore.ContentSerializer;
+﻿using System.IO;
 using Mizore.ContentSerializer.JavaBin;
 
 namespace SimpleTestApp
 {
-    class JavaBinDev
+    internal class JavaBinDev
     {
         public static void Main(string[] args)
         {

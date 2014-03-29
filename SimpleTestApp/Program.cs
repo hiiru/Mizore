@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Text;
 using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
-using Mizore.ContentSerializer;
 using Mizore.ContentSerializer.Data.Solr;
-using Mizore.ContentSerializer.JavaBin;
-using Mizore.ContentSerializer.JsonNet;
 using Mizore.SolrServerHandler;
 
 namespace SimpleTestApp
@@ -24,23 +20,22 @@ namespace SimpleTestApp
             try
             {
                 //Servers.Add(new HttpSolrServer(SERVERURL, new JavaBinSerializer()));
-                Servers.Add(new HttpSolrServer(SERVERURL, new JsonNetSerializer()));
+                Servers.Add(new HttpSolrServer(SERVERURL));
                 //Servers.Add(new HttpSolrServer(SERVERURL_362, new EasynetJavabinSerializer()));
 
                 foreach (var server in Servers)
                 {
-                    Console.WriteLine("Checking Server " + server.SolrUriBuilder.ServerAddress);
+                    Console.WriteLine("Checking Server " + server.GetUriBuilder().ServerAddress);
                     Ping(server);
                     SystemInfo(server);
                     Console.WriteLine();
                     Query(server);
                     Console.WriteLine();
                     var docId = DateTime.Now.ToString("yyyyMMdd-HH:mm");
-                    CreateDoc(server,docId);
+                    CreateDoc(server, docId);
                     Console.WriteLine();
-                    Query(server, "id:\""+docId+"\"");
+                    Query(server, "id:\"" + docId + "\"");
                     Console.WriteLine();
-
                 }
                 Console.WriteLine("Done");
             }
@@ -70,12 +65,12 @@ namespace SimpleTestApp
 
         private const string TestQuery = "*:*";
 
-        private static void Query(ISolrServerHandler server, string queryString=null)
+        private static void Query(ISolrServerHandler server, string queryString = null)
         {
             if (server == null) return;
             queryString = queryString ?? TestQuery;
             var sbOutput = new StringBuilder();
-            var queryRequest = server.RequestFactory.CreateRequest("select", server, server.DefaultCore, new SimpleQueryBuilder(queryString));
+            var queryRequest = server.RequestFactory.CreateRequest("select", server.GetUriBuilder(), queryBuilder: new SimpleQueryBuilder(queryString));
             var query = server.Request<SelectResponse>(queryRequest);
             sbOutput.AppendFormat("querying for {0}, ResultCount: {1}\n", queryString, query.Documents != null ? query.Documents.NumFound : 0);
             if (query.Documents != null)

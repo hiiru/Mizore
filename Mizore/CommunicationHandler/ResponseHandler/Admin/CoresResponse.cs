@@ -1,18 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using Mizore.CommunicationHandler.Data.Admin;
-using Mizore.CommunicationHandler.RequestHandler;
+using Mizore.CommunicationHandler.RequestHandler.Admin;
 using Mizore.ContentSerializer.Data;
 
 namespace Mizore.CommunicationHandler.ResponseHandler.Admin
 {
     public class CoresResponse : AResponseBase, IResponse
     {
-        public override void Parse(IRequest request, Stream content)
-        {
-            Request = request;
-            Content = Request.Server.Serializer.Unmarshal(content);
-        }
+        public CoresResponse(CoresRequest request, INamedList nl)
+            : base(request, nl)
+        { }
 
         protected string _defaultCore;
 

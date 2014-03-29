@@ -1,12 +1,10 @@
 ﻿using Mizore.CommunicationHandler.RequestHandler;
-using Mizore.SolrServerHandler;
+using Mizore.ContentSerializer.Data;
 
 namespace Mizore.CommunicationHandler
 {
     public interface IRequestFactory
     {
-        IRequest CreateRequest(string requestType, ISolrServerHandler server, string core, params object[] objects);
-
-        IRequest CreateRequest(string requestType, ISolrServerHandler server, params object[] objects);
+        IRequest CreateRequest(string requestType, SolrUriBuilder builder, INamedList content = null, IQueryBuilder queryBuilder = null);
     }
 }

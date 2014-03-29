@@ -8,7 +8,6 @@ using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ConnectionHandler;
 using Mizore.ContentSerializer;
-using Mizore.ContentSerializer.JavaBin;
 using Mizore.Exceptions;
 
 namespace Mizore.SolrServerHandler
@@ -21,11 +20,9 @@ namespace Mizore.SolrServerHandler
 
         public string DefaultCore { get; set; }
 
-        public SolrUriBuilder SolrUriBuilder { get; protected set; }
-
         public ICacheHandler Cache { get; protected set; }
 
-        public IContentSerializer Serializer { get; protected set; }
+        public IContentSerializerFactory SerializerFactory { get; protected set; }
 
         public IRequestFactory RequestFactory { get; protected set; }
 
@@ -35,13 +32,14 @@ namespace Mizore.SolrServerHandler
 
         #endregion Properties
 
+        private readonly SolrUriBuilder baseUriBuilder;
         protected HttpWebRequestHandler RequestHandler;
         private DateTime LastCheck;
 
         //TODO: define interval?
         private TimeSpan RechckInterval = new TimeSpan(0, 1, 0);
 
-        public HttpSolrServer(string url, IContentSerializer contentSerializer = null, ICacheHandler cacheHandler = null, IRequestFactory factory = null)
+        public HttpSolrServer(string url, IContentSerializerFactory contentSerializerFactory = null, IRequestFactory factory = null, ICacheHandler cacheHandler = null)
         {
             //Argument Validation
             if (string.IsNullOrWhiteSpace(url)) throw new ArgumentNullException("url");
@@ -52,8 +50,8 @@ namespace Mizore.SolrServerHandler
             if (!RequestHandler.IsUriSupported(solrUri)) throw new ArgumentException("the URL is invalid", "url");
 
             //Initialization
-            SolrUriBuilder = new SolrUriBuilder(solrUri);
-            Serializer = contentSerializer ?? new JavaBinSerializer();
+            baseUriBuilder = new SolrUriBuilder(solrUri);
+            SerializerFactory = contentSerializerFactory ?? new ContentSerializerFactory();
             Cache = cacheHandler ?? null;
             RequestFactory = factory ?? new RequestFactory();
             IsReady = true;
@@ -67,7 +65,7 @@ namespace Mizore.SolrServerHandler
             LastCheck = DateTime.Now;
             try
             {
-                var ping = RequestHandler.Request<PingResponse>(RequestFactory.CreateRequest("ping", this));
+                var ping = RequestHandler.Request<PingResponse>(RequestFactory.CreateRequest("ping", GetUriBuilder()), SerializerFactory);
                 IsOnline = ping != null && ping.Status.Equals("OK", StringComparison.InvariantCultureIgnoreCase);
             }
             catch
@@ -77,7 +75,7 @@ namespace Mizore.SolrServerHandler
             }
             if (IsOnline && loadCores)
             {
-                var coresResponse = RequestHandler.Request<CoresResponse>(RequestFactory.CreateRequest("cores", this));
+                var coresResponse = RequestHandler.Request<CoresResponse>(RequestFactory.CreateRequest("cores", GetUriBuilder()), SerializerFactory);
                 if (coresResponse != null)
                 {
                     Cores = coresResponse.Cores.Select(x => x.Name).ToList();
@@ -85,6 +83,11 @@ namespace Mizore.SolrServerHandler
                 }
             }
             return IsOnline;
+        }
+
+        public SolrUriBuilder GetUriBuilder(string core = null, string handler = null)
+        {
+            return baseUriBuilder.GetBuilder(core ?? DefaultCore, handler);
         }
 
         public bool TryRequest<T>(IRequest request, out T response, string core = null) where T : class, IResponse
@@ -107,15 +110,15 @@ namespace Mizore.SolrServerHandler
         public T Request<T>(IRequest request, string core = null) where T : class, IResponse
         {
             if (!IsOnline && !CheckStatus()) throw new MizoreException("Server offline");
-            return RequestHandler.Request<T>(request);
+            return RequestHandler.Request<T>(request, SerializerFactory);
         }
 
         public T Request<T>(string type, string core = null) where T : class, IResponse
         {
             //TODO: how is the Data passed to the Request?
             if (!IsOnline && !CheckStatus()) throw new MizoreException("Server offline");
-            var request = RequestFactory.CreateRequest(type, this);
-            return RequestHandler.Request<T>(request);
+            var request = RequestFactory.CreateRequest(type, GetUriBuilder());
+            return RequestHandler.Request<T>(request, SerializerFactory);
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using Mizore.CommunicationHandler.Data.Params;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
+using Mizore.ContentSerializer;
 using Mizore.Exceptions;
 
 namespace Mizore.ConnectionHandler
@@ -18,18 +20,16 @@ namespace Mizore.ConnectionHandler
         /// <param name="request">IRequest implementation, which handles the required date for the Request.</param>
         /// <exception cref="MizoreConnectionExcpetion">Thrown when a problem with the Conneection to the server occurs</exception>
         /// <returns>IResponse implementation for the Response</returns>
-        public T Request<T>(IRequest request) where T : IResponse
+        public T Request<T>(IRequest request, IContentSerializerFactory serializerFactory) where T : IResponse
         {
             if (request == null) throw new ArgumentNullException("request");
-            if (request.Server.Cache != null)
-                ETag = request.Server.Cache.GetETag(request.CacheKey);
+            if (serializerFactory == null) throw new ArgumentNullException("serializerFactory");
+
+            //if (request.Server.Cache != null)
+            //    ETag = request.Server.Cache.GetETag(request.CacheKey);
             try
             {
-                var webRequest = CreateWebRequest(request);
-
-                //if new T() can't be used due to missing new()
-                var response = (T)Activator.CreateInstance(typeof(T));
-                //var response = new T();
+                var webRequest = CreateWebRequest(request, serializerFactory);
                 var webResponse = webRequest.GetResponse();
                 Stream ms = null;
                 using (var responseStream = webResponse.GetResponseStream())
@@ -41,8 +41,11 @@ namespace Mizore.ConnectionHandler
                         ms.Position = 0;
                     }
                 }
-                response.Parse(request, ms);
-                return response;
+                var serializer = serializerFactory.GetContentSerializer(webResponse.ContentType);
+                if (serializer == null)
+                    throw new InvalidOperationException("No Matching ContentSerializer found for type " + webResponse.ContentType);
+                var nl = serializer.Unmarshal(ms);
+                return (T)request.GetResponse(nl);
             }
             catch (WebException we)
             {
@@ -75,10 +78,15 @@ namespace Mizore.ConnectionHandler
             return true;
         }
 
-        protected virtual HttpWebRequest CreateWebRequest(IRequest request)
+        protected virtual HttpWebRequest CreateWebRequest(IRequest request, IContentSerializerFactory serializerFactory)
         {
-            var webRequest = (HttpWebRequest)WebRequest.Create(request.Url);
-            webRequest.Method = request.Method;
+            var serializer = GetSerializer(request, serializerFactory);
+            if (!request.UrlBuilder.Query.ContainsKey(CommonParams.WT))
+                request.UrlBuilder.Query[CommonParams.WT] = serializer.WT;
+
+            var webRequest = (HttpWebRequest)WebRequest.Create(request.UrlBuilder.Uri);
+            webRequest.Method = request.Method.ToString("G");
+            webRequest.Accept = serializer.ContentType;
 
             //Default settings
             webRequest.KeepAlive = true;
@@ -98,10 +106,20 @@ namespace Mizore.ConnectionHandler
             {
                 using (var requestStream = webRequest.GetRequestStream())
                 {
-                    request.Server.Serializer.Marshal(request.Content, requestStream);
+                    serializer.Marshal(request.Content, requestStream);
                 }
             }
             return webRequest;
+        }
+
+        protected IContentSerializer GetSerializer(IRequest request, IContentSerializerFactory serializerFactory)
+        {
+            string serializerType = null;
+            if (request.UrlBuilder.Query.ContainsKey(CommonParams.WT))
+                serializerType = request.UrlBuilder.Query[CommonParams.WT];
+            else if (request.Header.ContainsKey("content-type"))
+                serializerType = request.Header["content-type"];
+            return serializerFactory.GetContentSerializer(serializerType);
         }
     }
 }

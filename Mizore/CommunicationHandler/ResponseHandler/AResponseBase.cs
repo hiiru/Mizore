@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Mizore.CommunicationHandler.Data;
+﻿using Mizore.CommunicationHandler.Data;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.ContentSerializer.Data;
 
@@ -7,7 +6,11 @@ namespace Mizore.CommunicationHandler.ResponseHandler
 {
     public abstract class AResponseBase : IResponse
     {
-        public abstract void Parse(IRequest request, Stream content);
+        public AResponseBase(IRequest request, INamedList list)
+        {
+            Request = request;
+            Content = list;
+        }
 
         public IRequest Request { get; protected set; }
 

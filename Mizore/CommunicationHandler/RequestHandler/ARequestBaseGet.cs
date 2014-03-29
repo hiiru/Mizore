@@ -1,36 +1,28 @@
 ﻿using System;
-using System.Collections.Specialized;
-using Mizore.CommunicationHandler.Data.Params;
+using System.Collections.Generic;
+using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.ContentSerializer.Data;
-using Mizore.SolrServerHandler;
 
 namespace Mizore.CommunicationHandler.RequestHandler
 {
     public abstract class ARequestBaseGet : IRequest
     {
-        protected ARequestBaseGet(ISolrServerHandler server, string core, string handler)
+        protected ARequestBaseGet(SolrUriBuilder baseBuilder)
         {
-            if (server == null) throw new ArgumentNullException("server");
-            if (core == null) core = server.DefaultCore;
-            Server = server;
-            uriBuilder = server.SolrUriBuilder.GetBuilder(core, handler);
-            if (server.Serializer != null)
-                uriBuilder.Query[CommonParams.WT] = server.Serializer.wt;
+            if (baseBuilder == null) throw new ArgumentNullException("baseBuilder");
+            if (baseBuilder.IsBaseUrl) throw new ArgumentException("Requests don't accept base urls", "baseBuilder");
+            UrlBuilder = baseBuilder;
+            Header = new Dictionary<string, string>();
         }
 
-        public string Method { get { return "GET"; } }
+        public RequestMethod Method { get { return RequestMethod.GET; } }
 
         public INamedList Content { get { return null; } }
 
-        protected SolrUriBuilder uriBuilder;
+        public Dictionary<string, string> Header { get; private set; }
 
-        public Uri Url { get { return uriBuilder.Uri; } }
+        public abstract IResponse GetResponse(INamedList nl);
 
-        public ISolrServerHandler Server { get; protected set; }
-
-        //For future use
-        public virtual NameValueCollection Header { get { return null; } }
-
-        public string CacheKey { get { return null; } }
+        public SolrUriBuilder UrlBuilder { get; protected set; }
     }
 }

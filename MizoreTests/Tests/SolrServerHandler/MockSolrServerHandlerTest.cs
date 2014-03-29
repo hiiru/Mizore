@@ -10,7 +10,7 @@ namespace MizoreTests.Tests.SolrServerHandler
     {
         protected override ISolrServerHandler CreateInstance()
         {
-            return new MockSolrServerHandler(resourcePath: "MizoreTests.Resources.ResponseFiles.", contentSerializer: CreateSerializer());
+            return new MockSolrServerHandler("MizoreTests.Resources.ResponseFiles.");
         }
     }
 

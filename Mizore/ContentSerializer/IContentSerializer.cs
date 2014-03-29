@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 using Mizore.ContentSerializer.Data;
 
@@ -11,12 +11,14 @@ namespace Mizore.ContentSerializer
     public interface IContentSerializer
     {
         //naming for wt= parameter?
-        string wt { get; }
+        string WT { get; }
 
         string ContentType { get; }
 
+        ReadOnlyCollection<string> Aliases { get; }
+
         //Minimum solr version needed - Version or float?
-        Version SupportedSince { get; }
+        //Version SupportedSince { get; }
 
         void Marshal<T>(T obj, Stream stream) where T : INamedList;
 
