@@ -31,7 +31,7 @@ namespace SimpleTestApp
         public static void Parse(byte[] bytes)
         {
             var myJB = new JavaBinSerializer();
-            var myList = myJB.Unmarshal(new MemoryStream(bytes));
+            var myList = myJB.Deserialize(new MemoryStream(bytes));
         }
     }
 }

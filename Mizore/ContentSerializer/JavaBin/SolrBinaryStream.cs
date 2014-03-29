@@ -1,15 +1,15 @@
 ﻿using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Mizore.ContentSerializer.JavaBin.ConvertedSolrjClasses
+namespace Mizore.ContentSerializer.JavaBin
 {
-    public class SolrBufferedStream : Stream
+    public class SolrBinaryStream : Stream
     {
         protected readonly Stream InputStream;
         protected readonly byte[] ReadBuffer = new byte[8];
         protected FloatingPointConverter converter = new FloatingPointConverter();
 
-        public SolrBufferedStream(Stream stream)
+        public SolrBinaryStream(Stream stream)
         {
             InputStream = stream;
         }

@@ -2,6 +2,6 @@
 {
     public interface IDataMappingHandlery
     {
-        //TODO: JIRA SOLR-8:  just todo...
+        //TODO: JIRA MIZORE-8:  just todo...
     }
 }

@@ -41,7 +41,7 @@ namespace MizoreTests.Mock
             //using (var fileStream = new BufferedStream(File.OpenRead(fileName)))
             using (var fileStream = ResourceProvider.GetResourceStream(fileName))
             {
-                var nl = serializer.Unmarshal(fileStream);
+                var nl = serializer.Deserialize(fileStream);
                 return (T)request.GetResponse(nl);
             }
         }

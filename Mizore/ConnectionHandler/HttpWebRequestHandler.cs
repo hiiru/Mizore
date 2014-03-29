@@ -44,14 +44,14 @@ namespace Mizore.ConnectionHandler
                 var serializer = serializerFactory.GetContentSerializer(webResponse.ContentType);
                 if (serializer == null)
                     throw new InvalidOperationException("No Matching ContentSerializer found for type " + webResponse.ContentType);
-                var nl = serializer.Unmarshal(ms);
+                var nl = serializer.Deserialize(ms);
                 return (T)request.GetResponse(nl);
             }
             catch (WebException we)
             {
-                //TODO: JIRA SOLR-7: Http exceptionhandling
-                //TODO: JIIRA SOLR-9: Cache handling
-                //TODO-LOW: JIRA SOLR-16: Solr errorpage parsing and own exception handling
+                //TODO: JIRA MIZORE-7: Http exceptionhandling
+                //TODO: JIRA MIZORE-9: Cache handling
+                //TODO-LOW: JIRA MIZORE-16: Solr errorpage parsing and own exception handling
                 throw new MizoreConnectionException(request, "Connection exception occured in HttpWebRequestHandler.", we);
             }
             catch (Exception e)
@@ -97,8 +97,7 @@ namespace Mizore.ConnectionHandler
             //if (request.Server.ConnectionTimeout > 0)
             //    webRequest.Timeout = webRequest.ReadWriteTimeout = request.Server.ConnectionTimeout;
 
-            //TODO-LOW: UserAgent?
-            //webRequest.UserAgent = "TODO";
+            webRequest.UserAgent = "Mizore (.NET solr library)";
 
             //TODO-LOW: ServicePoint.Expect100Continue for post values -> true or false? which is faster in the solr case?
 
@@ -106,7 +105,7 @@ namespace Mizore.ConnectionHandler
             {
                 using (var requestStream = webRequest.GetRequestStream())
                 {
-                    serializer.Marshal(request.Content, requestStream);
+                    serializer.Serialize(request.Content, requestStream);
                 }
             }
             return webRequest;

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using Mizore.ContentSerializer.Data;
 using Mizore.ContentSerializer.Data.Solr;
-using Mizore.ContentSerializer.JavaBin.ConvertedSolrjClasses;
 
 namespace Mizore.ContentSerializer.JavaBin
 {
@@ -62,7 +61,7 @@ namespace Mizore.ContentSerializer.JavaBin
 
         public void WriteJavaBin(object list, Stream stream)
         {
-            var writeStream = new SolrBufferedStream(stream);
+            var writeStream = new SolrBinaryStream(stream);
             try
             {
                 writeStream.Write(VERSION);
@@ -77,7 +76,7 @@ namespace Mizore.ContentSerializer.JavaBin
 
         public object ReadJavaBin(Stream stream)
         {
-            var solrStream = new SolrBufferedStream(stream);
+            var solrStream = new SolrBinaryStream(stream);
             var version = solrStream.ReadByte();
             if (version != VERSION)
             {
@@ -88,7 +87,7 @@ namespace Mizore.ContentSerializer.JavaBin
 
         #region Read
 
-        public object ReadVal(SolrBufferedStream stream)
+        public object ReadVal(SolrBinaryStream stream)
         {
             tagByte = Convert.ToByte(stream.ReadByte());
 
@@ -196,21 +195,21 @@ namespace Mizore.ContentSerializer.JavaBin
             throw new Exception("Unknown type " + tagByte);
         }
 
-        private object ReadMapEntry(SolrBufferedStream stream)
+        private object ReadMapEntry(SolrBinaryStream stream)
         {
             var key = ReadVal(stream);
             var value = ReadVal(stream);
             return new KeyValuePair<object, object>(key, value);
         }
 
-        private object ReadEnumFieldValue(SolrBufferedStream stream)
+        private object ReadEnumFieldValue(SolrBinaryStream stream)
         {
             var intValue = (int)ReadVal(stream);
             var stringValue = (string)ReadVal(stream);
             return new Tuple<int, string>(intValue, stringValue);
         }
 
-        private object ReadSolrInputDocument(SolrBufferedStream stream)
+        private object ReadSolrInputDocument(SolrBinaryStream stream)
         {
             int sz = ReadVInt(stream);
             var sid = new SolrInputDocument();
@@ -242,7 +241,7 @@ namespace Mizore.ContentSerializer.JavaBin
             return sid;
         }
 
-        private IList ReadIterator(SolrBufferedStream stream)
+        private IList ReadIterator(SolrBinaryStream stream)
         {
             var l = new ArrayList();
             while (true)
@@ -254,7 +253,7 @@ namespace Mizore.ContentSerializer.JavaBin
             return l;
         }
 
-        private byte[] ReadByteArray(SolrBufferedStream stream)
+        private byte[] ReadByteArray(SolrBinaryStream stream)
         {
             var sz = ReadVInt(stream);
             var arr = new byte[sz];
@@ -262,7 +261,7 @@ namespace Mizore.ContentSerializer.JavaBin
             return arr;
         }
 
-        private SolrDocumentList ReadSolrDocumentList(SolrBufferedStream stream)
+        private SolrDocumentList ReadSolrDocumentList(SolrBinaryStream stream)
         {
             var sdl = new SolrDocumentList();
             var metadata = (IList)ReadVal(stream);
@@ -275,12 +274,12 @@ namespace Mizore.ContentSerializer.JavaBin
             return sdl;
         }
 
-        private SolrDocument ReadSolrDocument(SolrBufferedStream stream)
+        private SolrDocument ReadSolrDocument(SolrBinaryStream stream)
         {
             return new SolrDocument(ReadVal(stream) as INamedList);
         }
 
-        private IDictionary<object, object> ReadMap(SolrBufferedStream stream)
+        private IDictionary<object, object> ReadMap(SolrBinaryStream stream)
         {
             int sz = ReadVInt(stream);
             var m = new Dictionary<object, object>();
@@ -293,7 +292,7 @@ namespace Mizore.ContentSerializer.JavaBin
             return m;
         }
 
-        private string ReadExternString(SolrBufferedStream stream)
+        private string ReadExternString(SolrBinaryStream stream)
         {
             int idx = ReadSize(stream);
             // idx != 0 is the index of the extern string
@@ -306,7 +305,7 @@ namespace Mizore.ContentSerializer.JavaBin
             return s;
         }
 
-        private INamedList ReadNamedList(SolrBufferedStream stream)
+        private INamedList ReadNamedList(SolrBinaryStream stream)
         {
             int sz = ReadSize(stream);
             var nl = new SerializationNamedList();
@@ -319,20 +318,20 @@ namespace Mizore.ContentSerializer.JavaBin
             return nl;
         }
 
-        private INamedList ReadOrderedMap(SolrBufferedStream stream)
+        private INamedList ReadOrderedMap(SolrBinaryStream stream)
         {
             return ReadNamedList(stream);
             //throw new NotImplementedException();
         }
 
-        private int ReadSize(SolrBufferedStream stream)
+        private int ReadSize(SolrBinaryStream stream)
         {
             int sz = tagByte & 0x1f;
             if (sz == 0x1f) sz += ReadVInt(stream);
             return sz;
         }
 
-        private int ReadVInt(SolrBufferedStream stream)
+        private int ReadVInt(SolrBinaryStream stream)
         {
             var b = Convert.ToByte(stream.ReadByte());
             int i = b & 0x7F;
@@ -344,7 +343,7 @@ namespace Mizore.ContentSerializer.JavaBin
             return i;
         }
 
-        private long ReadVLong(SolrBufferedStream stream)
+        private long ReadVLong(SolrBinaryStream stream)
         {
             var b = Convert.ToByte(stream.ReadByte());
             long i = b & 0x7F;
@@ -356,7 +355,7 @@ namespace Mizore.ContentSerializer.JavaBin
             return i;
         }
 
-        private string ReadString(SolrBufferedStream stream)
+        private string ReadString(SolrBinaryStream stream)
         {
             int sz = ReadSize(stream);
             if (bytes == null || bytes.Length < sz) bytes = new byte[sz];
@@ -364,7 +363,7 @@ namespace Mizore.ContentSerializer.JavaBin
             return Encoding.UTF8.GetString(bytes, 0, sz);
         }
 
-        private int ReadSmallInt(SolrBufferedStream stream)
+        private int ReadSmallInt(SolrBinaryStream stream)
         {
             int v = tagByte & 0x0F;
             if ((tagByte & 0x10) != 0)
@@ -372,7 +371,7 @@ namespace Mizore.ContentSerializer.JavaBin
             return v;
         }
 
-        private long ReadSmallLong(SolrBufferedStream stream)
+        private long ReadSmallLong(SolrBinaryStream stream)
         {
             long v = tagByte & 0x0F;
             if ((tagByte & 0x10) != 0)
@@ -380,7 +379,7 @@ namespace Mizore.ContentSerializer.JavaBin
             return v;
         }
 
-        private IList ReadArray(SolrBufferedStream stream)
+        private IList ReadArray(SolrBinaryStream stream)
         {
             var sz = ReadSize(stream);
             var l = new ArrayList(sz);
@@ -393,7 +392,7 @@ namespace Mizore.ContentSerializer.JavaBin
 
         #region Write
 
-        public void WriteVal(object value, SolrBufferedStream stream)
+        public void WriteVal(object value, SolrBinaryStream stream)
         {
             if (WritePrimitive(value, stream))
                 return;
@@ -419,21 +418,21 @@ namespace Mizore.ContentSerializer.JavaBin
                 WriteMapEntry((KeyValuePair<object, object>)value, stream);
         }
 
-        private void WriteMapEntry(KeyValuePair<object, object> value, SolrBufferedStream stream)
+        private void WriteMapEntry(KeyValuePair<object, object> value, SolrBinaryStream stream)
         {
             WriteTag(MAP_ENTRY, stream);
             WriteVal(value.Key, stream);
             WriteVal(value.Value, stream);
         }
 
-        private void WriteEnumFieldValue(Tuple<int, string> value, SolrBufferedStream stream)
+        private void WriteEnumFieldValue(Tuple<int, string> value, SolrBinaryStream stream)
         {
             WriteTag(ENUM_FIELD_VALUE, stream);
             WriteInt(value.Item1, stream);
             WriteString(value.Item2, stream);
         }
 
-        private void WriteIterator(IEnumerator value, SolrBufferedStream stream)
+        private void WriteIterator(IEnumerator value, SolrBinaryStream stream)
         {
             WriteTag(ITERATOR, stream);
             while (value.MoveNext())
@@ -441,7 +440,7 @@ namespace Mizore.ContentSerializer.JavaBin
             WriteVal(END_OBJ, stream);
         }
 
-        private void WriteMap(IDictionary value, SolrBufferedStream stream)
+        private void WriteMap(IDictionary value, SolrBinaryStream stream)
         {
             WriteTag(MAP, stream, value.Count);
             foreach (DictionaryEntry entry in value)
@@ -454,7 +453,7 @@ namespace Mizore.ContentSerializer.JavaBin
             }
         }
 
-        private void WriteSolrInputDocument(SolrInputDocument sid, SolrBufferedStream stream)
+        private void WriteSolrInputDocument(SolrInputDocument sid, SolrBinaryStream stream)
         {
             var length = sid.Fields.Count + (sid.ChildDocuments != null ? sid.ChildDocuments.Count : 0);
             WriteTag(SOLRINPUTDOC, stream, length);
@@ -473,7 +472,7 @@ namespace Mizore.ContentSerializer.JavaBin
             }
         }
 
-        private void WriteSolrDocument(SolrDocument solrDocument, SolrBufferedStream stream)
+        private void WriteSolrDocument(SolrDocument solrDocument, SolrBinaryStream stream)
         {
             WriteTag(SOLRDOC, stream);
             WriteTag(ORDERED_MAP, stream, solrDocument.Fields.Count);
@@ -484,7 +483,7 @@ namespace Mizore.ContentSerializer.JavaBin
             }
         }
 
-        private void WriteSolrDocumentList(SolrDocumentList value, SolrBufferedStream stream)
+        private void WriteSolrDocumentList(SolrDocumentList value, SolrBinaryStream stream)
         {
             WriteTag(SOLRDOCLST, stream);
             IList l = new ArrayList(3);
@@ -495,14 +494,14 @@ namespace Mizore.ContentSerializer.JavaBin
             WriteArray(value, stream);
         }
 
-        private void WriteArray(IList value, SolrBufferedStream stream)
+        private void WriteArray(IList value, SolrBinaryStream stream)
         {
             WriteTag(ARR, stream, value.Count);
             foreach (var item in value)
                 WriteVal(item, stream);
         }
 
-        private void WriteNamedList(INamedList value, SolrBufferedStream stream)
+        private void WriteNamedList(INamedList value, SolrBinaryStream stream)
         {
             //TODO: handle orderedMap? value is SimpleOrderedMap ? ORDERED_MAP : NAMED_LST
             WriteTag(NAMED_LST, stream, value.Count);
@@ -515,7 +514,7 @@ namespace Mizore.ContentSerializer.JavaBin
             }
         }
 
-        private void WriteExternString(string value, SolrBufferedStream stream)
+        private void WriteExternString(string value, SolrBinaryStream stream)
         {
             if (value == null)
             {
@@ -534,7 +533,7 @@ namespace Mizore.ContentSerializer.JavaBin
             }
         }
 
-        private bool WritePrimitive(object value, SolrBufferedStream stream)
+        private bool WritePrimitive(object value, SolrBinaryStream stream)
         {
             if (value == null)
             {
@@ -605,19 +604,19 @@ namespace Mizore.ContentSerializer.JavaBin
             return false;
         }
 
-        private void WriteByteArray(byte[] buf, int offset, int length, SolrBufferedStream stream)
+        private void WriteByteArray(byte[] buf, int offset, int length, SolrBinaryStream stream)
         {
             WriteTag(BYTEARR, stream, length);
             stream.Write(buf, offset, length);
         }
 
-        private void WriteFloat(float value, SolrBufferedStream stream)
+        private void WriteFloat(float value, SolrBinaryStream stream)
         {
             stream.Write(FLOAT);
             stream.WriteFloat(value);
         }
 
-        private void WriteLong(long value, SolrBufferedStream stream)
+        private void WriteLong(long value, SolrBinaryStream stream)
         {
             if (((ulong)value & 0xff00000000000000L) == 0)
             {
@@ -638,7 +637,7 @@ namespace Mizore.ContentSerializer.JavaBin
             }
         }
 
-        private void WriteVLong(long value, SolrBufferedStream stream)
+        private void WriteVLong(long value, SolrBinaryStream stream)
         {
             while ((value & ~0x7F) != 0)
             {
@@ -648,7 +647,7 @@ namespace Mizore.ContentSerializer.JavaBin
             stream.Write((byte)value);
         }
 
-        private void WriteInt(int value, SolrBufferedStream stream)
+        private void WriteInt(int value, SolrBinaryStream stream)
         {
             if (value > 0)
             {
@@ -669,14 +668,14 @@ namespace Mizore.ContentSerializer.JavaBin
             }
         }
 
-        private void WriteString(string value, SolrBufferedStream stream)
+        private void WriteString(string value, SolrBinaryStream stream)
         {
             var bytes = Encoding.UTF8.GetBytes(value);
             WriteTag(STR, stream, bytes.Length);
             stream.Write(bytes, 0, bytes.Length);
         }
 
-        private void WriteTag(byte tag, SolrBufferedStream stream, int? length = null)
+        private void WriteTag(byte tag, SolrBinaryStream stream, int? length = null)
         {
             if (length.HasValue)
             {
@@ -704,7 +703,7 @@ namespace Mizore.ContentSerializer.JavaBin
             }
         }
 
-        private void WriteVInt(int value, SolrBufferedStream stream)
+        private void WriteVInt(int value, SolrBinaryStream stream)
         {
             while ((value & ~0x7F) != 0)
             {

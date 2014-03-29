@@ -20,8 +20,8 @@ namespace Mizore.ContentSerializer
         //Minimum solr version needed - Version or float?
         //Version SupportedSince { get; }
 
-        void Marshal<T>(T obj, Stream stream) where T : INamedList;
+        void Serialize<T>(T obj, Stream stream) where T : INamedList;
 
-        INamedList Unmarshal(Stream stream);
+        INamedList Deserialize(Stream stream);
     }
 }

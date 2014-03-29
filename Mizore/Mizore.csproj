@@ -110,7 +110,7 @@
     <Compile Include="ContentSerializer\ContentSerializerFactory.cs" />
     <Compile Include="ContentSerializer\IContentSerializer.cs" />
     <Compile Include="ContentSerializer\IContentSerializerFactory.cs" />
-    <Compile Include="ContentSerializer\JavaBin\ConvertedSolrjClasses\SolrBufferedStream.cs" />
+    <Compile Include="ContentSerializer\JavaBin\SolrBinaryStream.cs" />
     <Compile Include="ContentSerializer\JavaBin\JavaBinSerializer.cs" />
     <Compile Include="ContentSerializer\JavaBin\SolrJavaBinConverter.cs" />
     <Compile Include="ContentSerializer\JsonNet\JsonNetSerializer.cs" />
@@ -123,6 +123,7 @@
     <Compile Include="ContentSerializer\Data\Solr\SolrInputField.cs" />
     <Compile Include="Exceptions\MizoreConnectionException.cs" />
     <Compile Include="Exceptions\MizoreException.cs" />
+    <Compile Include="Exceptions\MizoreSerializationException.cs" />
     <Compile Include="MizoreExtensions.cs" />
     <Compile Include="SolrServerHandler\HttpSolrServer.cs" />
     <Compile Include="SolrServerHandler\ISolrServerHandler.cs" />

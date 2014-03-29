@@ -5,7 +5,7 @@
     /// Temporary Project Codename, based on Mizore Shirayuki (Rosario + Vampire)
     /// Note to myself: Don't choose project codenames while drinking beer and watching anime anymore... ^^
     ///
-    /// TODO: JIRA SOLR-12: decide on final project name
+    /// TODO: MIZORE-12: decide on final project name
     /// </summary>
     public class Mizore
     {

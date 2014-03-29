@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using Mizore.ContentSerializer.Data;
+using Mizore.Exceptions;
 
 namespace Mizore.ContentSerializer.JavaBin
 {
@@ -23,16 +24,30 @@ namespace Mizore.ContentSerializer.JavaBin
 
         public Version SupportedSince { get; private set; }
 
-        public void Marshal<T>(T obj, Stream stream) where T : INamedList
+        public void Serialize<T>(T obj, Stream stream) where T : INamedList
         {
-            var converter = new SolrJavaBinConverter();
-            converter.WriteJavaBin(obj, stream);
+            try
+            {
+                var converter = new SolrJavaBinConverter();
+                converter.WriteJavaBin(obj, stream);
+            }
+            catch (Exception e)
+            {
+                throw new MizoreSerializationException("Exception during Serialization.", this, e);
+            }
         }
 
-        public INamedList Unmarshal(Stream stream)
+        public INamedList Deserialize(Stream stream)
         {
-            var converter = new SolrJavaBinConverter();
-            return converter.ReadJavaBin(stream) as INamedList;
+            try
+            {
+                var converter = new SolrJavaBinConverter();
+                return converter.ReadJavaBin(stream) as INamedList;
+            }
+            catch (Exception e)
+            {
+                throw new MizoreSerializationException("Exception during Deserialization.", this, e);
+            }
         }
     }
 }
