@@ -2,6 +2,7 @@
 using Mizore.CommunicationHandler.Data;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.Data;
+using Mizore.Data.Solr;
 
 namespace Mizore.CommunicationHandler.ResponseHandler
 {
@@ -13,16 +14,15 @@ namespace Mizore.CommunicationHandler.ResponseHandler
             Content = Request.Server.Serializer.Unmarshal(content);
         }
 
-        //TODO: change this from SolrDocumentList to SelectResponseData
-        private SelectResponseData _documents;
+        private SolrDocumentList _documents;
 
-        public SelectResponseData Documents
+        public SolrDocumentList Documents
         {
             get
             {
                 if (_documents == null && Content != null)
                 {
-                    _documents = new SelectResponseData(Content.GetOrDefault<INamedList>("response"));
+                    _documents = Content.GetOrDefault<SolrDocumentList>("response");
                 }
                 return _documents;
             }

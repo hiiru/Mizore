@@ -7,6 +7,7 @@ using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer;
 using Mizore.ContentSerializer.JavaBin;
 using Mizore.ContentSerializer.JsonNet;
+using Mizore.Data.Solr;
 using Mizore.SolrServerHandler;
 
 namespace SimpleTestApp
@@ -59,14 +60,17 @@ namespace SimpleTestApp
             var queryRequest = server.RequestFactory.CreateRequest("select", server, server.DefaultCore, new SimpleQueryBuilder(TestQuery));
             var query = server.Request<SelectResponse>(queryRequest);
             sbOutput.AppendFormat("querying for {0}, ResultCount: {1}\n", TestQuery, query.Documents != null ? query.Documents.NumFound : 0);
-            if (query.Documents != null && query.Documents.Docs != null)
+            if (query.Documents != null)
             {
-                var docs = query.Documents.Docs;
-                for (int i = 0; i < 5 && i < docs.Count; i++)
+                foreach (var doc in query.Documents)
                 {
-                    var id = docs[i].Get("id");
-                    var name = docs[i].Get("name");
-                    sbOutput.AppendFormat("ID: {0}, name: {1}\n", id, name);
+                    var line = new StringBuilder();
+                    line.AppendFormat("{0}", doc.Fields["id"]);
+                    if (doc.Fields.ContainsKey("price"))
+                        line.AppendFormat(", {0}", doc.Fields["price"]);
+                    if (doc.Fields.ContainsKey("name"))
+                        line.AppendFormat(", {0}", doc.Fields["name"]);
+                    sbOutput.AppendLine(line.ToString());
                 }
             }
             Console.WriteLine(sbOutput.ToString());

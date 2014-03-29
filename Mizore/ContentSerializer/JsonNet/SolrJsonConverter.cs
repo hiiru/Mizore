@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Mizore.Data;
+using Mizore.Data.Solr;
 using Newtonsoft.Json;
 
 namespace Mizore.ContentSerializer.JsonNet
@@ -79,7 +81,7 @@ namespace Mizore.ContentSerializer.JsonNet
             if (reader.TokenType != JsonToken.StartObject)
                 throw new ArgumentException("requires StartObject token", "reader");
             var list = new NamedList();
-            string propertyName = null;
+            string propertyName=null;
             while (reader.Read())
             {
                 switch (reader.TokenType)
@@ -119,7 +121,9 @@ namespace Mizore.ContentSerializer.JsonNet
                     case JsonToken.StartObject:
                         if (propertyName == null)
                             throw new InvalidOperationException("propertyName is null...");
-                        list.Add(propertyName, ReadNamedList(reader));
+                        list.Add(propertyName,
+                            propertyName == "response" ? ReadSolrDocumentList(reader) : 
+                            ReadNamedList(reader));
                         propertyName = null;
                         break;
 
@@ -142,7 +146,7 @@ namespace Mizore.ContentSerializer.JsonNet
             }
             throw new InvalidOperationException("Some shit hit the fan! - eh i mean, this won't happen, i hope :P");
         }
-
+        
         protected IList<object> ReadArray(JsonReader reader)
         {
             if (reader.TokenType != JsonToken.StartArray)
@@ -194,6 +198,44 @@ namespace Mizore.ContentSerializer.JsonNet
                 }
             }
             throw new InvalidOperationException("Some shit hit the fan! - eh i mean, this won't happen, i hope :P");
+        }
+
+        protected object ReadSolrDocumentList(JsonReader reader)
+        {
+            if (reader.TokenType != JsonToken.StartObject)
+                throw new ArgumentException("requires StartObject token", "reader");
+            var nl = ReadNamedList(reader);
+            // return the named list of the counts are wrong to be a document list
+            if (nl.Count < 3 || nl.Count > 4)
+                return nl;
+            var sdl = new SolrDocumentList();
+            for (int i = 0; i < nl.Count; i++)
+            {
+                switch (nl.GetKey(i))
+                {
+                    case "numFound":
+                        sdl.NumFound = nl.GetOrDefaultStruct<long>(i);
+                        break;
+                    case "start":
+                        sdl.Start = nl.GetOrDefaultStruct<long>(i);
+                        break;
+                    case "maxScore":
+                        sdl.MaxScore = nl.GetOrDefault<object>(i) as float?;
+                        break;
+                    case "docs":
+                        var docs = nl.GetOrDefault<IList>(i);
+                        if (!docs.IsNullOrEmpty())
+                        {
+                            for (int j=0;j<docs.Count;j++)
+                                sdl.Add(new SolrDocument(docs[j] as INamedList));
+                        }
+                        break;
+                    default:
+                        //Unexpected name, returning namedlist as fallback
+                        return nl;
+                }
+            }
+            return sdl;
         }
 
         public override bool CanConvert(Type objectType)
