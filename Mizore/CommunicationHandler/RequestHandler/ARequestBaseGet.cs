@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using Mizore.CommunicationHandler.Data.Params;
 using Mizore.Data;
 using Mizore.SolrServerHandler;
 
@@ -14,7 +15,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
             Server = server;
             uriBuilder = server.SolrUriBuilder.GetBuilder(core, handler);
             if (server.Serializer != null)
-                uriBuilder.Query["wt"] = server.Serializer.wt;
+                uriBuilder.Query[CommonParams.WT] = server.Serializer.wt;
         }
 
         public string Method { get { return "GET"; } }

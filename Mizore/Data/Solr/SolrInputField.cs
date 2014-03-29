@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections;
 
 namespace Mizore.Data.Solr
 {
     public class SolrInputField
     {
-      public SolrInputField(string n)
-      {
-          Boost = 1f;
-        Name = n;
-      }
+        public SolrInputField(string name, object value = null, float boost = 1f)
+        {
+            Name = name;
+            Value = value;
+            Boost = boost;
+        }
 
         private object _value;
+
         public object Value
         {
             get
@@ -41,7 +39,7 @@ namespace Mizore.Data.Solr
         {
             get
             {
-                if (_value == null) 
+                if (_value == null)
                     return 0;
                 if (_value is ICollection)
                     return (_value as ICollection).Count;
@@ -51,7 +49,7 @@ namespace Mizore.Data.Solr
 
         public override string ToString()
         {
-            if (Boost==1f)
+            if (Boost == 1f)
                 return string.Format("{0}={1}", Name, Value);
             return string.Format("{0}({2})={1}", Name, Value, Boost);
         }
