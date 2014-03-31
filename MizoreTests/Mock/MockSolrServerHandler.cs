@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Mizore.CacheHandler;
 using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.RequestHandler;
+using Mizore.CommunicationHandler.RequestHandler.Admin;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer;
@@ -15,13 +16,12 @@ namespace MizoreTests.Mock
         protected string ResourcePath;
         private readonly SolrUriBuilder baseUriBuilder;
 
-        public MockSolrServerHandler(string resourcePath, IContentSerializerFactory contentSerializerFactory = null, IRequestFactory factory = null, ICacheHandler cacheHandler = null)
+        public MockSolrServerHandler(string resourcePath, IContentSerializerFactory contentSerializerFactory = null, ICacheHandler cacheHandler = null)
         {
             ResourcePath = resourcePath;
             baseUriBuilder = new SolrUriBuilder(null ?? "http://127.0.0.1:20440/solr/");
             SerializerFactory = contentSerializerFactory ?? new ContentSerializerFactory();
             Cache = cacheHandler ?? null;
-            RequestFactory = factory ?? new RequestFactory();
             DefaultCore = "mizoreMockingTestCore";
             Cores = new List<string> { DefaultCore };
         }
@@ -37,9 +37,7 @@ namespace MizoreTests.Mock
         public ICacheHandler Cache { get; private set; }
 
         public IContentSerializerFactory SerializerFactory { get; private set; }
-
-        public IRequestFactory RequestFactory { get; private set; }
-
+        
         public SolrUriBuilder GetUriBuilder(string core = null, string handler = null)
         {
             return baseUriBuilder.GetBuilder(core ?? DefaultCore, handler);
@@ -85,7 +83,7 @@ namespace MizoreTests.Mock
         public PingResponse Ping()
         {
             var conHandler = new MockConnectionHandler { ResponseFilename = "ping", ResourcePath = ResourcePath };
-            return conHandler.Request<PingResponse>(RequestFactory.CreateRequest("ping", GetUriBuilder()), SerializerFactory);
+            return conHandler.Request<PingResponse>(new PingRequest(GetUriBuilder()), SerializerFactory);
         }
 
         public SystemResponse GetSystemInfo()

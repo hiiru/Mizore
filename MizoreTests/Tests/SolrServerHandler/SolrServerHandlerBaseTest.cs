@@ -34,11 +34,5 @@ namespace MizoreTests.Tests.SolrServerHandler
         {
             Assert.IsNotNull(CreateInstance().SerializerFactory);
         }
-
-        [TestMethod]
-        public void RequestFactoryNotNull()
-        {
-            Assert.IsNotNull(CreateInstance().RequestFactory);
-        }
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Mizore.CommunicationHandler;
+using Mizore.CommunicationHandler.RequestHandler;
+using Mizore.CommunicationHandler.RequestHandler.Admin;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer.Data.Solr;
@@ -70,7 +72,7 @@ namespace SimpleTestApp
             if (server == null) return;
             queryString = queryString ?? TestQuery;
             var sbOutput = new StringBuilder();
-            var queryRequest = server.RequestFactory.CreateRequest("select", server.GetUriBuilder(), queryBuilder: new SimpleQueryBuilder(queryString));
+            var queryRequest = new SelectRequest(server.GetUriBuilder(),new SimpleQueryBuilder(queryString));
             var query = server.Request<SelectResponse>(queryRequest);
             sbOutput.AppendFormat("querying for {0}, ResultCount: {1}\n", queryString, query.Documents != null ? query.Documents.NumFound : 0);
             if (query.Documents != null)
@@ -93,7 +95,7 @@ namespace SimpleTestApp
         {
             if (server == null) return;
             var sbOutput = new StringBuilder();
-            var ping = server.Request<PingResponse>("ping");
+            var ping = server.Request<PingResponse>(new PingRequest(server.GetUriBuilder()));
             sbOutput.AppendFormat("Status: {0} - QTime: {1}", ping.Status, ping.ResponseHeader.QTime);
             Console.WriteLine(sbOutput.ToString());
         }
@@ -102,7 +104,7 @@ namespace SimpleTestApp
         {
             if (server == null) return;
             var sbOutput = new StringBuilder();
-            var system = server.Request<SystemResponse>("system");
+            var system = server.Request<SystemResponse>(new SystemRequest(server.GetUriBuilder()));
             sbOutput.AppendFormat("Host: {0} servertime: {1} StartTime: {2}", system.Core.Host, system.Core.Now, system.Core.Start);
             Console.WriteLine(sbOutput.ToString());
         }

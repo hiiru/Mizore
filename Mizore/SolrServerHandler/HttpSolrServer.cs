@@ -4,6 +4,7 @@ using System.Linq;
 using Mizore.CacheHandler;
 using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.RequestHandler;
+using Mizore.CommunicationHandler.RequestHandler.Admin;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ConnectionHandler;
@@ -23,9 +24,7 @@ namespace Mizore.SolrServerHandler
         public ICacheHandler Cache { get; protected set; }
 
         public IContentSerializerFactory SerializerFactory { get; protected set; }
-
-        public IRequestFactory RequestFactory { get; protected set; }
-
+        
         public bool IsReady { get; protected set; }
 
         public bool IsOnline { get; protected set; }
@@ -39,7 +38,7 @@ namespace Mizore.SolrServerHandler
         //TODO: define interval?
         private TimeSpan RechckInterval = new TimeSpan(0, 1, 0);
 
-        public HttpSolrServer(string url, IContentSerializerFactory contentSerializerFactory = null, IRequestFactory factory = null, ICacheHandler cacheHandler = null)
+        public HttpSolrServer(string url, IContentSerializerFactory contentSerializerFactory = null, ICacheHandler cacheHandler = null)
         {
             //Argument Validation
             if (string.IsNullOrWhiteSpace(url)) throw new ArgumentNullException("url");
@@ -53,7 +52,6 @@ namespace Mizore.SolrServerHandler
             baseUriBuilder = new SolrUriBuilder(solrUri);
             SerializerFactory = contentSerializerFactory ?? new ContentSerializerFactory();
             Cache = cacheHandler ?? null;
-            RequestFactory = factory ?? new RequestFactory();
             IsReady = true;
             CheckStatus(true);
         }
@@ -65,7 +63,7 @@ namespace Mizore.SolrServerHandler
             LastCheck = DateTime.Now;
             try
             {
-                var ping = RequestHandler.Request<PingResponse>(RequestFactory.CreateRequest("ping", GetUriBuilder()), SerializerFactory);
+                var ping = RequestHandler.Request<PingResponse>(new PingRequest(GetUriBuilder()), SerializerFactory);
                 IsOnline = ping != null && ping.Status.Equals("OK", StringComparison.InvariantCultureIgnoreCase);
             }
             catch
@@ -75,7 +73,7 @@ namespace Mizore.SolrServerHandler
             }
             if (IsOnline && loadCores)
             {
-                var coresResponse = RequestHandler.Request<CoresResponse>(RequestFactory.CreateRequest("cores", GetUriBuilder()), SerializerFactory);
+                var coresResponse = RequestHandler.Request<CoresResponse>(new CoresRequest(GetUriBuilder()), SerializerFactory);
                 if (coresResponse != null)
                 {
                     Cores = coresResponse.Cores.Select(x => x.Name).ToList();
@@ -110,14 +108,6 @@ namespace Mizore.SolrServerHandler
         public T Request<T>(IRequest request, string core = null) where T : class, IResponse
         {
             if (!IsOnline && !CheckStatus()) throw new MizoreException("Server offline");
-            return RequestHandler.Request<T>(request, SerializerFactory);
-        }
-
-        public T Request<T>(string type, string core = null) where T : class, IResponse
-        {
-            //TODO: how is the Data passed to the Request?
-            if (!IsOnline && !CheckStatus()) throw new MizoreException("Server offline");
-            var request = RequestFactory.CreateRequest(type, GetUriBuilder());
             return RequestHandler.Request<T>(request, SerializerFactory);
         }
     }

@@ -31,15 +31,11 @@ namespace Mizore.SolrServerHandler
         ICacheHandler Cache { get; }
 
         IContentSerializerFactory SerializerFactory { get; }
-
-        IRequestFactory RequestFactory { get; }
-
+        
         SolrUriBuilder GetUriBuilder(string core = null, string handler = null);
 
         bool TryRequest<T>(IRequest request, out T response, string core = null) where T : class, IResponse;
 
         T Request<T>(IRequest request, string core = null) where T : class, IResponse;
-
-        T Request<T>(string type, string core = null) where T : class, IResponse;
     }
 }

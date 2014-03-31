@@ -86,8 +86,6 @@
     <Compile Include="CommunicationHandler\Data\Params\UpdateParams.cs" />
     <Compile Include="CommunicationHandler\Data\Params\CommonParams.cs" />
     <Compile Include="CommunicationHandler\IQueryBuilder.cs" />
-    <Compile Include="CommunicationHandler\IRequestFactory.cs" />
-    <Compile Include="CommunicationHandler\RequestFactory.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\Admin\CoresRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\ARequestBaseGet.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\UpdateReuqest.cs" />
