@@ -86,7 +86,10 @@ namespace Mizore.ConnectionHandler
 
             var webRequest = (HttpWebRequest)WebRequest.Create(request.UrlBuilder.Uri);
             webRequest.Method = request.Method.ToString("G");
-            webRequest.Accept = serializer.ContentType;
+            if (request.Method == RequestMethod.GET)
+                webRequest.Accept = serializer.ContentType;
+            else
+                webRequest.ContentType = serializer.ContentType;
 
             //Default settings
             webRequest.KeepAlive = true;
@@ -116,7 +119,7 @@ namespace Mizore.ConnectionHandler
             string serializerType = null;
             if (request.UrlBuilder.Query.ContainsKey(CommonParams.WT))
                 serializerType = request.UrlBuilder.Query[CommonParams.WT];
-            else if (request.Header.ContainsKey("content-type"))
+            else if (request.Header!=null && request.Header.ContainsKey("content-type"))
                 serializerType = request.Header["content-type"];
             return serializerFactory.GetContentSerializer(serializerType);
         }

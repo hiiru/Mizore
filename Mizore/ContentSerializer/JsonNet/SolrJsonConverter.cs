@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Web.UI;
 using Mizore.ContentSerializer.Data;
 using Mizore.ContentSerializer.Data.Solr;
 using Newtonsoft.Json;
@@ -11,7 +12,98 @@ namespace Mizore.ContentSerializer.JsonNet
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            WriteNamedList(writer, value as INamedList);
+            if (value is SolrUpdateList)
+                WriteUpdateList(writer, value as SolrUpdateList);
+            else
+                WriteNamedList(writer, value as INamedList);
+        }
+
+        private void WriteUpdateList(JsonWriter writer, SolrUpdateList solrUpdateList)
+        {
+            writer.WriteStartObject();
+            var add = solrUpdateList.Get("add") as INamedList;
+            if (add != null)
+            {
+                var overwrite = add.Get("overwrite") as bool?;
+                var commitWithin = add.Get("commitWithin") as int?;
+                var docs = add.GetOrDefault<List<SolrInputDocument>>("doc");
+                if (!docs.IsNullOrEmpty())
+                    foreach (var doc in docs)
+                    {
+                        writer.WritePropertyName("add");
+                        writer.WriteStartObject();
+                        if (overwrite.HasValue)
+                        {
+                            writer.WritePropertyName("overwrite");
+                            writer.WriteValue(overwrite.Value);
+                        }
+                        if (commitWithin.HasValue)
+                        {
+                            writer.WritePropertyName("commitWithin");
+                            writer.WriteValue(commitWithin.Value);
+                        }
+                        if (doc.DocBoost.HasValue)
+                        {
+                            writer.WritePropertyName("boost");
+                            writer.WriteValue(doc.DocBoost.Value);
+                        }
+                        writer.WritePropertyName("doc");
+                        writer.WriteStartObject();
+                        foreach (var solrInputField in doc.Fields)
+                        {
+                            writer.WritePropertyName(solrInputField.Key);
+                            if (solrInputField.Value.Boost != 1f)
+                            {
+                                writer.WriteStartObject();
+                                writer.WritePropertyName("boost");
+                                writer.WriteValue(solrInputField.Value.Boost);
+                                writer.WritePropertyName("value");
+                                if (solrInputField.Value.Value is IList)
+                                {
+                                    writer.WriteStartArray();
+                                    foreach (var item in solrInputField.Value.Value as IList)
+                                    {
+                                        writer.WriteValue(item);
+                                    }
+                                    writer.WriteEndArray();
+                                }
+                                else
+                                    writer.WriteValue(solrInputField.Value.Value);
+                                writer.WriteEndObject();
+                            }
+                            else
+                            {
+                                writer.WriteValue(solrInputField.Value.Value);
+                            }
+
+                        }
+                        writer.WriteEndObject();
+                        writer.WriteEndObject();
+                    }
+            }
+            var delete = solrUpdateList.Get("delete") as INamedList;
+            if (delete != null)
+            {
+                for (int i = 0; i < delete.Count; i++)
+                {
+                    writer.WritePropertyName("delete");
+                    writer.WriteStartObject();
+                    var key = delete.GetKey(i);
+                    writer.WritePropertyName(key);
+                    var value = delete.Get(i);
+                    writer.WriteValue(value);
+                    writer.WriteEndObject();
+                }
+            }
+            var commit = solrUpdateList.Get("commit") as INamedList;
+            if (commit != null)
+            {
+                var key = commit.GetKey(0);
+                writer.WritePropertyName(key);
+                WriteNamedList(writer, commit.Get(0) as INamedList);
+            }
+
+            writer.WriteEndObject();
         }
 
         protected void WriteNamedList(JsonWriter writer, INamedList list)
@@ -57,7 +149,7 @@ namespace Mizore.ContentSerializer.JsonNet
             }
             writer.WriteEndArray();
         }
-
+        
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             switch (reader.TokenType)

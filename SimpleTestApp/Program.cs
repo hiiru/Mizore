@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.RequestHandler;
@@ -61,8 +62,19 @@ namespace SimpleTestApp
             doc.Fields.Add("id", new SolrInputField("id", docId));
             doc.Fields.Add("name", new SolrInputField("name", "Test Document with ID " + docId));
 
-            //var updateRequest = server.RequestFactory.CreateRequest("update", server, server.DefaultCore, doc);
-            //var updateResponse = server.Request<UpdateResponse>(updateRequest);
+            var updateRequest = new UpdateRequest(server.GetUriBuilder()).Add(doc).Commit(true);
+
+
+            if (updateRequest.Content != null)
+            {
+                using (var requestStream = File.OpenWrite("update.json"))
+                {
+                    server.SerializerFactory.DefaultSerializer.Serialize(updateRequest.Content, requestStream);
+                }
+            }
+
+            var updateResponse = server.Request<UpdateResponse>(updateRequest);
+            Console.WriteLine("doc "+docId+" added");
         }
 
         private const string TestQuery = "*:*";
