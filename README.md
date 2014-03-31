@@ -8,9 +8,26 @@ The goal of this project is to create a small but extendable library which is fa
 **NOTE:<br/> This is a very early alpha implementation and NOT yet intended for production use!<br/>
 All the Interfaces, classes and other elements are still subject to change and might break every check-in.**
 
+## Current Status
+
+**Query**: Minimalistic Querying is possible (a QueryBuilder is currently missing)<br/>
+**Update**: Implemented<br/>
+**Serializer**: Json (based on JSON.NET), JavaBin (Note: post in javabin is untested)<br/>
+**Object Mapping**: missing / not implemented yet<br/>
+**Cache**: missing / not implemented yet<br/>
+**Admin Requests**: Implemented Ping, System and Cores<br/>
+
+## Current priority TODO Queue (in no specific order)
+Reflection-based object Mapping<br/>
+Simple cache example (mostly a proof of concept of the interface integration)<br/>
+better QueryBuilder(s)<br/>
+Decide on final project name<br/>
+Better Exception handling and types<br/>
+Solr Get implementation
+
 ----
 
-Need a C# solr library today?<br/>
+Need a .NET solr library today?<br/>
 check out solrnet (http://code.google.com/p/solrnet/) and easynet (http://easynet.codeplex.com).
 
 -----
@@ -42,20 +59,12 @@ You always wanted to use csv/php/ruby format in C#? start here :P
 
 Also other cases could be covered, e.g. a wrapper which uses JSON on DEBUG and javabin on live or special content filtering
 
-#### SolrServerHandler -- Solr connection/manager
-This is the Core element which managed what Handlers are used and prepare the requests, which is heavily inspired by solrj but created with .NET and the libraries design in mind.
-
-When you access solr in your external project, it will be most likely thru this Layer.
-
-This should allow you to implement all kind of thing, connection pooling, multi-server/farm/cloud, solr analytics/debugging or even creating special handlers like an embedded solr server (e.g. by using IKVM.NET and solrj)
-
 #### CommunicationHandler -- Request/Response / connection content abstraction/manager
 The CommunicationHandler understand the data structure of solr (NamedList) and converts them into a typed class.
 
 They consist of 2 Parts (and optional data classes), Request and Response.<br/>
 The Request is passed to the ConnectionHandler (and ContentSerializer) which returns a Response object.<br/>
 Request -> ConnectionHandler/ContentSerializer -> Response
-
 
 #### DataMappingHandler -- Object/Data binding
 Still TBD how this layer will be integrated, However this will handle the conversion of Solr Documents to Data-Objects.<br/>
@@ -69,6 +78,13 @@ This Handler will do everything related to caching and defines how the data is c
 A simple implementation could be a KV Store based on request etag and/or request hashcode combined with an expiration.
 
 There are 2 main points in which Caching might be beneficial: Solr Responses (parsed into raw NamedList) and fully parsed .NET objects (post-reflection)
+
+#### SolrServerHandler -- Solr connection/manager
+This is the Core element which managed what Handlers are used and prepare the requests, which is heavily inspired by solrj but created with .NET and the libraries design in mind.
+
+When you access solr in your external project, it will be most likely thru this Layer.
+
+This should allow you to implement all kind of thing, connection pooling, multi-server/farm/cloud, solr analytics/debugging or even creating special handlers like an embedded solr server (e.g. by using IKVM.NET and solrj)
 
 ## Tests and Documentation
 In the alpha the features and basic functionality is more important than an up-to-date tests project and documentation, so it might be out of sync.
