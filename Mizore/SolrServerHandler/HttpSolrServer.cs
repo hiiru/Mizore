@@ -27,17 +27,17 @@ namespace Mizore.SolrServerHandler
         
         public bool IsReady { get; protected set; }
 
-        public bool IsOnline { get; protected set; }
+        protected bool _isOnline;
 
+        public bool IsOnline { get { return _isOnline || CheckStatus(); } }
+
+        public TimeSpan RecheckInterval { get; set; }
+        public DateTime LastCheck { get; protected set; }
         #endregion Properties
 
         private readonly SolrUriBuilder baseUriBuilder;
         protected HttpWebRequestHandler RequestHandler;
-        private DateTime LastCheck;
-
-        //TODO: define interval?
-        private TimeSpan RechckInterval = new TimeSpan(0, 1, 0);
-
+        
         public HttpSolrServer(string url, IContentSerializerFactory contentSerializerFactory = null, ICacheHandler cacheHandler = null)
         {
             //Argument Validation
@@ -49,6 +49,7 @@ namespace Mizore.SolrServerHandler
             if (!RequestHandler.IsUriSupported(solrUri)) throw new ArgumentException("the URL is invalid", "url");
 
             //Initialization
+            RecheckInterval = new TimeSpan(0, 1, 0);
             baseUriBuilder = new SolrUriBuilder(solrUri);
             SerializerFactory = contentSerializerFactory ?? new ContentSerializerFactory();
             Cache = cacheHandler ?? null;
@@ -58,20 +59,20 @@ namespace Mizore.SolrServerHandler
 
         private bool CheckStatus(bool loadCores = false)
         {
-            if (IsOnline) return true;
-            if (LastCheck - DateTime.Now > RechckInterval) return false;
+            if (_isOnline) return true;
+            if (LastCheck - DateTime.Now > RecheckInterval) return false;
             LastCheck = DateTime.Now;
             try
             {
                 var ping = RequestHandler.Request<PingResponse>(new PingRequest(GetUriBuilder()), SerializerFactory);
-                IsOnline = ping != null && ping.Status.Equals("OK", StringComparison.InvariantCultureIgnoreCase);
+                _isOnline = ping != null && ping.Status.Equals("OK", StringComparison.InvariantCultureIgnoreCase);
             }
             catch
             {
-                IsOnline = false;
+                _isOnline = false;
                 return false;
             }
-            if (IsOnline && loadCores)
+            if (_isOnline && loadCores)
             {
                 var coresResponse = RequestHandler.Request<CoresResponse>(new CoresRequest(GetUriBuilder()), SerializerFactory);
                 if (coresResponse != null)
@@ -80,7 +81,7 @@ namespace Mizore.SolrServerHandler
                     DefaultCore = coresResponse.DefaultCore;
                 }
             }
-            return IsOnline;
+            return _isOnline;
         }
 
         public SolrUriBuilder GetUriBuilder(string core = null, string handler = null)
@@ -91,7 +92,7 @@ namespace Mizore.SolrServerHandler
         public bool TryRequest<T>(IRequest request, out T response, string core = null) where T : class, IResponse
         {
             response = null;
-            if (!IsOnline && !CheckStatus())
+            if (!IsOnline)
                 return false;
 
             try
@@ -107,7 +108,7 @@ namespace Mizore.SolrServerHandler
 
         public T Request<T>(IRequest request, string core = null) where T : class, IResponse
         {
-            if (!IsOnline && !CheckStatus()) throw new MizoreException("Server offline");
+            if (!IsOnline) throw new MizoreException("Server offline");
             return RequestHandler.Request<T>(request, SerializerFactory);
         }
     }
