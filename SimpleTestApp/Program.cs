@@ -37,7 +37,9 @@ namespace SimpleTestApp
                     var docId = DateTime.Now.ToString("yyyyMMdd-HH:mm");
                     CreateDoc(server, docId);
                     Console.WriteLine();
-                    Query(server, "id:\"" + docId + "\"");
+                    Get(server, docId);
+                    Get(server, "INVALID-########");
+                    //Query(server, "id:\"" + docId + "\"");
                     Console.WriteLine();
                 }
                 Console.WriteLine("Done");
@@ -54,6 +56,25 @@ namespace SimpleTestApp
                 }
             }
             Console.ReadKey();
+        }
+
+        private static void Get(ISolrServerHandler server, string docId)
+        {
+            var getRequest = new GetRequest(server.GetUriBuilder(), docId);
+            var getResponse = server.Request<GetResponse>(getRequest);
+            if (getResponse.Document != null)
+            {
+                var sbDoc = new StringBuilder();
+                foreach (var field in getResponse.Document.Fields)
+                {
+                    sbDoc.AppendLine(field.ToString());
+                }
+                Console.WriteLine(sbDoc.ToString());
+            }
+            else
+            {
+                Console.WriteLine("DocId "+docId+" does not exist (is null)!");
+            }
         }
 
         private static void CreateDoc(ISolrServerHandler server, string docId)

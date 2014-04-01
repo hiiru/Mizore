@@ -88,6 +88,7 @@
     <Compile Include="CommunicationHandler\IQueryBuilder.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\Admin\CoresRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\ARequestBaseGet.cs" />
+    <Compile Include="CommunicationHandler\RequestHandler\GetRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\UpdateReuqest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\Admin\SystemRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\Admin\PingRequest.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="CommunicationHandler\RequestHandler\IRequest.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\Admin\CoresResponse.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\AResponseBase.cs" />
+    <Compile Include="CommunicationHandler\ResponseHandler\GetResponse.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\UpdateResonse.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\Admin\SystemResponse.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\Admin\PingResponse.cs" />
