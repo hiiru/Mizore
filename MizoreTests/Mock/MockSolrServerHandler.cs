@@ -37,7 +37,7 @@ namespace MizoreTests.Mock
         public ICacheHandler Cache { get; private set; }
 
         public IContentSerializerFactory SerializerFactory { get; private set; }
-        
+
         public SolrUriBuilder GetUriBuilder(string core = null, string handler = null)
         {
             return baseUriBuilder.GetBuilder(core ?? DefaultCore, handler);

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using Mizore.CommunicationHandler.Data.Params;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.ContentSerializer.Data;
@@ -13,20 +10,20 @@ namespace Mizore.CommunicationHandler.RequestHandler
     /// <summary>
     /// Solr Update Request
     /// This request handes Add, Delete, Commit and Optimize
-    /// 
+    ///
     /// Atomic Updates aren't currently implemented, but will come in future
-    /// 
+    ///
     /// Note: those deprecated attributes won't be implemented because those are deprecated or got removed, if you NEED them: create a custom UpdateRequest
     /// Add: allowDups, overwritePending and overwriteCommitted  -> use overwrite
     /// Delete: fromPending,fromCommitted  -> both are deprecated
     /// Commit / Optimize: waitFlush -> removed in solr 4.0
-    /// 
+    ///
     /// Expert-level options:
     /// Rollback and prepareCommet aren't currently implementet nor planned, if you need them, feel free to to add them and send a pull request
-    /// 
+    ///
     /// Alternative Update (GET, stream.body):
     /// Currently those aren't planned, however if you want them, please implement and send a pull request :)
-    /// 
+    ///
     /// This Class is based upon http://wiki.apache.org/solr/UpdateXmlMessages and SolrJ
     /// </summary>
     public class UpdateRequest : IRequest
@@ -35,7 +32,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
         {
             if (urlBuilder == null) throw new ArgumentNullException("urlBuilder");
             urlBuilder.Handler = "update";
-            urlBuilder.Query.Add(CommonParams.WT,"json");
+            urlBuilder.Query.Add(CommonParams.WT, "json");
             UrlBuilder = urlBuilder;
         }
 
@@ -46,10 +43,10 @@ namespace Mizore.CommunicationHandler.RequestHandler
             public bool? softCommit;
             public bool? expungeDeletes;
             public int? maxSegments;
-
         }
 
         protected CommitOptimizeOptions? _CommitOptimizeOptions;
+
         /// <summary>
         /// Document Id's to delete.
         /// </summary>
@@ -66,6 +63,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
         protected List<SolrInputDocument> _documents;
 
         protected int? _commitWithin;
+
         public int? CommitWithin
         {
             get
@@ -80,6 +78,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
         }
 
         protected bool? _overwrite;
+
         public bool? Overwrite
         {
             get
@@ -92,7 +91,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
                 _changed = true;
             }
         }
-        
+
         public void Clear()
         {
             _deleteIds = null;
@@ -101,14 +100,15 @@ namespace Mizore.CommunicationHandler.RequestHandler
         }
 
         #region Delete
+
         //Note: I didn't added fromPending  and fromCommitted  because both are deprecated
         public UpdateRequest DeleteById(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 throw new ArgumentNullException("id");
 
-            if (_deleteIds==null)
-                _deleteIds=new List<string>();
+            if (_deleteIds == null)
+                _deleteIds = new List<string>();
 
             _deleteIds.Add(id);
             _changed = true;
@@ -131,7 +131,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
             _changed = true;
             return this;
         }
-        
+
         public UpdateRequest DeleteByQuery(string query)
         {
             if (string.IsNullOrWhiteSpace(query))
@@ -161,7 +161,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
             return this;
         }
 
-        #endregion Delete by Query
+        #endregion Delete
 
         #region Documents (Add or Update)
 
@@ -169,7 +169,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
         {
             if (doc == null)
                 throw new ArgumentNullException("doc");
-            
+
             if (_documents == null)
                 _documents = new List<SolrInputDocument>();
             _documents.Add(doc);
@@ -207,6 +207,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
             _changed = true;
             return this;
         }
+
         public UpdateRequest Optimize(bool? waitSearcher = null, bool? softCommit = null, int? maxSegments = null)
         {
             _CommitOptimizeOptions = new CommitOptimizeOptions
@@ -248,7 +249,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
                 deleteList = new NamedList();
                 foreach (var deleteId in _deleteIds)
                 {
-                    deleteList.Add("id",deleteId);
+                    deleteList.Add("id", deleteId);
                 }
             }
 
@@ -258,16 +259,15 @@ namespace Mizore.CommunicationHandler.RequestHandler
                     deleteList = new NamedList();
                 foreach (var deleteQuery in _deleteQueries)
                 {
-                    deleteList.Add("query",deleteQuery);
+                    deleteList.Add("query", deleteQuery);
                 }
-                
             }
-            
+
             if (!_documents.IsNullOrEmpty())
             {
                 addList = new NamedList();
                 if (_overwrite.HasValue)
-                    addList.Add("overwrite",_overwrite.Value);
+                    addList.Add("overwrite", _overwrite.Value);
                 if (_commitWithin.HasValue)
                     addList.Add("commitWithin", _commitWithin.Value);
                 addList.Add("doc", new List<SolrInputDocument>(_documents));
@@ -285,7 +285,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
                 {
                     if (options.maxSegments.HasValue)
                         innerCommitList.Add("maxSegments", options.maxSegments.Value);
-                    commitList.Add("optimize",innerCommitList);
+                    commitList.Add("optimize", innerCommitList);
                 }
                 else
                 {
@@ -295,7 +295,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
                 }
             }
             _changed = false;
-            return new SolrUpdateList(addList,deleteList,commitList);
+            return new SolrUpdateList(addList, deleteList, commitList);
         }
 
         public Dictionary<string, string> Header { get; protected set; }

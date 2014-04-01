@@ -119,7 +119,7 @@ namespace Mizore.ConnectionHandler
             string serializerType = null;
             if (request.UrlBuilder.Query.ContainsKey(CommonParams.WT))
                 serializerType = request.UrlBuilder.Query[CommonParams.WT];
-            else if (request.Header!=null && request.Header.ContainsKey("content-type"))
+            else if (request.Header != null && request.Header.ContainsKey("content-type"))
                 serializerType = request.Header["content-type"];
             return serializerFactory.GetContentSerializer(serializerType);
         }

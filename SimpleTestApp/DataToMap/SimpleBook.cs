@@ -15,7 +15,7 @@ namespace SimpleTestApp.DataToMap
         [SolrField("description")]
         public string Description { get; set; }
 
-        [SolrField("author",2f)]
+        [SolrField("author", 2f)]
         public string Author { get; set; }
 
         [SolrField("pages_i")]

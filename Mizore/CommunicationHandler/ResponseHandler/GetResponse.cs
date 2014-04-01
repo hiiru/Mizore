@@ -18,6 +18,7 @@ namespace Mizore.CommunicationHandler.ResponseHandler
 
         private SolrDocument _document;
         private bool docIsNull;
+
         public SolrDocument Document
         {
             get
@@ -25,7 +26,7 @@ namespace Mizore.CommunicationHandler.ResponseHandler
                 if (!docIsNull && _document == null && Content != null)
                 {
                     var docNl = Content.GetOrDefault<INamedList>("doc");
-                    if (docNl!=null)
+                    if (docNl != null)
                         _document = new SolrDocument(docNl);
                     else
                         docIsNull = true;

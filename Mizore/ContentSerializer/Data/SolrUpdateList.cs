@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Mizore.ContentSerializer.Data.Solr;
 
 namespace Mizore.ContentSerializer.Data
 {
@@ -9,7 +8,7 @@ namespace Mizore.ContentSerializer.Data
     /// Bacause the structure of a XML and JSON is quite different, this object can be used for detection.
     /// Note: this isn't a normal Named List, the index is "faked" and can change after each modification.
     /// </summary>
-    public class SolrUpdateList :INamedList
+    public class SolrUpdateList : INamedList
     {
         private readonly INamedList ListDelete;
         private readonly INamedList ListAdd;
@@ -33,10 +32,13 @@ namespace Mizore.ContentSerializer.Data
             {
                 case "add":
                     return ListAdd;
+
                 case "delete":
                     return ListDelete;
+
                 case "commit":
                     return ListCommit;
+
                 default:
                     return null;
             }
@@ -48,10 +50,13 @@ namespace Mizore.ContentSerializer.Data
             {
                 case "add":
                     return ListAdd as IList<object>;
+
                 case "delete":
                     return ListDelete as IList<object>;
+
                 case "commit":
-                    return new List<object>{ ListCommit };
+                    return new List<object> { ListCommit };
+
                 default:
                     return null;
             }
@@ -63,10 +68,13 @@ namespace Mizore.ContentSerializer.Data
             {
                 case 0:
                     return "add";
+
                 case 1:
                     return "delete";
+
                 case 2:
                     return "commit";
+
                 default:
                     return null;
             }
@@ -74,7 +82,7 @@ namespace Mizore.ContentSerializer.Data
 
         public void Add(string name, object obj)
         {
-           throw new NotSupportedException("Can't add anything to a SolrUpdateList, use the constructor!");
+            throw new NotSupportedException("Can't add anything to a SolrUpdateList, use the constructor!");
         }
 
         public int Count { get { return 3; } }

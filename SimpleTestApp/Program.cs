@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.RequestHandler;
@@ -34,16 +33,16 @@ namespace SimpleTestApp
                     Pages = 666,
                     Price = new decimal(13.37),
                     ReleaseDate = DateTime.Now,
-                    Tags = new List<string>{"1337","31337","leet","elite"}
+                    Tags = new List<string> { "1337", "31337", "leet", "elite" }
                 };
                 var mapper = new ReflectionDataMapper<SimpleBook>();
 
-                for (int i = 0; i < 1000000; i++)
-                {
-                    var doc = mapper.GetDocument(book);
-                    mapper.GetObject(doc);
-                }
-                return;
+                //for (int i = 0; i < 1000000; i++)
+                //{
+                //    var doc = mapper.GetDocument(book);
+                //    mapper.GetObject(doc);
+                //}
+                //return;
 
                 Servers.Add(new HttpSolrServer(SERVERURL));
 
@@ -62,7 +61,7 @@ namespace SimpleTestApp
                     Get(server, "INVALID-########");
                     Console.WriteLine();
                     AddObject(server, book, mapper);
-                    var solrBook=GetObject(server, book.Iban,mapper);
+                    var solrBook = GetObject(server, book.Iban, mapper);
                 }
                 Console.WriteLine("Done");
             }
@@ -115,7 +114,7 @@ namespace SimpleTestApp
             }
             else
             {
-                Console.WriteLine("DocId "+docId+" does not exist (is null)!");
+                Console.WriteLine("DocId " + docId + " does not exist (is null)!");
             }
             return getResponse.Document;
         }
@@ -128,7 +127,7 @@ namespace SimpleTestApp
 
             var updateRequest = new UpdateRequest(server.GetUriBuilder()).Add(doc).Commit(true);
             server.Request<UpdateResponse>(updateRequest);
-            Console.WriteLine("doc "+docId+" added");
+            Console.WriteLine("doc " + docId + " added");
         }
 
         private const string TestQuery = "*:*";
@@ -138,7 +137,7 @@ namespace SimpleTestApp
             if (server == null) return;
             queryString = queryString ?? TestQuery;
             var sbOutput = new StringBuilder();
-            var queryRequest = new SelectRequest(server.GetUriBuilder(),new SimpleQueryBuilder(queryString));
+            var queryRequest = new SelectRequest(server.GetUriBuilder(), new SimpleQueryBuilder(queryString));
             var query = server.Request<SelectResponse>(queryRequest);
             sbOutput.AppendFormat("querying for {0}, ResultCount: {1}\n", queryString, query.Documents != null ? query.Documents.NumFound : 0);
             if (query.Documents != null)

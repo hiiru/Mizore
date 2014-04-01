@@ -24,7 +24,7 @@ namespace Mizore.SolrServerHandler
         public ICacheHandler Cache { get; protected set; }
 
         public IContentSerializerFactory SerializerFactory { get; protected set; }
-        
+
         public bool IsReady { get; protected set; }
 
         protected bool _isOnline;
@@ -32,12 +32,14 @@ namespace Mizore.SolrServerHandler
         public bool IsOnline { get { return _isOnline || CheckStatus(); } }
 
         public TimeSpan RecheckInterval { get; set; }
+
         public DateTime LastCheck { get; protected set; }
+
         #endregion Properties
 
         private readonly SolrUriBuilder baseUriBuilder;
         protected HttpWebRequestHandler RequestHandler;
-        
+
         public HttpSolrServer(string url, IContentSerializerFactory contentSerializerFactory = null, ICacheHandler cacheHandler = null)
         {
             //Argument Validation

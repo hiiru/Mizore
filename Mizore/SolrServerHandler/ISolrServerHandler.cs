@@ -31,7 +31,7 @@ namespace Mizore.SolrServerHandler
         ICacheHandler Cache { get; }
 
         IContentSerializerFactory SerializerFactory { get; }
-        
+
         SolrUriBuilder GetUriBuilder(string core = null, string handler = null);
 
         bool TryRequest<T>(IRequest request, out T response, string core = null) where T : class, IResponse;

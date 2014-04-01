@@ -13,13 +13,12 @@ All the Interfaces, classes and other elements are still subject to change and m
 **Query**: Minimalistic Querying is possible (a complete QueryBuilder is currently missing)<br/>
 **Update**: Implemented<br/>
 **Serializer**: Json (based on JSON.NET), JavaBin (Note: post in javabin is untested)<br/>
-**Object Mapping**: missing / not implemented yet<br/>
+**Object Mapping**: in progress, Reflection-based mapper implemented, but not integrated yet<br/>
 **Cache**: missing / not implemented yet<br/>
 **Admin Requests**: Implemented Ping, System and Cores<br/>
 **Get Request**: Implemented<br/>
 
 ## Current priority TODO Queue (in no specific order)
-Reflection-based object Mapping<br/>
 Simple cache example (mostly a proof of concept of the interface integration)<br/>
 better QueryBuilder(s)<br/>
 Decide on final project name<br/>
