@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataToMap\SimpleBook.cs" />
     <Compile Include="JavaBinDev.cs" />
     <Compile Include="JsonDev.cs" />
     <Compile Include="Program.cs" />

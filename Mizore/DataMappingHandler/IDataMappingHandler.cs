@@ -1,7 +1,11 @@
-﻿namespace Mizore.DataMappingHandler
+﻿using Mizore.ContentSerializer.Data.Solr;
+
+namespace Mizore.DataMappingHandler
 {
-    public interface IDataMappingHandlery
+    public interface IDataMappingHandlery<T> where T : class, new()
     {
-        //TODO: JIRA MIZORE-8:  just todo...
+        T GetObject(SolrDocument nl);
+
+        SolrInputDocument GetDocument(T obj);
     }
 }

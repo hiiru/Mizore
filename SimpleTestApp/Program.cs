@@ -8,7 +8,9 @@ using Mizore.CommunicationHandler.RequestHandler.Admin;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer.Data.Solr;
+using Mizore.DataMappingHandler.Reflection;
 using Mizore.SolrServerHandler;
+using SimpleTestApp.DataToMap;
 
 namespace SimpleTestApp
 {
@@ -22,9 +24,28 @@ namespace SimpleTestApp
         {
             try
             {
-                //Servers.Add(new HttpSolrServer(SERVERURL, new JavaBinSerializer()));
+                var book = new SimpleBook()
+                {
+                    Iban = "IBAN-MOO-1337",
+                    Title = "tHe sTorey of 1337",
+                    Description = "it's elite leet 31337 !!!111111 ¶☻°∟┴H}♣○",
+                    Author = "some guy",
+                    InPrint = false,
+                    Pages = 666,
+                    Price = new decimal(13.37),
+                    ReleaseDate = DateTime.Now,
+                    Tags = new List<string>{"1337","31337","leet","elite"}
+                };
+                var mapper = new ReflectionDataMapper<SimpleBook>();
+
+                for (int i = 0; i < 1000000; i++)
+                {
+                    var doc = mapper.GetDocument(book);
+                    mapper.GetObject(doc);
+                }
+                return;
+
                 Servers.Add(new HttpSolrServer(SERVERURL));
-                //Servers.Add(new HttpSolrServer(SERVERURL_362, new EasynetJavabinSerializer()));
 
                 foreach (var server in Servers)
                 {
@@ -39,8 +60,9 @@ namespace SimpleTestApp
                     Console.WriteLine();
                     Get(server, docId);
                     Get(server, "INVALID-########");
-                    //Query(server, "id:\"" + docId + "\"");
                     Console.WriteLine();
+                    AddObject(server, book, mapper);
+                    var solrBook=GetObject(server, book.Iban,mapper);
                 }
                 Console.WriteLine("Done");
             }
@@ -58,7 +80,27 @@ namespace SimpleTestApp
             Console.ReadKey();
         }
 
-        private static void Get(ISolrServerHandler server, string docId)
+        private static SimpleBook GetObject(ISolrServerHandler server, string iban, ReflectionDataMapper<SimpleBook> mapper)
+        {
+            var doc = Get(server, iban);
+            return mapper.GetObject(doc);
+        }
+
+        private static void AddObject(ISolrServerHandler server, SimpleBook book, ReflectionDataMapper<SimpleBook> mapper)
+        {
+            var doc = mapper.GetDocument(book);
+            var updateRequest = new UpdateRequest(server.GetUriBuilder()).Add(doc).Commit(true);
+            //if (updateRequest.Content != null)
+            //{
+            //    using (var requestStream = File.OpenWrite("update.json"))
+            //    {
+            //        server.SerializerFactory.DefaultSerializer.Serialize(updateRequest.Content, requestStream);
+            //    }
+            //}
+            server.Request<UpdateResponse>(updateRequest);
+        }
+
+        private static SolrDocument Get(ISolrServerHandler server, string docId)
         {
             var getRequest = new GetRequest(server.GetUriBuilder(), docId);
             var getResponse = server.Request<GetResponse>(getRequest);
@@ -75,6 +117,7 @@ namespace SimpleTestApp
             {
                 Console.WriteLine("DocId "+docId+" does not exist (is null)!");
             }
+            return getResponse.Document;
         }
 
         private static void CreateDoc(ISolrServerHandler server, string docId)
@@ -84,17 +127,7 @@ namespace SimpleTestApp
             doc.Fields.Add("name", new SolrInputField("name", "Test Document with ID " + docId));
 
             var updateRequest = new UpdateRequest(server.GetUriBuilder()).Add(doc).Commit(true);
-
-
-            if (updateRequest.Content != null)
-            {
-                using (var requestStream = File.OpenWrite("update.json"))
-                {
-                    server.SerializerFactory.DefaultSerializer.Serialize(updateRequest.Content, requestStream);
-                }
-            }
-
-            var updateResponse = server.Request<UpdateResponse>(updateRequest);
+            server.Request<UpdateResponse>(updateRequest);
             Console.WriteLine("doc "+docId+" added");
         }
 

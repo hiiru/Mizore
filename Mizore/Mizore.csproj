@@ -116,12 +116,17 @@
     <Compile Include="ContentSerializer\JavaBin\SolrJavaBinConverter.cs" />
     <Compile Include="ContentSerializer\JsonNet\JsonNetSerializer.cs" />
     <Compile Include="ContentSerializer\JsonNet\SolrJsonConverter.cs" />
+    <Compile Include="DataMappingHandler\Attributes\SolrFieldAttribute.cs" />
+    <Compile Include="DataMappingHandler\Attributes\SolrIdFieldAttribute.cs" />
     <Compile Include="DataMappingHandler\IDataMappingHandler.cs" />
     <Compile Include="ContentSerializer\Data\SerializationNamedList.cs" />
     <Compile Include="ContentSerializer\Data\Solr\SolrDocument.cs" />
     <Compile Include="ContentSerializer\Data\Solr\SolrDocumentList.cs" />
     <Compile Include="ContentSerializer\Data\Solr\SolrInputDocument.cs" />
     <Compile Include="ContentSerializer\Data\Solr\SolrInputField.cs" />
+    <Compile Include="DataMappingHandler\Reflection\ReflectedMember.cs" />
+    <Compile Include="DataMappingHandler\Reflection\ReflectionDataMapper.cs" />
+    <Compile Include="DataMappingHandler\Reflection\ReflectionHelper.cs" />
     <Compile Include="Exceptions\MizoreConnectionException.cs" />
     <Compile Include="Exceptions\MizoreException.cs" />
     <Compile Include="Exceptions\MizoreSerializationException.cs" />

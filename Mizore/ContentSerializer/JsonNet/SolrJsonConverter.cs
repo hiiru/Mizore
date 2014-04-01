@@ -12,6 +12,8 @@ namespace Mizore.ContentSerializer.JsonNet
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
+            writer.DateFormatHandling=DateFormatHandling.IsoDateFormat;
+            writer.DateTimeZoneHandling=DateTimeZoneHandling.Utc;
             if (value is SolrUpdateList)
                 WriteUpdateList(writer, value as SolrUpdateList);
             else
@@ -42,7 +44,7 @@ namespace Mizore.ContentSerializer.JsonNet
                             writer.WritePropertyName("commitWithin");
                             writer.WriteValue(commitWithin.Value);
                         }
-                        if (doc.DocBoost.HasValue)
+                        if (doc.DocBoost.HasValue && doc.DocBoost.Value!=1f)
                         {
                             writer.WritePropertyName("boost");
                             writer.WriteValue(doc.DocBoost.Value);
@@ -60,12 +62,13 @@ namespace Mizore.ContentSerializer.JsonNet
                                 writer.WritePropertyName("value");
                                 if (solrInputField.Value.Value is IList)
                                 {
-                                    writer.WriteStartArray();
-                                    foreach (var item in solrInputField.Value.Value as IList)
-                                    {
-                                        writer.WriteValue(item);
-                                    }
-                                    writer.WriteEndArray();
+                                    WriteArray(writer, (IList) solrInputField.Value.Value);
+                                    //writer.WriteStartArray();
+                                    //foreach (var item in solrInputField.Value.Value as IList)
+                                    //{
+                                    //    writer.WriteValue(item);
+                                    //}
+                                    //writer.WriteEndArray();
                                 }
                                 else
                                     writer.WriteValue(solrInputField.Value.Value);
@@ -73,7 +76,10 @@ namespace Mizore.ContentSerializer.JsonNet
                             }
                             else
                             {
-                                writer.WriteValue(solrInputField.Value.Value);
+                                if (solrInputField.Value.Value is IList)
+                                    WriteArray(writer, (IList) solrInputField.Value.Value);
+                                else
+                                    writer.WriteValue(solrInputField.Value.Value);
                             }
 
                         }
@@ -152,6 +158,7 @@ namespace Mizore.ContentSerializer.JsonNet
         
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            //reader.DateTimeZoneHandling = DateTimeZoneHandling.Local;
             switch (reader.TokenType)
             {
                 case JsonToken.StartArray:
