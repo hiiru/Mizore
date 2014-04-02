@@ -48,7 +48,6 @@ namespace Mizore.ContentSerializer.JavaBin
 
         protected byte tagByte;
         private byte[] bytes;
-        //private char[] chars;
 
         #endregion Solr JavaBin Definition (based on solr's JavaBinCodec from 12.03.2014)
 
@@ -125,10 +124,6 @@ namespace Mizore.ContentSerializer.JavaBin
                     var timestamp = stream.ReadLong();
                     if (timestamp < -62135596800000)
                         return DateTime.MinValue;
-
-                    //    if (timestamp <= -315537897600000 || timestamp >= 315537897600000)
-                    //{
-                    //}
                     DateTime date;
                     try
                     {

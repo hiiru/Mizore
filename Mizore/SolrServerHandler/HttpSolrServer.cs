@@ -9,6 +9,7 @@ using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ConnectionHandler;
 using Mizore.ContentSerializer;
+using Mizore.DataMappingHandler;
 using Mizore.Exceptions;
 
 namespace Mizore.SolrServerHandler
@@ -24,6 +25,8 @@ namespace Mizore.SolrServerHandler
         public ICacheHandler Cache { get; protected set; }
 
         public IContentSerializerFactory SerializerFactory { get; protected set; }
+
+        public IDataMappingHandler DataMapping { get; protected set; }
 
         public bool IsReady { get; protected set; }
 
@@ -54,6 +57,7 @@ namespace Mizore.SolrServerHandler
             RecheckInterval = new TimeSpan(0, 1, 0);
             baseUriBuilder = new SolrUriBuilder(solrUri);
             SerializerFactory = contentSerializerFactory ?? new ContentSerializerFactory();
+            DataMapping = new DataMappingCollection();
             Cache = cacheHandler ?? null;
             IsReady = true;
             CheckStatus(true);

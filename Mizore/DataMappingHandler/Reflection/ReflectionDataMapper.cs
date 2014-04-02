@@ -7,7 +7,7 @@ using Mizore.DataMappingHandler.Attributes;
 
 namespace Mizore.DataMappingHandler.Reflection
 {
-    public class ReflectionDataMapper<T> : IDataMappingHandlery<T> where T : class, new()
+    public class ReflectionDataMapper<T> : IDataMappingHandler<T> where T : class, new()
     {
         protected static readonly Type SolrAttributeType = typeof(SolrFieldAttribute);
         protected readonly Type ObjectType;
@@ -37,6 +37,48 @@ namespace Mizore.DataMappingHandler.Reflection
                     uniqueKey = reflected;
                 mapping.Add(reflected);
             }
+        }
+
+        public IDataMappingHandler GetMappingHandler(Type type)
+        {
+            if (typeof (T) == type)
+                return this;
+            return null;
+        }
+
+        public IDataMappingHandler<T1> GetMappingHandler<T1>() where T1 : class, new()
+        {
+            if (typeof(T) == typeof(T1))
+                return this as IDataMappingHandler<T1>;
+            return null;
+        }
+
+        public bool CanHandle(Type type)
+        {
+            var fields = type.GetFields();
+            for (int i = 0; i < fields.Length; i++)
+            {
+                var field = fields[i];
+                var attrs = field.GetCustomAttributes(SolrAttributeType, false);
+                if (attrs.IsNullOrEmpty()) continue;
+                return true;
+            }
+            return false;
+        }
+
+        public Type GetGenericType()
+        {
+            return typeof (ReflectionDataMapper<>);
+        }
+
+        object IDataMappingHandler.GetObject(SolrDocument doc)
+        {
+            return GetObject(doc);
+        }
+
+        public SolrInputDocument GetDocument(object obj)
+        {
+            return GetDocument(obj as T);
         }
 
         public T GetObject(SolrDocument document)

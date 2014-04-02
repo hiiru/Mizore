@@ -66,12 +66,14 @@ The Request is passed to the ConnectionHandler (and ContentSerializer) which ret
 Request -> ConnectionHandler/ContentSerializer -> Response
 
 #### DataMappingHandler -- Object/Data binding
+**Note: Work in Progess**, the mapper exists but isn't integrated in the design yet.<br/>
 Still TBD how this layer will be integrated, However this will handle the conversion of Solr Documents to Data-Objects.<br/>
 e.g. NamedList (raw), reflection/attribute mapping, etc. (aka all the voodoo to provide you with your "MyApplicationDocument" out of solr :) )
 
 This might also handle how the SelectRequest will be created (e.g. fl param optimization).
 
 #### CacheHandler - well, caching
+**Note**: this is till TODO, **not implemented yet**!<br/>
 This Handler will do everything related to caching and defines how the data is cached.
 
 A simple implementation could be a KV Store based on request etag and/or request hashcode combined with an expiration.

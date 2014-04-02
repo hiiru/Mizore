@@ -7,6 +7,7 @@ using Mizore.CommunicationHandler.RequestHandler.Admin;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer.Data.Solr;
+using Mizore.DataMappingHandler;
 using Mizore.DataMappingHandler.Reflection;
 using Mizore.SolrServerHandler;
 using SimpleTestApp.DataToMap;
@@ -17,7 +18,7 @@ namespace SimpleTestApp
     {
         private const string SERVERURL = "http://127.0.0.1:20440/solr/";
         private const string SERVERURL_362 = "http://127.0.0.1:20362/solr/";
-        private static readonly List<ISolrServerHandler> Servers = new List<ISolrServerHandler>();
+        private static readonly List<HttpSolrServer> Servers = new List<HttpSolrServer>();
 
         private static void Main(string[] args)
         {
@@ -35,7 +36,8 @@ namespace SimpleTestApp
                     ReleaseDate = DateTime.Now,
                     Tags = new List<string> { "1337", "31337", "leet", "elite" }
                 };
-                var mapper = new ReflectionDataMapper<SimpleBook>();
+
+                //var mapper = new ReflectionDataMapper<SimpleBook>();
 
                 //for (int i = 0; i < 1000000; i++)
                 //{
@@ -45,7 +47,7 @@ namespace SimpleTestApp
                 //return;
 
                 Servers.Add(new HttpSolrServer(SERVERURL));
-
+                
                 foreach (var server in Servers)
                 {
                     Console.WriteLine("Checking Server " + server.GetUriBuilder().ServerAddress);
@@ -60,8 +62,13 @@ namespace SimpleTestApp
                     Get(server, docId);
                     Get(server, "INVALID-########");
                     Console.WriteLine();
-                    AddObject(server, book, mapper);
-                    var solrBook = GetObject(server, book.Iban, mapper);
+                    if (server.DataMapping != null)
+                    {
+                        var mapper = server.DataMapping.GetMappingHandler(typeof(SimpleBook));
+                        AddObject(server, book, mapper);
+                        var solrBook = GetObject(server, book.Iban, mapper);
+                    }
+
                 }
                 Console.WriteLine("Done");
             }
@@ -79,13 +86,13 @@ namespace SimpleTestApp
             Console.ReadKey();
         }
 
-        private static SimpleBook GetObject(ISolrServerHandler server, string iban, ReflectionDataMapper<SimpleBook> mapper)
+        private static SimpleBook GetObject(ISolrServerHandler server, string iban, IDataMappingHandler mapper)
         {
             var doc = Get(server, iban);
-            return mapper.GetObject(doc);
+            return mapper.GetObject(doc) as SimpleBook;
         }
 
-        private static void AddObject(ISolrServerHandler server, SimpleBook book, ReflectionDataMapper<SimpleBook> mapper)
+        private static void AddObject(ISolrServerHandler server, SimpleBook book, IDataMappingHandler mapper)
         {
             var doc = mapper.GetDocument(book);
             var updateRequest = new UpdateRequest(server.GetUriBuilder()).Add(doc).Commit(true);

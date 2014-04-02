@@ -1,10 +1,24 @@
-﻿using Mizore.ContentSerializer.Data.Solr;
+﻿using System;
+using Mizore.ContentSerializer.Data.Solr;
 
 namespace Mizore.DataMappingHandler
 {
-    public interface IDataMappingHandlery<T> where T : class, new()
+    public interface IDataMappingHandler
     {
-        T GetObject(SolrDocument nl);
+        IDataMappingHandler GetMappingHandler(Type type);
+
+        IDataMappingHandler<T> GetMappingHandler<T>() where T : class, new();
+
+        bool CanHandle(Type type);
+        Type GetGenericType();
+
+        object GetObject(SolrDocument doc);
+        SolrInputDocument GetDocument(object obj);
+    }
+
+    public interface IDataMappingHandler<T> : IDataMappingHandler where T : class, new()
+    {
+        T GetObject(SolrDocument doc);
 
         SolrInputDocument GetDocument(T obj);
     }
