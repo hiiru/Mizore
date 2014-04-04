@@ -1,28 +1,27 @@
 # Project "Mizore"
 
-This is a simple C# solr library project codenamed "Mizore".<br/>
+This is a C#/.NET solr library project codenamed "Mizore".<br/>
 The name and state of the projects (documentation, tests, etc.) will improve when we leave the alpha
 
 The goal of this project is to create a small but extendable library which is fast, stable and offers extensibility.
 
-**NOTE:<br/> This is a very early alpha implementation and NOT yet intended for production use!<br/>
-All the Interfaces, classes and other elements are still subject to change and might break every check-in.**
+**NOTE:<br/> This is a early alpha implementation and NOT yet intended for production use!<br/>
+All the Interfaces, classes and other elements are still subject to change.**
 
-## Current Status
+## Current Status: Alpha
 
-**Query**: Minimalistic Querying is possible (a complete QueryBuilder is currently missing)<br/>
-**Update**: Implemented<br/>
+**CRUD"": Update and Get Implemented, minimalistic Querying implemented (a complete QueryBuilder is currently missing)<br/>
 **Serializer**: Json (based on JSON.NET), JavaBin (Note: post in javabin is untested)<br/>
-**Object Mapping**: in progress, Reflection-based mapper implemented, but not integrated yet<br/>
+**Object Mapping**: basic relfection-based Object Mapping Implemented<br/>
 **Cache**: missing / not implemented yet<br/>
 **Admin Requests**: Implemented Ping, System and Cores<br/>
-**Get Request**: Implemented<br/>
 
 ## Current priority TODO Queue (in no specific order)
 Simple cache example (mostly a proof of concept of the interface integration)<br/>
 better QueryBuilder(s)<br/>
 Decide on final project name<br/>
-Better Exception handling and types<br/>
+Cleanup and Improve code-documentation (summery tags)<br/>
+Write Tests
 
 ----
 

@@ -129,9 +129,13 @@
     <Compile Include="DataMappingHandler\Reflection\ReflectionDataMapper.cs" />
     <Compile Include="DataMappingHandler\Reflection\ReflectionDataMappingHandler.cs" />
     <Compile Include="DataMappingHandler\Reflection\ReflectionHelper.cs" />
+    <Compile Include="Exceptions\MizoreCacheException.cs" />
+    <Compile Include="Exceptions\MizoreCommunicationException.cs" />
     <Compile Include="Exceptions\MizoreConnectionException.cs" />
     <Compile Include="Exceptions\MizoreException.cs" />
+    <Compile Include="Exceptions\MizoreMappingException.cs" />
     <Compile Include="Exceptions\MizoreSerializationException.cs" />
+    <Compile Include="Exceptions\MizoreServerException.cs" />
     <Compile Include="MizoreExtensions.cs" />
     <Compile Include="SolrServerHandler\HttpSolrServer.cs" />
     <Compile Include="SolrServerHandler\ISolrServerHandler.cs" />

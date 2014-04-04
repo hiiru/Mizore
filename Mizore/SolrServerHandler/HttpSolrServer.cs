@@ -114,7 +114,9 @@ namespace Mizore.SolrServerHandler
 
         public T Request<T>(IRequest request, string core = null) where T : class, IResponse
         {
-            if (!IsOnline) throw new MizoreException("Server offline");
+            if (!IsOnline) 
+                throw new MizoreServerException("Server offline");
+
             return RequestHandler.Request<T>(request, SerializerFactory);
         }
     }

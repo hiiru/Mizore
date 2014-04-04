@@ -202,7 +202,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
                 throw new ArgumentNullException("mappingHandler");
             var handler = mappingHandler.GetMappingHandler<T>();
             if (handler == null)
-                throw new MizoreException("Can't map the type " + typeof(T).Name);
+                throw new MizoreMappingException(mappingHandler,"Can't map the type " + typeof(T).Name);
 
             if (_documents == null)
                 _documents = new List<SolrInputDocument>();
@@ -219,7 +219,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
                 throw new ArgumentNullException("mappingHandler");
             var handler = mappingHandler.GetMappingHandler<T>();
             if (handler == null)
-                throw new MizoreException("Can't map the type " + typeof(T).Name);
+                throw new MizoreMappingException(mappingHandler, "Can't map the type " + typeof(T).Name);
 
             if (_documents == null)
                 _documents = new List<SolrInputDocument>();

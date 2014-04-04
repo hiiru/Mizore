@@ -7,8 +7,7 @@ namespace Mizore.Exceptions
     {
         public MizoreConnectionException(IRequest request, Exception innerException)
             : this(request, innerException.Message, innerException)
-        {
-        }
+        { }
 
         public MizoreConnectionException(IRequest request, string message, Exception innerException)
             : base(message, innerException)
