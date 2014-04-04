@@ -5,10 +5,6 @@
 
 ### Select 
 
-### Update
-
-### Get
-
 ## Admin / Debug / Management
 
 TODO: Define which one we will implement.

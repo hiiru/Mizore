@@ -7,7 +7,6 @@ namespace Mizore.CommunicationHandler.RequestHandler
     public class SelectRequest : ARequestBaseGet
     {
         public SelectRequest(SolrUriBuilder builder, IQueryBuilder queryBuilder)
-            //ISolrServerHandler server, IQueryBuilder queryBuilder, string core = null)
             : base(builder)
         {
             UrlBuilder.Handler = "select";

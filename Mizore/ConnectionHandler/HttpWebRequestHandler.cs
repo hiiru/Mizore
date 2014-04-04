@@ -11,8 +11,6 @@ namespace Mizore.ConnectionHandler
 {
     public class HttpWebRequestHandler : IConnectionHandler
     {
-        protected string ETag = null;
-
         /// <summary>
         /// Transfers the Request to the Solr Server and returns it's Response.
         /// </summary>
@@ -94,12 +92,7 @@ namespace Mizore.ConnectionHandler
             //Default settings
             webRequest.KeepAlive = true;
             webRequest.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
-
-            if (ETag != null) webRequest.Headers.Add(HttpRequestHeader.IfNoneMatch, ETag);
-
-            //if (request.Server.ConnectionTimeout > 0)
-            //    webRequest.Timeout = webRequest.ReadWriteTimeout = request.Server.ConnectionTimeout;
-
+            
             webRequest.UserAgent = "Mizore (.NET solr library)";
 
             //TODO-LOW: ServicePoint.Expect100Continue for post values -> true or false? which is faster in the solr case?

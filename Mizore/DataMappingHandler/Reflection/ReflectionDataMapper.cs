@@ -41,7 +41,7 @@ namespace Mizore.DataMappingHandler.Reflection
 
         public IDataMappingHandler GetMappingHandler(Type type)
         {
-            if (typeof (T) == type)
+            if (typeof(T) == type)
                 return this;
             return null;
         }
@@ -68,7 +68,7 @@ namespace Mizore.DataMappingHandler.Reflection
 
         public Type GetGenericType()
         {
-            return typeof (ReflectionDataMapper<>);
+            return typeof(ReflectionDataMapper<>);
         }
 
         object IDataMappingHandler.GetObject(SolrDocument doc)

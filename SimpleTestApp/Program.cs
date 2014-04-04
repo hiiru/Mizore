@@ -8,7 +8,6 @@ using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer.Data.Solr;
 using Mizore.DataMappingHandler;
-using Mizore.DataMappingHandler.Reflection;
 using Mizore.SolrServerHandler;
 using SimpleTestApp.DataToMap;
 
@@ -47,7 +46,7 @@ namespace SimpleTestApp
                 //return;
 
                 Servers.Add(new HttpSolrServer(SERVERURL));
-                
+
                 foreach (var server in Servers)
                 {
                     Console.WriteLine("Checking Server " + server.GetUriBuilder().ServerAddress);
@@ -68,7 +67,6 @@ namespace SimpleTestApp
                         AddObject(server, book, mapper);
                         var solrBook = GetObject(server, book.Iban, mapper);
                     }
-
                 }
                 Console.WriteLine("Done");
             }

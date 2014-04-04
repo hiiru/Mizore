@@ -49,6 +49,7 @@ namespace Mizore.DataMappingHandler
         {
             return null;
         }
+
         public object GetObject(SolrDocument doc)
         {
             throw new NotSupportedException("Can't create object in base class");

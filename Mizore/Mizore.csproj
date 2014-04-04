@@ -89,7 +89,7 @@
     <Compile Include="CommunicationHandler\RequestHandler\Admin\CoresRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\ARequestBaseGet.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\GetRequest.cs" />
-    <Compile Include="CommunicationHandler\RequestHandler\UpdateReuqest.cs" />
+    <Compile Include="CommunicationHandler\RequestHandler\UpdateRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\Admin\SystemRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\Admin\PingRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\SelectRequest.cs" />

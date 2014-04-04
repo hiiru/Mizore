@@ -4,6 +4,8 @@ using Mizore.CommunicationHandler.Data.Params;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.ContentSerializer.Data;
 using Mizore.ContentSerializer.Data.Solr;
+using Mizore.DataMappingHandler;
+using Mizore.Exceptions;
 
 namespace Mizore.CommunicationHandler.RequestHandler
 {
@@ -101,7 +103,6 @@ namespace Mizore.CommunicationHandler.RequestHandler
 
         #region Delete
 
-        //Note: I didn't added fromPending  and fromCommitted  because both are deprecated
         public UpdateRequest DeleteById(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -193,6 +194,45 @@ namespace Mizore.CommunicationHandler.RequestHandler
             return this;
         }
 
+        public UpdateRequest AddObject<T>(T obj, IDataMappingHandler mappingHandler) where T : class, new()
+        {
+            if (obj == null)
+                throw new ArgumentNullException("obj");
+            if (mappingHandler == null)
+                throw new ArgumentNullException("mappingHandler");
+            var handler = mappingHandler.GetMappingHandler<T>();
+            if (handler == null)
+                throw new MizoreException("Can't map the type " + typeof(T).Name);
+
+            if (_documents == null)
+                _documents = new List<SolrInputDocument>();
+            _documents.Add(handler.GetDocument(obj));
+            _changed = true;
+            return this;
+        }
+
+        public UpdateRequest AddObject<T>(IList<T> objs, IDataMappingHandler mappingHandler) where T : class, new()
+        {
+            if (objs == null)
+                throw new ArgumentNullException("objs");
+            if (mappingHandler == null)
+                throw new ArgumentNullException("mappingHandler");
+            var handler = mappingHandler.GetMappingHandler<T>();
+            if (handler == null)
+                throw new MizoreException("Can't map the type " + typeof(T).Name);
+
+            if (_documents == null)
+                _documents = new List<SolrInputDocument>();
+
+            foreach (var obj in objs)
+            {
+                if (obj == null) continue;
+                _documents.Add(handler.GetDocument(obj));
+            }
+            _changed = true;
+            return this;
+        }
+
         #endregion Documents (Add or Update)
 
         public UpdateRequest Commit(bool? waitSearcher = null, bool? softCommit = null, bool? expungeDeletes = null)
@@ -238,7 +278,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
             }
         }
 
-        private SolrUpdateList PrepareContent()
+        protected SolrUpdateList PrepareContent()
         {
             INamedList deleteList = null;
             INamedList addList = null;

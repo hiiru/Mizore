@@ -1,6 +1,7 @@
 ﻿using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.ContentSerializer.Data;
 using Mizore.ContentSerializer.Data.Solr;
+using Mizore.DataMappingHandler;
 
 namespace Mizore.CommunicationHandler.ResponseHandler
 {
@@ -33,6 +34,14 @@ namespace Mizore.CommunicationHandler.ResponseHandler
                 }
                 return _document;
             }
+        }
+
+        public T GetObject<T>(IDataMappingHandler mapping) where T : class, new()
+        {
+            if (mapping == null) return null;
+            var handler = mapping.GetMappingHandler<T>();
+            if (handler == null) return null;
+            return handler.GetObject(Document);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -38,6 +37,7 @@ namespace Mizore.DataMappingHandler.Reflection
         }
 
         private static readonly MethodInfo CastAndListMethod = typeof(ReflectedMember<T>).GetMethod("CastAndList", BindingFlags.Static | BindingFlags.NonPublic);
+
         private static IList CastAndList(IList items, Type listType, Type itemType)
         {
             var list = Activator.CreateInstance(listType.GetGenericTypeDefinition().MakeGenericType(itemType)) as IList;
@@ -48,7 +48,8 @@ namespace Mizore.DataMappingHandler.Reflection
             return list;
         }
 
-        static readonly MethodInfo ChangeTypeMethod = typeof(Convert).GetMethod("ChangeType", new[] { typeof(object), typeof(Type) });
+        private static readonly MethodInfo ChangeTypeMethod = typeof(Convert).GetMethod("ChangeType", new[] { typeof(object), typeof(Type) });
+
         protected Action<T, object> GetSetter(MemberInfo member)
         {
             ParameterExpression targetExp = Expression.Parameter(typeof(T), "targetObject");
@@ -62,7 +63,7 @@ namespace Mizore.DataMappingHandler.Reflection
                     {
                         //TODO: test if this performs... it feels like a workaround...
                         var listitemType = Type.GetGenericArguments().FirstOrDefault();
-                        Expression convertedObject = Expression.Call(CastAndListMethod, Expression.Convert(valueExp, typeof(IList)),Expression.Constant(Type), Expression.Constant(listitemType));
+                        Expression convertedObject = Expression.Call(CastAndListMethod, Expression.Convert(valueExp, typeof(IList)), Expression.Constant(Type), Expression.Constant(listitemType));
                         convert = Expression.Convert(convertedObject, Type);
                     }
                     else
