@@ -10,7 +10,7 @@ All the Interfaces, classes and other elements are still subject to change.**
 
 ## Current Status: Alpha
 
-**CRUD"": Update and Get Implemented, minimalistic Querying implemented (a complete QueryBuilder is currently missing)<br/>
+**CRUD**: Update and Get Implemented, minimalistic Querying implemented (a complete QueryBuilder is currently missing)<br/>
 **Serializer**: Json (based on JSON.NET), JavaBin (Note: post in javabin is untested)<br/>
 **Object Mapping**: basic relfection-based Object Mapping Implemented<br/>
 **Cache**: missing / not implemented yet<br/>
