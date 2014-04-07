@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Mizore.CacheHandler;
 using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.RequestHandler;
-using Mizore.CommunicationHandler.RequestHandler.Admin;
 using Mizore.CommunicationHandler.ResponseHandler;
-using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer;
 using Mizore.SolrServerHandler;
 
@@ -13,17 +10,18 @@ namespace MizoreTests.Mock
 {
     public class MockSolrServerHandler : ISolrServerHandler
     {
-        protected string ResourcePath;
         private readonly SolrUriBuilder baseUriBuilder;
+        private readonly MockConnectionHandler RequestHandler;
 
-        public MockSolrServerHandler(string resourcePath, IContentSerializerFactory contentSerializerFactory = null, ICacheHandler cacheHandler = null)
+        public MockSolrServerHandler(IContentSerializerFactory contentSerializerFactory = null, ICacheHandler cacheHandler = null)
         {
-            ResourcePath = resourcePath;
             baseUriBuilder = new SolrUriBuilder(null ?? "http://127.0.0.1:20440/solr/");
+            RequestHandler = new MockConnectionHandler();
             SerializerFactory = contentSerializerFactory ?? new ContentSerializerFactory();
-            Cache = cacheHandler ?? null;
-            DefaultCore = "mizoreMockingTestCore";
+            Cache = cacheHandler;
+            DefaultCore = "MockCore";
             Cores = new List<string> { DefaultCore };
+            IsReady = true;
         }
 
         public bool IsReady { get; private set; }
@@ -31,8 +29,6 @@ namespace MizoreTests.Mock
         public List<string> Cores { get; private set; }
 
         public string DefaultCore { get; set; }
-
-        public bool MulticoreMode { get; private set; }
 
         public ICacheHandler Cache { get; private set; }
 
@@ -45,55 +41,21 @@ namespace MizoreTests.Mock
 
         public bool TryRequest<T>(IRequest request, out T response, string core = null) where T : class, IResponse
         {
-            throw new NotImplementedException();
+            response = null;
+            try
+            {
+                response = Request<T>(request, core);
+            }
+            catch
+            {
+                return false;
+            }
+            return response != null;
         }
 
         public T Request<T>(IRequest request, string core = null) where T : class, IResponse
         {
-            throw new NotImplementedException();
-        }
-
-        public T Request<T>(string type, string core = null) where T : class, IResponse
-        {
-            throw new NotImplementedException();
-        }
-
-        public int ConnectionTimeout { get; set; }
-
-        public UpdateResponse Add(string core = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Delete()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Commit(string core = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Optimize(string core = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public PingResponse Ping()
-        {
-            var conHandler = new MockConnectionHandler { ResponseFilename = "ping", ResourcePath = ResourcePath };
-            return conHandler.Request<PingResponse>(new PingRequest(GetUriBuilder()), SerializerFactory);
-        }
-
-        public SystemResponse GetSystemInfo()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void GetVersion()
-        {
-            throw new NotImplementedException();
+            return RequestHandler.Request<T>(request, SerializerFactory);
         }
     }
 }
