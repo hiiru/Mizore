@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+
+<doc name="doc">
+  <str name="id">GB18030TEST</str>
+  <str name="name">Test with some GB18030 encoded characters</str>
+  <arr name="features">
+    <str>No accents here</str>
+    <str>这是一个功能</str>
+    <str>This is a feature (translated)</str>
+    <str>这份文件是很有光泽</str>
+    <str>This document is very shiny (translated)</str>
+  </arr>
+  <float name="price">0.0</float>
+  <bool name="inStock">true</bool>
+  <long name="_version_">1445086860543000576</long></doc>
+</response>

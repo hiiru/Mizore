@@ -1,13 +1,17 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mizore;
+using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.Data.Params;
+using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.RequestHandler.Admin;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.ContentSerializer.Data;
+using Mizore.ContentSerializer.Data.Solr;
 using Mizore.SolrServerHandler;
 using System;
+using System.Collections;
+using System.Linq;
 
 namespace MizoreTests.Tests.SolrServerHandler
 {
@@ -117,7 +121,7 @@ namespace MizoreTests.Tests.SolrServerHandler
             Assert.IsNotNull(cores.ResponseHeader);
             Assert.IsTrue(cores.DefaultCore == "collection1");
             Assert.IsNotNull(cores.Cores);
-            Assert.IsTrue(cores.Cores.Count()==2);
+            Assert.IsTrue(cores.Cores.Count() == 2);
             var core1 = cores.Cores.FirstOrDefault();
             Assert.IsNotNull(core1);
             Assert.IsTrue(core1.Name == "collection1");
@@ -158,10 +162,75 @@ namespace MizoreTests.Tests.SolrServerHandler
             Assert.IsTrue(system.Jvm.Memory.GetOrDefault<string>("total") == "102 MB");
             Assert.IsTrue(system.Jvm.Memory.GetOrDefault<INamedList>("raw").GetOrDefaultStruct<long>("max") == 3812622336);
             Assert.IsNotNull(system.System);
-            Assert.IsTrue(system.System.Arch=="amd64");
-            Assert.IsTrue(system.System.Version=="6.3");
-            Assert.IsTrue(system.System.SystemLoadAverage==-1.0);
+            Assert.IsTrue(system.System.Arch == "amd64");
+            Assert.IsTrue(system.System.Version == "6.3");
+            Assert.IsTrue(system.System.SystemLoadAverage == -1.0);
             Assert.IsTrue(system.System.TotalPhysicalMemorySize == 17153019904);
+        }
+
+        [TestMethod]
+        [Priority(3)]
+        public void RequestGet()
+        {
+            var builder = Server.GetUriBuilder();
+            builder.Query[CommonParams.WT] = WTValue;
+            var get = Server.Request<GetResponse>(new GetRequest(builder));
+            Assert.IsNotNull(get);
+            CheckDocument(get.Document, 6);
+        }
+
+        protected void CheckDocument(SolrDocument doc, int fields)
+        {
+            Assert.IsNotNull(doc);
+            Assert.IsNotNull(doc.Fields);
+            Assert.IsTrue(doc.Fields.Count == fields);
+            Assert.IsTrue((string)doc.Fields["id"].Value == "GB18030TEST");
+            Assert.IsTrue((double)doc.Fields["price"].Value == 0.0);
+            Assert.IsTrue((bool)doc.Fields["inStock"].Value);
+            Assert.IsTrue((long)doc.Fields["_version_"].Value == 1445086860543000576);
+            Assert.IsTrue((string)((IList)doc.Fields["features"].Value)[0] == "No accents here");
+            Assert.IsTrue((string)((IList)doc.Fields["features"].Value)[1] == "这是一个功能");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        [Priority(3)]
+        public void RequestSelectArgumentNull()
+        {
+            var builder = Server.GetUriBuilder();
+            builder.Query[CommonParams.WT] = WTValue;
+            var select = Server.Request<SelectResponse>(new SelectRequest(builder, null));
+        }
+
+        [TestMethod]
+        [Priority(3)]
+        public void RequestSelect()
+        {
+            var builder = Server.GetUriBuilder();
+            builder.Query[CommonParams.WT] = WTValue;
+            //note: QueryBuilder is not tested here, only request/response (incl. content serializer)
+            var select = Server.Request<SelectResponse>(new SelectRequest(builder, new SimpleQueryBuilder("*:*")));
+            Assert.IsNotNull(select);
+            Assert.IsNotNull(select.ResponseHeader);
+            Assert.IsTrue(select.ResponseHeader.Parameters.GetOrDefault<string>("q") == "*:*");
+            Assert.IsNotNull(select.Documents);
+            Assert.IsTrue(select.Documents.NumFound == 97);
+            Assert.IsTrue(select.Documents.Start == 0);
+            Assert.IsTrue(select.Documents.Count == 10);
+            CheckDocument(select.Documents[0], 7);
+            Assert.IsTrue((string)select.Documents[9].Fields["id"].Value == "ati");
+        }
+
+        [TestMethod]
+        [Priority(3)]
+        public void RequestUpdate()
+        {
+            var builder = Server.GetUriBuilder();
+            builder.Query[CommonParams.WT] = WTValue;
+            var update = Server.Request<UpdateResponse>(new UpdateRequest(builder));
+            Assert.IsNotNull(update);
+            Assert.IsNotNull(update.ResponseHeader);
+            Assert.IsNotNull(update.Request);
         }
     }
 }

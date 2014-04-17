@@ -1,0 +1,13 @@
+{
+  "doc":
+  {
+    "id":"GB18030TEST",
+    "name":"Test with some GB18030 encoded characters",
+    "features":["No accents here",
+      "这是一个功能",
+      "This is a feature (translated)",
+      "这份文件是很有光泽",
+      "This document is very shiny (translated)"],
+    "price":0.0,
+    "inStock":true,
+    "_version_":1445086860543000576}}

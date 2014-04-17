@@ -67,9 +67,7 @@
       <Name>Mizore</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\MockServer\MockCore\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Resources\MockServer\admin\ping.javabin" />
     <EmbeddedResource Include="Resources\MockServer\admin\ping.json" />
@@ -90,6 +88,19 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\MockServer\admin\system.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MockServer\MockCore\get.javabin" />
+    <EmbeddedResource Include="Resources\MockServer\MockCore\get.json" />
+    <EmbeddedResource Include="Resources\MockServer\MockCore\select.javabin" />
+    <EmbeddedResource Include="Resources\MockServer\MockCore\select.json" />
+    <EmbeddedResource Include="Resources\MockServer\MockCore\update.javabin" />
+    <EmbeddedResource Include="Resources\MockServer\MockCore\update.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MockServer\MockCore\get.xml" />
+    <EmbeddedResource Include="Resources\MockServer\MockCore\select.xml" />
+    <EmbeddedResource Include="Resources\MockServer\MockCore\update.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
