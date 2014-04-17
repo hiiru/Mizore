@@ -12,6 +12,8 @@ namespace MizoreTests.Tests.SolrServerHandler
     {
         protected abstract ISolrServerHandler Server { get; }
 
+        protected abstract string WTValue { get; }
+
         [TestMethod]
         [Priority(0)]
         public void ServerIsNotNull()
@@ -75,10 +77,10 @@ namespace MizoreTests.Tests.SolrServerHandler
 
         [TestMethod]
         [Priority(3)]
-        public void RequestPingJSON()
+        public void RequestPing()
         {
             var builder = Server.GetUriBuilder();
-            builder.Query[CommonParams.WT] = "json";
+            builder.Query[CommonParams.WT] = WTValue;
             var ping = Server.Request<PingResponse>(new PingRequest(builder));
             Assert.IsNotNull(ping);
             Assert.IsTrue(ping.Status == "OK");
@@ -88,68 +90,30 @@ namespace MizoreTests.Tests.SolrServerHandler
 
         [TestMethod]
         [Priority(3)]
-        public void TryRequestPingJSON()
+        public void TryRequestPing()
         {
             PingResponse ping;
             var builder = Server.GetUriBuilder();
-            builder.Query[CommonParams.WT] = "json";
+            builder.Query[CommonParams.WT] = WTValue;
             Assert.IsTrue(Server.TryRequest<PingResponse>(new PingRequest(builder), out ping));
             Assert.IsNotNull(ping);
             Assert.IsTrue(ping.Status == "OK");
             Assert.IsNotNull(ping.ResponseHeader);
             Assert.IsNotNull(ping.Request);
         }
-
+        
         [TestMethod]
         [Priority(3)]
-        public void RequestPingJavaBin()
+        public void RequestCores()
         {
             var builder = Server.GetUriBuilder();
-            builder.Query[CommonParams.WT] = "javabin";
-            var ping = Server.Request<PingResponse>(new PingRequest(builder));
-            Assert.IsNotNull(ping);
-            Assert.IsTrue(ping.Status == "OK");
-            Assert.IsNotNull(ping.ResponseHeader);
-            Assert.IsNotNull(ping.Request);
-        }
-
-        [TestMethod]
-        [Priority(3)]
-        public void TryRequestPingJavaBin()
-        {
-            PingResponse ping;
-            var builder = Server.GetUriBuilder();
-            builder.Query[CommonParams.WT] = "javabin";
-            Assert.IsTrue(Server.TryRequest<PingResponse>(new PingRequest(builder), out ping));
-            Assert.IsNotNull(ping);
-            Assert.IsTrue(ping.Status == "OK");
-            Assert.IsNotNull(ping.ResponseHeader);
-            Assert.IsNotNull(ping.Request);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException), "No Matching ContentSerializer found for type text/xml")]
-        [Priority(3)]
-        public void RequestPingInvalid()
-        {
-            var builder = Server.GetUriBuilder();
-            builder.Query[CommonParams.WT] = "invalid";
-            var ping = Server.Request<PingResponse>(new PingRequest(builder));
-            Assert.IsNotNull(ping);
-            Assert.IsTrue(ping.Status == "OK");
-            Assert.IsNotNull(ping.ResponseHeader);
-            Assert.IsNotNull(ping.Request);
-        }
-
-        [TestMethod]
-        [Priority(3)]
-        public void TryRequestPingInvalid()
-        {
-            PingResponse ping;
-            var builder = Server.GetUriBuilder();
-            builder.Query[CommonParams.WT] = "invalid";
-            Assert.IsFalse(Server.TryRequest<PingResponse>(new PingRequest(builder), out ping));
-            Assert.IsNull(ping);
+            builder.Query[CommonParams.WT] = WTValue;
+            var cores = Server.Request<CoresResponse>(new CoresRequest(builder));
+            Assert.IsNotNull(cores);
+            Assert.IsNotNull(cores.Cores);
+            Assert.IsFalse(cores.DefaultCore == null);
+            Assert.IsNotNull(cores.ResponseHeader);
+            Assert.IsNotNull(cores.Request);
         }
     }
 }

@@ -56,9 +56,10 @@
     <Compile Include="Mock\MockConnectionHandler.cs" />
     <Compile Include="Mock\MockSolrServerHandler.cs" />
     <Compile Include="Resources\ResourceProvider.cs" />
+    <Compile Include="Tests\SolrServerHandler\MockFileServerJavaBin.cs" />
     <Compile Include="Tests\SolrServerHandler\TestSolrServerHandlerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\SolrServerHandler\UnitTest1.cs" />
+    <Compile Include="Tests\SolrServerHandler\MockFileServerJson.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mizore\Mizore.csproj">

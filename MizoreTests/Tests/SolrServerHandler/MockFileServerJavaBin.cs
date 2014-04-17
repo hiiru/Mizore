@@ -5,9 +5,9 @@ using MizoreTests.Mock;
 namespace MizoreTests.Tests.SolrServerHandler
 {
     [TestClass]
-    public class MockFileServer : TestSolrServerHandlerBase
+    public class MockFileServerJavaBin : TestSolrServerHandlerBase
     {
-        public MockFileServer()
+        public MockFileServerJavaBin()
         {
             _server = new MockSolrServerHandler();
         }
@@ -15,5 +15,10 @@ namespace MizoreTests.Tests.SolrServerHandler
         private readonly MockSolrServerHandler _server;
 
         protected override ISolrServerHandler Server { get { return _server; } }
+
+        protected override string WTValue
+        {
+            get { return "json"; }
+        }
     }
 }
