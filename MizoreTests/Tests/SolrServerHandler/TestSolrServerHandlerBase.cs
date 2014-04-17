@@ -5,6 +5,7 @@ using Mizore.CommunicationHandler.Data.Params;
 using Mizore.CommunicationHandler.RequestHandler.Admin;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
+using Mizore.ContentSerializer.Data;
 using Mizore.SolrServerHandler;
 using System;
 
@@ -111,10 +112,10 @@ namespace MizoreTests.Tests.SolrServerHandler
             var builder = Server.GetUriBuilder();
             builder.Query[CommonParams.WT] = WTValue;
             var cores = Server.Request<CoresResponse>(new CoresRequest(builder));
+            Assert.IsNotNull(cores);
             Assert.IsNotNull(cores.Request);
             Assert.IsNotNull(cores.ResponseHeader);
             Assert.IsTrue(cores.DefaultCore == "collection1");
-            Assert.IsNotNull(cores);
             Assert.IsNotNull(cores.Cores);
             Assert.IsTrue(cores.Cores.Count()==2);
             var core1 = cores.Cores.FirstOrDefault();
@@ -128,6 +129,39 @@ namespace MizoreTests.Tests.SolrServerHandler
             var core2 = cores.Cores.LastOrDefault();
             Assert.IsNotNull(core2);
             Assert.IsTrue(core2.Name == "testcore2");
+        }
+
+        [TestMethod]
+        [Priority(3)]
+        public void RequestSystem()
+        {
+            var builder = Server.GetUriBuilder();
+            builder.Query[CommonParams.WT] = WTValue;
+            var system = Server.Request<SystemResponse>(new SystemRequest(builder));
+            Assert.IsNotNull(system);
+            Assert.IsNotNull(system.Request);
+            Assert.IsNotNull(system.ResponseHeader);
+            Assert.IsTrue(system.Mode == "std");
+            Assert.IsNotNull(system.Core);
+            Assert.IsTrue(system.Core.Host == null);
+            Assert.IsTrue(system.Core.Start.ToUniversalTime() == new DateTime(2014, 4, 14, 17, 4, 4, 591));
+            Assert.IsTrue(system.Core.Directory.GetOrDefault<string>("dirimpl") == "org.apache.solr.core.NRTCachingDirectoryFactory");
+            Assert.IsNotNull(system.Lucene);
+            Assert.IsTrue(system.Lucene.SolrSpecVersion == "4.4.0");
+            Assert.IsTrue(system.Lucene.SolrImplVersion == "4.4.0 1504776 - sarowe - 2013-07-19 02:58:35");
+            Assert.IsTrue(system.Lucene.LuceneSpecVersion == "4.4.0");
+            Assert.IsTrue(system.Lucene.LuceneImplVersion == "4.4.0 1504776 - sarowe - 2013-07-19 02:53:42");
+            Assert.IsNotNull(system.Jvm);
+            Assert.IsTrue(system.Jvm.Version == "1.8.0 25.0-b70");
+            Assert.IsTrue(system.Jvm.Processors == 8);
+            Assert.IsTrue(system.Jvm.Jre.Count == 2);
+            Assert.IsTrue(system.Jvm.Memory.GetOrDefault<string>("total") == "102 MB");
+            Assert.IsTrue(system.Jvm.Memory.GetOrDefault<INamedList>("raw").GetOrDefaultStruct<long>("max") == 3812622336);
+            Assert.IsNotNull(system.System);
+            Assert.IsTrue(system.System.Arch=="amd64");
+            Assert.IsTrue(system.System.Version=="6.3");
+            Assert.IsTrue(system.System.SystemLoadAverage==-1.0);
+            Assert.IsTrue(system.System.TotalPhysicalMemorySize == 17153019904);
         }
     }
 }
