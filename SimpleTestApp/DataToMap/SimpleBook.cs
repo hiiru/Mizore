@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Mizore.DataMappingHandler.Attributes;
+using System;
 using System.Collections.Generic;
-using Mizore.DataMappingHandler.Attributes;
 
 namespace SimpleTestApp.DataToMap
 {

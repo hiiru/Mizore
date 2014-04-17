@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Mizore.ContentSerializer.Data;
+using Mizore.ContentSerializer.Data.Solr;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Mizore.ContentSerializer.Data;
-using Mizore.ContentSerializer.Data.Solr;
 
 namespace Mizore.ContentSerializer.JavaBin
 {

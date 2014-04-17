@@ -1,5 +1,5 @@
-﻿using System;
-using Mizore.DataMappingHandler;
+﻿using Mizore.DataMappingHandler;
+using System;
 
 namespace Mizore.Exceptions
 {

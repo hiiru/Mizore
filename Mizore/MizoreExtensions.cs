@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Mizore.ContentSerializer.Data;
+using System;
 using System.Collections;
-using Mizore.ContentSerializer.Data;
 
 namespace Mizore
 {

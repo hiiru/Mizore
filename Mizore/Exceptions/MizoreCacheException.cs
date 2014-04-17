@@ -1,5 +1,5 @@
-﻿using System;
-using Mizore.CacheHandler;
+﻿using Mizore.CacheHandler;
+using System;
 
 namespace Mizore.Exceptions
 {

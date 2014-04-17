@@ -1,6 +1,6 @@
-﻿using System;
-using Mizore.CommunicationHandler.ResponseHandler;
+﻿using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.ContentSerializer.Data;
+using System;
 
 namespace Mizore.CommunicationHandler.RequestHandler
 {

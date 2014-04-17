@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Mizore.CacheHandler;
+﻿using Mizore.CacheHandler;
 using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.RequestHandler.Admin;
@@ -11,6 +8,9 @@ using Mizore.ConnectionHandler;
 using Mizore.ContentSerializer;
 using Mizore.DataMappingHandler;
 using Mizore.Exceptions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Mizore.SolrServerHandler
 {
@@ -114,7 +114,7 @@ namespace Mizore.SolrServerHandler
 
         public T Request<T>(IRequest request, string core = null) where T : class, IResponse
         {
-            if (!IsOnline) 
+            if (!IsOnline)
                 throw new MizoreServerException("Server offline");
 
             return RequestHandler.Request<T>(request, SerializerFactory);

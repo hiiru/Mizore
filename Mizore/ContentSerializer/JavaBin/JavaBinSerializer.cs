@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Mizore.ContentSerializer.Data;
+using Mizore.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using Mizore.ContentSerializer.Data;
-using Mizore.Exceptions;
 
 namespace Mizore.ContentSerializer.JavaBin
 {

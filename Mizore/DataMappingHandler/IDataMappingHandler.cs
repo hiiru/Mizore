@@ -1,5 +1,5 @@
-﻿using System;
-using Mizore.ContentSerializer.Data.Solr;
+﻿using Mizore.ContentSerializer.Data.Solr;
+using System;
 
 namespace Mizore.DataMappingHandler
 {

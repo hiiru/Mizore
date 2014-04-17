@@ -1,6 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using Mizore.ContentSerializer.Data;
+using System.Collections.ObjectModel;
 using System.IO;
-using Mizore.ContentSerializer.Data;
 
 namespace Mizore.ContentSerializer
 {

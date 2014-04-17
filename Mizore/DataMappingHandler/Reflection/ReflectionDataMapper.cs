@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Mizore.ContentSerializer.Data.Solr;
+using Mizore.DataMappingHandler.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Mizore.ContentSerializer.Data.Solr;
-using Mizore.DataMappingHandler.Attributes;
 
 namespace Mizore.DataMappingHandler.Reflection
 {

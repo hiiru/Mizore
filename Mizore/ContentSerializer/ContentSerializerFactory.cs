@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Mizore.ContentSerializer.JavaBin;
+﻿using Mizore.ContentSerializer.JavaBin;
 using Mizore.ContentSerializer.JsonNet;
 using Mizore.Exceptions;
+using System;
+using System.Collections.Generic;
 
 namespace Mizore.ContentSerializer
 {

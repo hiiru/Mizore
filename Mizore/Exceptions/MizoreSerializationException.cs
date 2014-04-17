@@ -1,5 +1,5 @@
-﻿using System;
-using Mizore.ContentSerializer;
+﻿using Mizore.ContentSerializer;
+using System;
 
 namespace Mizore.Exceptions
 {

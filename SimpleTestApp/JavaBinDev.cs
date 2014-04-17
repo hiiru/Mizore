@@ -1,5 +1,5 @@
-﻿using System.IO;
-using Mizore.ContentSerializer.JavaBin;
+﻿using Mizore.ContentSerializer.JavaBin;
+using System.IO;
 
 namespace SimpleTestApp
 {

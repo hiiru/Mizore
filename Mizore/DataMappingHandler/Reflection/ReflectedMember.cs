@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Mizore.DataMappingHandler.Attributes;
+using System;
 using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Mizore.DataMappingHandler.Attributes;
 
 namespace Mizore.DataMappingHandler.Reflection
 {

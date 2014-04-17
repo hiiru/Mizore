@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Mizore.CommunicationHandler.Data.Params;
+﻿using Mizore.CommunicationHandler.Data.Params;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.ContentSerializer.Data;
 using Mizore.ContentSerializer.Data.Solr;
 using Mizore.DataMappingHandler;
 using Mizore.Exceptions;
+using System;
+using System.Collections.Generic;
 
 namespace Mizore.CommunicationHandler.RequestHandler
 {
@@ -202,7 +202,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
                 throw new ArgumentNullException("mappingHandler");
             var handler = mappingHandler.GetMappingHandler<T>();
             if (handler == null)
-                throw new MizoreMappingException(mappingHandler,"Can't map the type " + typeof(T).Name);
+                throw new MizoreMappingException(mappingHandler, "Can't map the type " + typeof(T).Name);
 
             if (_documents == null)
                 _documents = new List<SolrInputDocument>();

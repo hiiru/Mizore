@@ -1,10 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mizore.CommunicationHandler.Data.Params;
 using Mizore.CommunicationHandler.RequestHandler.Admin;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.CommunicationHandler.ResponseHandler.Admin;
 using Mizore.SolrServerHandler;
+using System;
 
 namespace MizoreTests.Tests.SolrServerHandler
 {
@@ -101,7 +101,7 @@ namespace MizoreTests.Tests.SolrServerHandler
             Assert.IsNotNull(ping.ResponseHeader);
             Assert.IsNotNull(ping.Request);
         }
-        
+
         [TestMethod]
         [Priority(3)]
         public void RequestCores()

@@ -1,5 +1,5 @@
-﻿using System;
-using Mizore.ContentSerializer.Data;
+﻿using Mizore.ContentSerializer.Data;
+using System;
 
 namespace Mizore.CommunicationHandler.Data.Admin
 {

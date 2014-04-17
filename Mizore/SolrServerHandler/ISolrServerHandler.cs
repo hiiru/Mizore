@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Mizore.CacheHandler;
+﻿using Mizore.CacheHandler;
 using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.ContentSerializer;
+using System.Collections.Generic;
 
 namespace Mizore.SolrServerHandler
 {

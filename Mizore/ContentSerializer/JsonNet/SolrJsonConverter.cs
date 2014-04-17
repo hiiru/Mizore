@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Mizore.ContentSerializer.Data;
+﻿using Mizore.ContentSerializer.Data;
 using Mizore.ContentSerializer.Data.Solr;
 using Newtonsoft.Json;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Mizore.ContentSerializer.JsonNet
 {

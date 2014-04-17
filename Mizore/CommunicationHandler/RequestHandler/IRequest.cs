@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Mizore.CommunicationHandler.ResponseHandler;
+﻿using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.ContentSerializer.Data;
+using System.Collections.Generic;
 
 namespace Mizore.CommunicationHandler.RequestHandler
 {

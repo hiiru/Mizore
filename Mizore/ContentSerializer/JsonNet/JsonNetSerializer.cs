@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Mizore.ContentSerializer.Data;
+using Mizore.Exceptions;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using Mizore.ContentSerializer.Data;
-using Mizore.Exceptions;
-using Newtonsoft.Json;
 
 namespace Mizore.ContentSerializer.JsonNet
 {

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using Mizore.CommunicationHandler.Data.Admin;
+﻿using Mizore.CommunicationHandler.Data.Admin;
 using Mizore.CommunicationHandler.RequestHandler.Admin;
 using Mizore.ContentSerializer.Data;
+using System.Collections.Generic;
 
 namespace Mizore.CommunicationHandler.ResponseHandler.Admin
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Mizore.CommunicationHandler;
+﻿using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.RequestHandler.Admin;
 using Mizore.CommunicationHandler.ResponseHandler;
@@ -10,6 +7,9 @@ using Mizore.ContentSerializer.Data.Solr;
 using Mizore.DataMappingHandler;
 using Mizore.SolrServerHandler;
 using SimpleTestApp.DataToMap;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace SimpleTestApp
 {

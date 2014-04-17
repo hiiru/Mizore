@@ -1,7 +1,7 @@
-﻿using System;
-using Mizore.CommunicationHandler.RequestHandler;
+﻿using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.ContentSerializer;
+using System;
 
 namespace Mizore.ConnectionHandler
 {

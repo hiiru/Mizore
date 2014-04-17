@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using Mizore.CacheHandler;
+﻿using Mizore.CacheHandler;
 using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.ContentSerializer;
 using Mizore.SolrServerHandler;
+using System.Collections.Generic;
 
 namespace MizoreTests.Mock
 {

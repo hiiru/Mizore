@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Mizore.CommunicationHandler.Data.Params;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using Mizore.CommunicationHandler.Data.Params;
 
 namespace Mizore.CommunicationHandler
 {
@@ -120,7 +120,7 @@ namespace Mizore.CommunicationHandler
                 throw new ArgumentException("QueryParameters are empty", "queryBuilder");
             foreach (var parameter in queryBuilder.QueryParameters)
             {
-                if (parameter.Key.Equals(CommonParams.WT, StringComparison.InvariantCultureIgnoreCase)) 
+                if (parameter.Key.Equals(CommonParams.WT, StringComparison.InvariantCultureIgnoreCase))
                     throw new InvalidOperationException("wt parameter is not allowed in the QueryParameters");
                 Query[parameter.Key] = parameter.Value;
             }

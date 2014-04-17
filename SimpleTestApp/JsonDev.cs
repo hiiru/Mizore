@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Mizore;
+﻿using Mizore;
 using Mizore.ContentSerializer.Data;
 using Mizore.ContentSerializer.JsonNet;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace SimpleTestApp
 {

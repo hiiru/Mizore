@@ -1,11 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using Mizore.CommunicationHandler.Data.Params;
+﻿using Mizore.CommunicationHandler.Data.Params;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.ContentSerializer;
 using Mizore.Exceptions;
+using System;
+using System.IO;
+using System.Net;
 
 namespace Mizore.ConnectionHandler
 {
@@ -92,7 +92,7 @@ namespace Mizore.ConnectionHandler
             //Default settings
             webRequest.KeepAlive = true;
             webRequest.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
-            
+
             webRequest.UserAgent = "Mizore (.NET solr library)";
 
             //TODO-LOW: ServicePoint.Expect100Continue for post values -> true or false? which is faster in the solr case?

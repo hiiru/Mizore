@@ -1,6 +1,6 @@
-﻿using System;
-using Mizore.CommunicationHandler.RequestHandler;
+﻿using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
+using System;
 
 namespace Mizore.Exceptions
 {

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Mizore.CommunicationHandler.RequestHandler;
+﻿using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.ContentSerializer.Data;
 using Mizore.ContentSerializer.Data.Solr;
 using Mizore.DataMappingHandler;
+using System.Collections.Generic;
 
 namespace Mizore.CommunicationHandler.ResponseHandler
 {
