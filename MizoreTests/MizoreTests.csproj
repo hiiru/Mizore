@@ -77,6 +77,13 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\MockServer\admin\ping.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MockServer\admin\cores.javabin" />
+    <EmbeddedResource Include="Resources\MockServer\admin\cores.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MockServer\admin\cores.xml" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
