@@ -1,4 +1,5 @@
-﻿using Mizore.CommunicationHandler.Data.Params;
+﻿using System.Collections.Specialized;
+using Mizore.CommunicationHandler.Data.Params;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,7 +32,7 @@ namespace Mizore.CommunicationHandler
             ServerAddress = server.ServerAddress;
             Core = core;
             Handler = handler;
-            Query = new Dictionary<string, string>();
+            Query = new NameValueCollection();
         }
 
         private void Init(Uri uri)
@@ -75,7 +76,7 @@ namespace Mizore.CommunicationHandler
 
         public string Handler { get; set; }
 
-        public Dictionary<string, string> Query { get; set; }
+        public NameValueCollection Query { get; set; }
 
         public Uri Uri { get { return new Uri(ToString(), UriKind.Absolute); } }
 
@@ -104,7 +105,7 @@ namespace Mizore.CommunicationHandler
         public string GenerateQueryString()
         {
             var sbQuery = new StringBuilder();
-            foreach (var item in Query)
+            foreach (KeyValuePair<string,string> item in Query)
             {
                 if (sbQuery.Length > 0) sbQuery.Append('&');
                 sbQuery.AppendFormat("{0}={1}", item.Key, item.Value);

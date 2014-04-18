@@ -21,7 +21,7 @@ namespace Mizore.ContentSerializer.Data
 
         public T Get(string key)
         {
-            return this[Keys.IndexOf(key)];
+            return Keys.Contains(key) ? this[Keys.IndexOf(key)] : default(T);
         }
 
         public IList<T> GetAll(string key)

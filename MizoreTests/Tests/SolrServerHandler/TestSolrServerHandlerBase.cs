@@ -11,6 +11,7 @@ using Mizore.ContentSerializer.Data.Solr;
 using Mizore.SolrServerHandler;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MizoreTests.Tests.SolrServerHandler
@@ -185,7 +186,7 @@ namespace MizoreTests.Tests.SolrServerHandler
             Assert.IsNotNull(doc.Fields);
             Assert.IsTrue(doc.Fields.Count == fields);
             Assert.IsTrue((string)doc.Fields["id"].Value == "GB18030TEST");
-            Assert.IsTrue((double)doc.Fields["price"].Value == 0.0);
+            Assert.IsTrue(Convert.ToDouble(doc.Fields["price"].Value) == 0.0);
             Assert.IsTrue((bool)doc.Fields["inStock"].Value);
             Assert.IsTrue((long)doc.Fields["_version_"].Value == 1445086860543000576);
             Assert.IsTrue((string)((IList)doc.Fields["features"].Value)[0] == "No accents here");
@@ -231,6 +232,59 @@ namespace MizoreTests.Tests.SolrServerHandler
             Assert.IsNotNull(update);
             Assert.IsNotNull(update.ResponseHeader);
             Assert.IsNotNull(update.Request);
+        }
+
+        [TestMethod]
+        [Priority(3)]
+        public void RequestLoggingSince()
+        {
+            var builder = Server.GetUriBuilder();
+            builder.Query[CommonParams.WT] = WTValue;
+            var logging = Server.Request<LoggingResponse>(new LoggingRequest(builder, 0));
+            Assert.IsNotNull(logging);
+            Assert.IsNotNull(logging.ResponseHeader);
+            Assert.IsNotNull(logging.Request);
+            Assert.IsTrue(logging.Watcher == "Log4j (org.slf4j.impl.Log4jLoggerFactory)");
+            Assert.IsNotNull(logging.Info);
+            Assert.IsTrue(logging.Info.Levels.Count == 8);
+            Assert.IsTrue(logging.Info.Levels[0] == "ALL");
+            Assert.IsTrue(logging.Info.Levels[6] == "FATAL");
+            Assert.IsTrue(logging.Levels == logging.Info.Levels);
+            Assert.IsTrue(logging.Info.Last == 1397807090823);
+            Assert.IsTrue(logging.Info.Buffer == 50);
+            Assert.IsTrue(logging.Info.Threshold == "WARN");
+            Assert.IsNotNull(logging.History);
+            Assert.IsTrue(logging.History.Count == 6);
+            Assert.IsTrue(logging.History.NumFound == 6);
+            Assert.IsTrue(logging.History.Start == 0);
+            var first = logging.History.First();
+            Assert.IsTrue(((DateTime)first.Fields["time"].Value).ToUniversalTime() == new DateTime(2014, 4, 18, 7, 44, 43, 62));
+            Assert.IsTrue((string)first.Fields["level"].Value == "ERROR");
+            Assert.IsTrue((string)first.Fields["logger"].Value == "org.apache.solr.core.SolrCore");
+            Assert.IsTrue(((string)first.Fields["message"].Value).Length == 2745);
+        }
+
+        [TestMethod]
+        [Priority(3)]
+        public void RequestLoggingSet()
+        {
+            var builder = Server.GetUriBuilder();
+            builder.Query[CommonParams.WT] = WTValue;
+            var logging = Server.Request<LoggingResponse>(new LoggingRequest(builder, new Dictionary<string, string> { { "/solr", "FATAL" } }));
+            Assert.IsNotNull(logging);
+            Assert.IsNotNull(logging.ResponseHeader);
+            Assert.IsNotNull(logging.Request);
+            Assert.IsTrue(logging.Watcher == "Log4j (org.slf4j.impl.Log4jLoggerFactory)");
+            Assert.IsNotNull(logging.Levels);
+            Assert.IsTrue(logging.Levels.Count == 8);
+            Assert.IsTrue(logging.Levels[0] == "ALL");
+            Assert.IsTrue(logging.Levels[6] == "FATAL");
+            Assert.IsTrue(logging.Levels == logging.Info.Levels);
+            Assert.IsNotNull(logging.Loggers);
+            Assert.IsTrue(logging.Loggers.Count == 185);
+            Assert.IsTrue(logging.Loggers[0].Name == "root");
+            Assert.IsTrue(logging.Loggers[0].Level == "INFO");
+            Assert.IsTrue(logging.Loggers[0].Set);
         }
     }
 }

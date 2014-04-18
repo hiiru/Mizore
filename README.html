@@ -1,0 +1,100 @@
+<h1>Project "Mizore"</h1>
+
+<p>This is a C#/.NET solr library project codenamed "Mizore".<br/>
+The name and state of the projects (documentation, tests, etc.) will improve when we leave the alpha</p>
+
+<p>The goal of this project is to create a small but extendable library which is fast, stable and offers extensibility.</p>
+
+<p><strong>NOTE:<br/> This is a early alpha implementation and NOT yet intended for production use!<br/>
+All the Interfaces, classes and other elements are still subject to change.</strong></p>
+
+<h2>Current Status: Alpha</h2>
+
+<p><strong>CRUD</strong>: Update and Get Implemented, minimalistic Querying implemented (a complete QueryBuilder is currently missing)<br/>
+<strong>Serializer</strong>: Json (based on JSON.NET), JavaBin (Note: post in javabin is untested)<br/>
+<strong>Object Mapping</strong>: basic reflection-based Object Mapping Implemented<br/>
+<strong>Cache</strong>: missing / not implemented yet<br/>
+<strong>Admin Requests</strong>: Implemented Ping, System and Cores<br/></p>
+
+<h2>Current priority TODO Queue (in no specific order)</h2>
+
+<p>Simple cache example (mostly a proof of concept of the interface integration)<br/>
+better QueryBuilder(s)<br/>
+Decide on final project name<br/>
+Cleanup and Improve code-documentation (summery tags)<br/>
+Write Tests</p>
+
+<hr />
+
+<p>Need a .NET solr library today?<br/>
+check out solrnet (http://code.google.com/p/solrnet/) and easynet (http://easynet.codeplex.com).</p>
+
+<hr />
+
+<h2>Architecture</h2>
+
+<p>The core idea of the Project is to create an easy yet powerful framework for the solr communication.
+To achieve this the Project is split into multiple layers, each layer focuses on their problem and accepts/passes the data in a defined interface.
+So that every part can be changed individually, which allows to create custom handles easily and help with testing and performance analysis between versions.</p>
+
+<h3>Layers</h3>
+
+<p>All Layers are currently Work in Progress, so their roles might sill change.
+Also there is no order in this list nor any diagram which visualized how they work together yet.</p>
+
+<h4>ConnectionHandler -- Low-level connection</h4>
+
+<p>This Handler controls how the Connections are handled, in most case this will be a HTTP connection.</p>
+
+<p>However even in the. .NET framework there are multiple ways of creating Requests. some are synchronized others asynchronous. So this layers allows you to have the power over the core connection.</p>
+
+<p>In Theory this should enable some basic implementation of features like connection pooling or shard-awareness, Some of them might overlap with the SolrServerHandler.
+Also some exotic things like tunneling the HTTP connection over SSH to access some distant network should be possible.</p>
+
+<h4>ContentSerializer -- Connection Content Classes (e.g. JSON, XML, JavaBin)</h4>
+
+<p>In the ContentSerializer the Data is de-/serialized from a Data-Object to a serialized format for the ConnectionHandler.</p>
+
+<p>This allows to control the used formats and serialization libraries.
+You always wanted to use csv/php/ruby format in C#? start here :P</p>
+
+<p>Also other cases could be covered, e.g. a wrapper which uses JSON on DEBUG and javabin on live or special content filtering</p>
+
+<h4>CommunicationHandler -- Request/Response / connection content abstraction/manager</h4>
+
+<p>The CommunicationHandler understand the data structure of solr (NamedList) and converts them into a typed class.</p>
+
+<p>They consist of 2 Parts (and optional data classes), Request and Response.<br/>
+The Request is passed to the ConnectionHandler (and ContentSerializer) which returns a Response object.<br/>
+Request -> ConnectionHandler/ContentSerializer -> Response</p>
+
+<h4>DataMappingHandler -- Object/Data binding</h4>
+
+<p><strong>Note: Work in Progess</strong>, the mapper exists but isn't integrated in the design yet.<br/>
+Still TBD how this layer will be integrated, However this will handle the conversion of Solr Documents to Data-Objects.<br/>
+e.g. NamedList (raw), reflection/attribute mapping, etc. (aka all the voodoo to provide you with your "MyApplicationDocument" out of solr :) )</p>
+
+<p>This might also handle how the SelectRequest will be created (e.g. fl param optimization).</p>
+
+<h4>CacheHandler - well, caching</h4>
+
+<p><strong>Note</strong>: this is still TODO, <strong>not implemented yet</strong>!<br/>
+This Handler will do everything related to caching and defines how the data is cached.</p>
+
+<p>A simple implementation could be a KV Store based on request etag and/or request hashcode combined with an expiration.</p>
+
+<p>There are 2 main points in which Caching might be beneficial: Solr Responses (parsed into raw NamedList) and fully parsed .NET objects (post-reflection)</p>
+
+<h4>SolrServerHandler -- Solr connection/manager</h4>
+
+<p>This is the Core element which managed what Handlers are used and prepare the requests, which is heavily inspired by solrj but created with .NET and the libraries design in mind.</p>
+
+<p>When you access solr in your external project, it will be most likely through this Layer.</p>
+
+<p>This should allow you to implement all kind of thing, connection pooling, multi-server/farm/cloud, solr analytics/debugging or even creating special handlers like an embedded solr server (e.g. by using IKVM.NET and solrj)</p>
+
+<h2>Tests and Documentation</h2>
+
+<p>In the alpha the features and basic functionality is more important than an up-to-date tests project and documentation, so it might be out of sync.</p>
+
+<p>However as soon as the Project reaches beta, this will change. A Library is only as good as it's documentation and tests.</p>

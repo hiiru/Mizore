@@ -12,7 +12,7 @@ All the Interfaces, classes and other elements are still subject to change.**
 
 **CRUD**: Update and Get Implemented, minimalistic Querying implemented (a complete QueryBuilder is currently missing)<br/>
 **Serializer**: Json (based on JSON.NET), JavaBin (Note: post in javabin is untested)<br/>
-**Object Mapping**: basic relfection-based Object Mapping Implemented<br/>
+**Object Mapping**: basic reflection-based Object Mapping Implemented<br/>
 **Cache**: missing / not implemented yet<br/>
 **Admin Requests**: Implemented Ping, System and Cores<br/>
 
@@ -72,7 +72,7 @@ e.g. NamedList (raw), reflection/attribute mapping, etc. (aka all the voodoo to 
 This might also handle how the SelectRequest will be created (e.g. fl param optimization).
 
 #### CacheHandler - well, caching
-**Note**: this is till TODO, **not implemented yet**!<br/>
+**Note**: this is still TODO, **not implemented yet**!<br/>
 This Handler will do everything related to caching and defines how the data is cached.
 
 A simple implementation could be a KV Store based on request etag and/or request hashcode combined with an expiration.
@@ -82,7 +82,7 @@ There are 2 main points in which Caching might be beneficial: Solr Responses (pa
 #### SolrServerHandler -- Solr connection/manager
 This is the Core element which managed what Handlers are used and prepare the requests, which is heavily inspired by solrj but created with .NET and the libraries design in mind.
 
-When you access solr in your external project, it will be most likely thru this Layer.
+When you access solr in your external project, it will be most likely through this Layer.
 
 This should allow you to implement all kind of thing, connection pooling, multi-server/farm/cloud, solr analytics/debugging or even creating special handlers like an embedded solr server (e.g. by using IKVM.NET and solrj)
 

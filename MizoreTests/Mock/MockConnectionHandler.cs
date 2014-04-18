@@ -1,4 +1,5 @@
-﻿using Mizore.CommunicationHandler;
+﻿using System.Linq;
+using Mizore.CommunicationHandler;
 using Mizore.CommunicationHandler.Data.Params;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
@@ -15,12 +16,14 @@ namespace MizoreTests.Mock
         public T Request<T>(IRequest request, IContentSerializerFactory serializerFactory) where T : IResponse
         {
             if (request == null) throw new ArgumentNullException("request");
-            if (request.UrlBuilder == null) throw new ArgumentException("Request doens't have a UrlBuilder", "request");
-            if (!request.UrlBuilder.Query.ContainsKey(CommonParams.WT)) throw new ArgumentException("UrlBuilder doesn't have a WT set, it's required for testing!", "request");
+            if (request.UrlBuilder == null) throw new ArgumentException("Request doesn't have a UrlBuilder", "request");
+            if (!request.UrlBuilder.Query.AllKeys.Contains(CommonParams.WT)) throw new ArgumentException("UrlBuilder doesn't have a WT set, it's required for testing!", "request");
             if (serializerFactory == null) throw new ArgumentNullException("serializerFactory");
 
+            var fileSuffix = GetSuffix(request);
+
             Stream ms = null;
-            using (var responseStream = GetFileStream(request.UrlBuilder))
+            using (var responseStream = GetFileStream(request.UrlBuilder, fileSuffix))
             {
                 if (responseStream != null)
                 {
@@ -37,11 +40,23 @@ namespace MizoreTests.Mock
             return (T)request.GetResponse(nl);
         }
 
+        private string GetSuffix(IRequest request)
+        {
+            switch (string.Format("{0}_{1}", request.UrlBuilder.Core, request.UrlBuilder.Handler))
+            {
+                case "admin_logging":
+                    if (request.UrlBuilder.Query.AllKeys.Contains("set")) return "set";
+                    return null;
+            }
+            return null;
+        }
+
         private const string BaseResoucePath = "MizoreTests.Resources.MockServer";
 
-        private Stream GetFileStream(SolrUriBuilder urlBuilder)
+        private Stream GetFileStream(SolrUriBuilder urlBuilder, string suffix)
         {
-            var resouece = string.Format("{0}.{1}.{2}.{3}", BaseResoucePath, urlBuilder.Core, urlBuilder.Handler, urlBuilder.Query[CommonParams.WT]);
+            var hander = suffix != null ? string.Format("{0}_{1}", urlBuilder.Handler, suffix) : urlBuilder.Handler;
+            var resouece = string.Format("{0}.{1}.{2}.{3}", BaseResoucePath, urlBuilder.Core, hander, urlBuilder.Query[CommonParams.WT]);
             return ResourceProvider.GetResourceStream(resouece);
         }
 

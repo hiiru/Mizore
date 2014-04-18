@@ -18,7 +18,7 @@ namespace MizoreTests.Tests.SolrServerHandler
 
         protected override string WTValue
         {
-            get { return "json"; }
+            get { return "javabin"; }
         }
     }
 }

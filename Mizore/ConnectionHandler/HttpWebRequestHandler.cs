@@ -1,4 +1,5 @@
-﻿using Mizore.CommunicationHandler.Data.Params;
+﻿using System.Linq;
+using Mizore.CommunicationHandler.Data.Params;
 using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.CommunicationHandler.ResponseHandler;
 using Mizore.ContentSerializer;
@@ -79,7 +80,7 @@ namespace Mizore.ConnectionHandler
         protected virtual HttpWebRequest CreateWebRequest(IRequest request, IContentSerializerFactory serializerFactory)
         {
             var serializer = GetSerializer(request, serializerFactory);
-            if (!request.UrlBuilder.Query.ContainsKey(CommonParams.WT))
+            if (!request.UrlBuilder.Query.AllKeys.Contains(CommonParams.WT))
                 request.UrlBuilder.Query[CommonParams.WT] = serializer.WT;
 
             var webRequest = (HttpWebRequest)WebRequest.Create(request.UrlBuilder.Uri);
@@ -110,7 +111,7 @@ namespace Mizore.ConnectionHandler
         protected IContentSerializer GetSerializer(IRequest request, IContentSerializerFactory serializerFactory)
         {
             string serializerType = null;
-            if (request.UrlBuilder.Query.ContainsKey(CommonParams.WT))
+            if (request.UrlBuilder.Query.AllKeys.Contains(CommonParams.WT))
                 serializerType = request.UrlBuilder.Query[CommonParams.WT];
             else if (request.Header != null && request.Header.ContainsKey("content-type"))
                 serializerType = request.Header["content-type"];

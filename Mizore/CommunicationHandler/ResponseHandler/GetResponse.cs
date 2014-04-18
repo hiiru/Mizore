@@ -26,10 +26,12 @@ namespace Mizore.CommunicationHandler.ResponseHandler
             {
                 if (!docIsNull && _document == null && Content != null)
                 {
-                    var docNl = Content.GetOrDefault<INamedList>("doc");
-                    if (docNl != null)
-                        _document = new SolrDocument(docNl);
-                    else
+                    _document = Content.GetOrDefault<SolrDocument>("doc");
+                    //var docNl = Content.GetOrDefault<INamedList>("doc");
+                    //if (docNl != null)
+                    //    _document = new SolrDocument(docNl);
+                    //else
+                    if (_document==null)
                         docIsNull = true;
                 }
                 return _document;

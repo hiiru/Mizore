@@ -218,9 +218,25 @@ namespace Mizore.ContentSerializer.JsonNet
                     case JsonToken.StartObject:
                         if (propertyName == null)
                             throw new InvalidOperationException("propertyName is null...");
-                        list.Add(propertyName,
-                            propertyName == "response" ? ReadSolrDocumentList(reader) :
-                            ReadNamedList(reader));
+                        object value;
+                        //Workaround because JSON doesn't know the exact type, so it would treat everything as NamedList, which differs from other formats
+                        switch (propertyName)
+                        {
+                            //used for GET Requests
+                            case "doc":
+                                value = new SolrDocument(ReadNamedList(reader));
+                                break;
+                            //used for Logging Requests
+                            case "history":
+                            //used for Select Requests
+                            case "response":
+                                value = ReadSolrDocumentList(reader);
+                                break;
+                            default:
+                                value = ReadNamedList(reader);
+                                break;
+                        }
+                        list.Add(propertyName,value);
                         propertyName = null;
                         break;
 
@@ -269,7 +285,6 @@ namespace Mizore.ContentSerializer.JsonNet
 
                     case JsonToken.PropertyName:
                         throw new InvalidOperationException("Json Array can't have a property name!");
-                        break;
 
                     case JsonToken.StartArray:
                         array.Add(ReadArray(reader));

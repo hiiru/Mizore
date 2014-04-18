@@ -1,18 +1,10 @@
 ﻿# CommunicationHandler TODO List
 
-
-## Important
-
-### Select 
-
 ## Admin / Debug / Management
 
 TODO: Define which one we will implement.
 
 INFO: these urls are based on the example 4.4.0 solr server with example data imported
-
-### Logging
-http://127.0.0.1:20440/solr/collection1/admin/logging?wt=json&since=0
 
 ### Properties
 http://127.0.0.1:20440/solr/collection1/admin/properties?wt=json
@@ -45,7 +37,7 @@ http://127.0.0.1:20440/solr/collection1/admin/mbeans?cat=QUERYHANDLER&wt=json
 
 ## Other
 
-Example hanlder or special handler
+Example handler or special handler
 ### Query
 
 ### Browse

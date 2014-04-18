@@ -60,6 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CacheHandler\ICacheHandler.cs" />
+    <Compile Include="CommunicationHandler\Data\Admin\LoggingInfo.cs" />
+    <Compile Include="CommunicationHandler\Data\Admin\LoggingLoggers.cs" />
     <Compile Include="CommunicationHandler\Data\Admin\SystemSystemData.cs" />
     <Compile Include="CommunicationHandler\Data\Admin\SystemJvmData.cs" />
     <Compile Include="CommunicationHandler\Data\Admin\SystemLuceneData.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="CommunicationHandler\Data\Params\CommonParams.cs" />
     <Compile Include="CommunicationHandler\IQueryBuilder.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\Admin\CoresRequest.cs" />
+    <Compile Include="CommunicationHandler\RequestHandler\Admin\LoggingRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\ARequestBaseGet.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\GetRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\UpdateRequest.cs" />
@@ -95,6 +98,7 @@
     <Compile Include="CommunicationHandler\RequestHandler\SelectRequest.cs" />
     <Compile Include="CommunicationHandler\RequestHandler\IRequest.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\Admin\CoresResponse.cs" />
+    <Compile Include="CommunicationHandler\ResponseHandler\Admin\LoggingResponse.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\AResponseBase.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\GetResponse.cs" />
     <Compile Include="CommunicationHandler\ResponseHandler\UpdateResonse.cs" />
@@ -172,7 +176,11 @@
     <None Include="ContentSerializer\Data\Solr\README.md" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="CommunicationHandler\TODO.html">
+      <DependentUpon>TODO.md</DependentUpon>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

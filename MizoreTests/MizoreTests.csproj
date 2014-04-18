@@ -67,7 +67,12 @@
       <Name>Mizore</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MockServer\admin\logging.javabin" />
+    <EmbeddedResource Include="Resources\MockServer\admin\logging.json" />
+    <EmbeddedResource Include="Resources\MockServer\admin\logging_set.javabin" />
+    <EmbeddedResource Include="Resources\MockServer\admin\logging_set.json" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\MockServer\admin\ping.javabin" />
     <EmbeddedResource Include="Resources\MockServer\admin\ping.json" />
@@ -101,6 +106,10 @@
     <EmbeddedResource Include="Resources\MockServer\MockCore\get.xml" />
     <EmbeddedResource Include="Resources\MockServer\MockCore\select.xml" />
     <EmbeddedResource Include="Resources\MockServer\MockCore\update.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MockServer\admin\logging.xml" />
+    <EmbeddedResource Include="Resources\MockServer\admin\logging_set.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

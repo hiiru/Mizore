@@ -1,0 +1,66 @@
+<h1>CommunicationHandler TODO List</h1>
+
+<h2>Admin / Debug / Management</h2>
+
+<p>TODO: Define which one we will implement.</p>
+
+<p>INFO: these urls are based on the example 4.4.0 solr server with example data imported</p>
+
+<h3>Properties</h3>
+
+<p>http://127.0.0.1:20440/solr/collection1/admin/properties?wt=json</p>
+
+<h3>Threads</h3>
+
+<p>http://127.0.0.1:20440/solr/collection1/admin/threads?wt=json</p>
+
+<h3>Replication</h3>
+
+<p>http://127.0.0.1:20440/solr/collection1/replication?command=details&amp;wt=json</p>
+
+<h3>DataImportHandler</h3>
+
+<p>https://127.0.0.1:20440/solr/collection1/dataimport?command=details&amp;wt=json</p>
+
+<h3>Analysis Fields + document</h3>
+
+<p>FAIL: http://127.0.0.1:20440/solr/collection1/analysis/field?wt=json&amp;analysis.showmatch=true&amp;analysis.fieldvalue=test&amp;analysis.query=test&amp;analysis.fieldname=<em>version</em></p>
+
+<p>SUCCESS: http://127.0.0.1:20440/solr/collection1/analysis/field?wt=json&amp;analysis.showmatch=true&amp;analysis.fieldvalue=test&amp;analysis.query=test&amp;analysis.fieldname=author</p>
+
+<p>TODO: example url for document</p>
+
+<h3>Luke</h3>
+
+<p>http://127.0.0.1:20440/solr/collection1/admin/luke?wt=json&amp;show=index&amp;numTerms=0</p>
+
+<h3>File / Tpl</h3>
+
+<p>http://127.0.0.1:20440/solr/collection1/admin/file?file=solrconfig.xml&amp;contentType=text/xml;charset=utf-8
+http://127.0.0.1:20440/solr/tpl/file.html?_=1395498159508</p>
+
+<h3>mbeans</h3>
+
+<p>http://127.0.0.1:20440/solr/collection1/admin/mbeans?cat=QUERYHANDLER&amp;wt=json</p>
+
+<h2>Other</h2>
+
+<p>Example handler or special handler</p>
+
+<h3>Query</h3>
+
+<h3>Browse</h3>
+
+<h3>Elevate</h3>
+
+<h3>Spell</h3>
+
+<h3>Terms</h3>
+
+<h3>tvrh</h3>
+
+<h3>Debug</h3>
+
+<p>/admin/plugins</p>
+
+<p>/debug/dump</p>
