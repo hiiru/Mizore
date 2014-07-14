@@ -17,7 +17,7 @@ namespace Mizore.ConnectionHandler
         /// </summary>
         /// <typeparam name="T">IResponse type, which handles the response.</typeparam>
         /// <param name="request">IRequest implementation, which handles the required date for the Request.</param>
-        /// <exception cref="MizoreConnectionExcpetion">Thrown when a problem with the Conneection to the server occurs</exception>
+        /// <exception cref="MizoreConnectionExcpetion">Thrown when a problem with the Connection to the server occurs</exception>
         /// <returns>IResponse implementation for the Response</returns>
         public T Request<T>(IRequest request, IContentSerializerFactory serializerFactory) where T : IResponse
         {

@@ -14,7 +14,7 @@ All the Interfaces, classes and other elements are still subject to change.**
 **Serializer**: Json (based on JSON.NET), JavaBin (Note: post in javabin is untested)<br/>
 **Object Mapping**: basic reflection-based Object Mapping Implemented<br/>
 **Cache**: missing / not implemented yet<br/>
-**Admin Requests**: Implemented Ping, System and Cores<br/>
+**Admin Requests**: Implemented Ping, System, Cores and Logging<br/>
 
 ## Current priority TODO Queue (in no specific order)
 Simple cache example (mostly a proof of concept of the interface integration)<br/>
