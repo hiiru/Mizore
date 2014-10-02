@@ -88,7 +88,7 @@ namespace MizoreTests.Tests.SolrServerHandler
         public void RequestPing()
         {
             var builder = Server.GetUriBuilder();
-            builder.Query[CommonParams.WT] = WTValue;
+            builder.Query.Set(CommonParams.WT, WTValue);
             var ping = Server.Request<PingResponse>(new PingRequest(builder));
             Assert.IsNotNull(ping);
             Assert.IsTrue(ping.Status == "OK");
@@ -102,7 +102,7 @@ namespace MizoreTests.Tests.SolrServerHandler
         {
             PingResponse ping;
             var builder = Server.GetUriBuilder();
-            builder.Query[CommonParams.WT] = WTValue;
+            builder.Query.Set(CommonParams.WT, WTValue);
             Assert.IsTrue(Server.TryRequest<PingResponse>(new PingRequest(builder), out ping));
             Assert.IsNotNull(ping);
             Assert.IsTrue(ping.Status == "OK");
@@ -115,7 +115,7 @@ namespace MizoreTests.Tests.SolrServerHandler
         public void RequestCores()
         {
             var builder = Server.GetUriBuilder();
-            builder.Query[CommonParams.WT] = WTValue;
+            builder.Query.Set(CommonParams.WT, WTValue);
             var cores = Server.Request<CoresResponse>(new CoresRequest(builder));
             Assert.IsNotNull(cores);
             Assert.IsNotNull(cores.Request);
@@ -141,7 +141,7 @@ namespace MizoreTests.Tests.SolrServerHandler
         public void RequestSystem()
         {
             var builder = Server.GetUriBuilder();
-            builder.Query[CommonParams.WT] = WTValue;
+            builder.Query.Set(CommonParams.WT, WTValue);
             var system = Server.Request<SystemResponse>(new SystemRequest(builder));
             Assert.IsNotNull(system);
             Assert.IsNotNull(system.Request);
@@ -174,7 +174,7 @@ namespace MizoreTests.Tests.SolrServerHandler
         public void RequestGet()
         {
             var builder = Server.GetUriBuilder();
-            builder.Query[CommonParams.WT] = WTValue;
+            builder.Query.Set(CommonParams.WT, WTValue);
             var get = Server.Request<GetResponse>(new GetRequest(builder));
             Assert.IsNotNull(get);
             CheckDocument(get.Document, 6);
@@ -199,7 +199,7 @@ namespace MizoreTests.Tests.SolrServerHandler
         public void RequestSelectArgumentNull()
         {
             var builder = Server.GetUriBuilder();
-            builder.Query[CommonParams.WT] = WTValue;
+            builder.Query.Set(CommonParams.WT, WTValue);
             var select = Server.Request<SelectResponse>(new SelectRequest(builder, null));
         }
 
@@ -208,7 +208,7 @@ namespace MizoreTests.Tests.SolrServerHandler
         public void RequestSelect()
         {
             var builder = Server.GetUriBuilder();
-            builder.Query[CommonParams.WT] = WTValue;
+            builder.Query.Set(CommonParams.WT, WTValue);
             //note: QueryBuilder is not tested here, only request/response (incl. content serializer)
             var select = Server.Request<SelectResponse>(new SelectRequest(builder, new SimpleQueryBuilder("*:*")));
             Assert.IsNotNull(select);
@@ -227,7 +227,7 @@ namespace MizoreTests.Tests.SolrServerHandler
         public void RequestUpdate()
         {
             var builder = Server.GetUriBuilder();
-            builder.Query[CommonParams.WT] = WTValue;
+            builder.Query.Set(CommonParams.WT, WTValue);
             var update = Server.Request<UpdateResponse>(new UpdateRequest(builder));
             Assert.IsNotNull(update);
             Assert.IsNotNull(update.ResponseHeader);
@@ -239,7 +239,7 @@ namespace MizoreTests.Tests.SolrServerHandler
         public void RequestLoggingSince()
         {
             var builder = Server.GetUriBuilder();
-            builder.Query[CommonParams.WT] = WTValue;
+            builder.Query.Set(CommonParams.WT, WTValue);
             var logging = Server.Request<LoggingResponse>(new LoggingRequest(builder, 0));
             Assert.IsNotNull(logging);
             Assert.IsNotNull(logging.ResponseHeader);
@@ -269,7 +269,7 @@ namespace MizoreTests.Tests.SolrServerHandler
         public void RequestLoggingSet()
         {
             var builder = Server.GetUriBuilder();
-            builder.Query[CommonParams.WT] = WTValue;
+            builder.Query.Set(CommonParams.WT, WTValue);
             var logging = Server.Request<LoggingResponse>(new LoggingRequest(builder, new Dictionary<string, string> { { "/solr", "FATAL" } }));
             Assert.IsNotNull(logging);
             Assert.IsNotNull(logging.ResponseHeader);

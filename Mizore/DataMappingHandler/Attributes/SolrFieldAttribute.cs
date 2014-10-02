@@ -30,5 +30,10 @@ namespace Mizore.DataMappingHandler.Attributes
         public string Field { get; set; }
 
         public float Boost { get; set; }
+
+        /// <summary>
+        /// This Field is ignored when updating, however when getting the document from solr, the field is loaded.
+        /// </summary>
+        public bool ReadOnly { get; set; }
     }
 }

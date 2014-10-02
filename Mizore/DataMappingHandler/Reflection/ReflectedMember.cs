@@ -27,6 +27,7 @@ namespace Mizore.DataMappingHandler.Reflection
 
             SolrField = solrAttr.Field ?? MemberName;
             SolrFieldBoost = solrAttr.Boost;
+            ReadOnly = solrAttr.ReadOnly;
         }
 
         private Type GetMemberType(MemberInfo member)
@@ -110,5 +111,7 @@ namespace Mizore.DataMappingHandler.Reflection
         public Func<T, object> Get { get; protected set; }
 
         public Action<T, object> Set { get; protected set; }
+
+        public bool ReadOnly { get; set; }
     }
 }

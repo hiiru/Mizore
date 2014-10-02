@@ -1,4 +1,5 @@
-﻿using Mizore.CommunicationHandler.RequestHandler;
+﻿using Mizore.CommunicationHandler.Data;
+using Mizore.CommunicationHandler.RequestHandler;
 using Mizore.ContentSerializer.Data;
 using Mizore.ContentSerializer.Data.Solr;
 using Mizore.DataMappingHandler;
@@ -23,6 +24,20 @@ namespace Mizore.CommunicationHandler.ResponseHandler
                     _documents = Content.GetOrDefault<SolrDocumentList>("response");
                 }
                 return _documents;
+            }
+        }
+
+        private FacetData _facets;
+
+        public FacetData Facets
+        {
+            get
+            {
+                if (_facets == null && Content != null)
+                {
+                    _facets = new FacetData(Content.GetOrDefault<INamedList>("facet_counts"));
+                }
+                return _facets;
             }
         }
 

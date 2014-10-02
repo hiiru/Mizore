@@ -26,6 +26,8 @@ namespace MizoreTests.Mock
 
         public bool IsReady { get; private set; }
 
+        public bool IsOnline { get { return true; } }
+
         public List<string> Cores { get; private set; }
 
         public string DefaultCore { get; set; }

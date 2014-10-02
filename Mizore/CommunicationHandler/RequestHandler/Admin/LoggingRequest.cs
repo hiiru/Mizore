@@ -32,7 +32,7 @@ namespace Mizore.CommunicationHandler.RequestHandler.Admin
         public LoggingRequest(SolrUriBuilder baseBuilder, long since)
             : this(baseBuilder)
         {
-            baseBuilder.Query["since"] = since.ToString();
+            baseBuilder.Query.Add("since",since.ToString());
         }
 
 

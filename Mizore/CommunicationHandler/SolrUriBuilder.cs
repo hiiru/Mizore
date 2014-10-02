@@ -3,6 +3,7 @@ using Mizore.CommunicationHandler.Data.Params;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Mizore.ContentSerializer.Data;
 
 namespace Mizore.CommunicationHandler
 {
@@ -32,7 +33,7 @@ namespace Mizore.CommunicationHandler
             ServerAddress = server.ServerAddress;
             Core = core;
             Handler = handler;
-            Query = new NameValueCollection();
+            Query = new NamedList<string>();
         }
 
         private void Init(Uri uri)
@@ -76,7 +77,7 @@ namespace Mizore.CommunicationHandler
 
         public string Handler { get; set; }
 
-        public NameValueCollection Query { get; set; }
+        public NamedList<string> Query { get; set; }
 
         public Uri Uri { get { return new Uri(ToString(), UriKind.Absolute); } }
 
@@ -105,10 +106,12 @@ namespace Mizore.CommunicationHandler
         public string GenerateQueryString()
         {
             var sbQuery = new StringBuilder();
-            foreach (KeyValuePair<string,string> item in Query)
+            for (int i=0;i<Query.Count;i++)
             {
+                var key = Query.GetKey(i);
+                var value = Query.Get(i);
                 if (sbQuery.Length > 0) sbQuery.Append('&');
-                sbQuery.AppendFormat("{0}={1}", item.Key, item.Value);
+                sbQuery.AppendFormat("{0}={1}", key, value);
             }
             return sbQuery.ToString();
         }
@@ -117,13 +120,15 @@ namespace Mizore.CommunicationHandler
         {
             if (queryBuilder == null)
                 throw new ArgumentNullException("queryBuilder");
-            if (queryBuilder.QueryParameters.IsNullOrEmpty())
+            if (queryBuilder.QueryParameters.Count==0)
                 throw new ArgumentException("QueryParameters are empty", "queryBuilder");
-            foreach (var parameter in queryBuilder.QueryParameters)
+            for(int i=0;i<queryBuilder.QueryParameters.Count;i++)
             {
-                if (parameter.Key.Equals(CommonParams.WT, StringComparison.InvariantCultureIgnoreCase))
+                var key = queryBuilder.QueryParameters.GetKey(i);
+                if (key.Equals(CommonParams.WT, StringComparison.InvariantCultureIgnoreCase))
                     throw new InvalidOperationException("wt parameter is not allowed in the QueryParameters");
-                Query[parameter.Key] = parameter.Value;
+                var value = queryBuilder.QueryParameters.Get(i);
+                Query.Add(key,value);
             }
         }
     }

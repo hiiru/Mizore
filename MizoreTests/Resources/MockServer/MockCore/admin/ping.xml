@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+<lst name="responseHeader"><int name="status">0</int><int name="QTime">1</int><lst name="params"><str name="df">text</str><str name="echoParams">all</str><str name="rows">10</str><str name="echoParams">all</str><str name="ts">1378396622592</str><str name="_">1378396622594</str><str name="wt">xml</str><str name="q">solrpingquery</str><str name="distrib">false</str></lst></lst><str name="status">OK</str>
+</response>

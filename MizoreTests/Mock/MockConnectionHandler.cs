@@ -17,7 +17,8 @@ namespace MizoreTests.Mock
         {
             if (request == null) throw new ArgumentNullException("request");
             if (request.UrlBuilder == null) throw new ArgumentException("Request doesn't have a UrlBuilder", "request");
-            if (!request.UrlBuilder.Query.AllKeys.Contains(CommonParams.WT)) throw new ArgumentException("UrlBuilder doesn't have a WT set, it's required for testing!", "request");
+            var wt = request.UrlBuilder.Query.Get(CommonParams.WT);
+            if (wt==null) throw new ArgumentException("UrlBuilder doesn't have a WT set, it's required for testing!", "request");
             if (serializerFactory == null) throw new ArgumentNullException("serializerFactory");
 
             var fileSuffix = GetSuffix(request);
@@ -45,8 +46,8 @@ namespace MizoreTests.Mock
             switch (string.Format("{0}_{1}", request.UrlBuilder.Core, request.UrlBuilder.Handler))
             {
                 case "admin_logging":
-                    if (request.UrlBuilder.Query.AllKeys.Contains("set")) return "set";
-                    return null;
+                    var setValue = request.UrlBuilder.Query.Get("set");
+                    return setValue!=null ? "set" : null;
             }
             return null;
         }
@@ -56,13 +57,13 @@ namespace MizoreTests.Mock
         private Stream GetFileStream(SolrUriBuilder urlBuilder, string suffix)
         {
             var hander = suffix != null ? string.Format("{0}_{1}", urlBuilder.Handler, suffix) : urlBuilder.Handler;
-            var resouece = string.Format("{0}.{1}.{2}.{3}", BaseResoucePath, urlBuilder.Core, hander, urlBuilder.Query[CommonParams.WT]);
+            var resouece = string.Format("{0}.{1}.{2}.{3}", BaseResoucePath, urlBuilder.Core, hander.Replace('/','.'), urlBuilder.Query.Get(CommonParams.WT));
             return ResourceProvider.GetResourceStream(resouece);
         }
 
         private string GetContentType(SolrUriBuilder urlBuilder)
         {
-            switch (urlBuilder.Query[CommonParams.WT].ToLowerInvariant())
+            switch (urlBuilder.Query.Get(CommonParams.WT).ToLowerInvariant())
             {
                 case "invalid":
                     return "invalid";

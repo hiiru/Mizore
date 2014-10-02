@@ -34,7 +34,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
         {
             if (urlBuilder == null) throw new ArgumentNullException("urlBuilder");
             urlBuilder.Handler = "update";
-            urlBuilder.Query[CommonParams.WT]= "json";
+            urlBuilder.Query.Add(CommonParams.WT, "json");
             UrlBuilder = urlBuilder;
         }
 

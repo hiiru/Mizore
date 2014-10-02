@@ -17,6 +17,7 @@ namespace Mizore.SolrServerHandler
     public interface ISolrServerHandler
     {
         bool IsReady { get; }
+        bool IsOnline { get; }
 
         /// <summary>
         /// Lists all the available cores.

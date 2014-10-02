@@ -102,6 +102,7 @@ namespace Mizore.DataMappingHandler.Reflection
             var doc = new SolrInputDocument();
             foreach (var member in mapping)
             {
+                if (member.ReadOnly) continue;
                 var value = member.Get(obj);
                 doc.Fields.Add(member.SolrField, new SolrInputField(member.SolrField, value, member.SolrFieldBoost.HasValue ? member.SolrFieldBoost.Value : 1f));
             }

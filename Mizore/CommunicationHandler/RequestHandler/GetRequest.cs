@@ -11,7 +11,7 @@ namespace Mizore.CommunicationHandler.RequestHandler
         {
             UrlBuilder.Handler = "get";
             if (id != null)
-                UrlBuilder.Query["id"] = id;
+                UrlBuilder.Query.Add("id",id);
         }
 
         public override IResponse GetResponse(INamedList nl)

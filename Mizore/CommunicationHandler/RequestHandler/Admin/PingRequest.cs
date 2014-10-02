@@ -9,8 +9,7 @@ namespace Mizore.CommunicationHandler.RequestHandler.Admin
         public PingRequest(SolrUriBuilder builder)
             : base(builder)
         {
-            UrlBuilder.Core = "admin";
-            UrlBuilder.Handler = "ping";
+            UrlBuilder.Handler = "admin/ping";
         }
 
         public override IResponse GetResponse(INamedList nl)

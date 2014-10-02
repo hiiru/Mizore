@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Mizore.ContentSerializer.Data
 {
@@ -89,5 +90,23 @@ namespace Mizore.ContentSerializer.Data
         }
 
         public int Count { get { return values.Count; } }
+
+        public void Set(string name, T obj)
+        {
+            if (!indexLookup.ContainsKey(name))
+            {
+                Add(name,obj);
+                return;
+            }
+            var index = indexLookup[name][0];
+            values[index] = obj;
+        }
+        public void Set(int index, T obj)
+        {
+            if (index >= values.Count) 
+                throw new ArgumentOutOfRangeException("index");
+
+            values[index] = obj;
+        }
     }
 }

@@ -43,7 +43,7 @@ namespace Mizore.SolrServerHandler
         private readonly SolrUriBuilder baseUriBuilder;
         protected HttpWebRequestHandler RequestHandler;
 
-        public HttpSolrServer(string url, IContentSerializerFactory contentSerializerFactory = null, ICacheHandler cacheHandler = null)
+        public HttpSolrServer(string url, IContentSerializerFactory contentSerializerFactory = null, ICacheHandler cacheHandler = null, bool ignoreStatusCheck=false)
         {
             //Argument Validation
             if (string.IsNullOrWhiteSpace(url)) throw new ArgumentNullException("url");
@@ -60,7 +60,14 @@ namespace Mizore.SolrServerHandler
             DataMapping = new DataMappingCollection();
             Cache = cacheHandler ?? null;
             IsReady = true;
-            CheckStatus(true);
+            if (ignoreStatusCheck)
+            {
+                _isOnline = true;
+            }
+            else
+            {
+                CheckStatus(true);
+            }
         }
 
         private bool CheckStatus(bool loadCores = false)
@@ -70,6 +77,20 @@ namespace Mizore.SolrServerHandler
             LastCheck = DateTime.Now;
             try
             {
+                if (Cores == null || Cores.Count == 0)
+                {
+                    var coresResponse = RequestHandler.Request<CoresResponse>(new CoresRequest(GetUriBuilder()), SerializerFactory);
+                    if (coresResponse != null)
+                    {
+                        Cores = coresResponse.Cores.Select(x => x.Name).ToList();
+                        DefaultCore = coresResponse.DefaultCore;
+                    }
+                }
+                if (string.IsNullOrWhiteSpace(DefaultCore))
+                {
+                    _isOnline = false;
+                    return false;
+                }
                 var ping = RequestHandler.Request<PingResponse>(new PingRequest(GetUriBuilder()), SerializerFactory);
                 _isOnline = ping != null && ping.Status.Equals("OK", StringComparison.InvariantCultureIgnoreCase);
             }
@@ -77,15 +98,6 @@ namespace Mizore.SolrServerHandler
             {
                 _isOnline = false;
                 return false;
-            }
-            if (_isOnline && loadCores)
-            {
-                var coresResponse = RequestHandler.Request<CoresResponse>(new CoresRequest(GetUriBuilder()), SerializerFactory);
-                if (coresResponse != null)
-                {
-                    Cores = coresResponse.Cores.Select(x => x.Name).ToList();
-                    DefaultCore = coresResponse.DefaultCore;
-                }
             }
             return _isOnline;
         }
